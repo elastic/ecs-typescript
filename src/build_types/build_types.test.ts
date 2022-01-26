@@ -1,4 +1,4 @@
-import { toCamelCase, convertAgentFields } from './build_types';
+import { convertAgentFields } from './build_types';
 
 describe('convertAgentFields', () => {
   it('converts agent fields', () => {
@@ -39,10 +39,4 @@ describe('convertAgentFields', () => {
       `
     );
   })
-});
-
-describe('toCamelCase', () => {
-  it('converts keys to camelCase', () => {
-    expect(toCamelCase("build.original")).toBe('buildOriginal');
-  });
 });
