@@ -1,6 +1,8 @@
 // Maps ECS types to TypeScript types
 const typeMapping: Record<string, string> = {
   keyword: 'string',
+  long: 'number',
+  date: 'string',
 };
 
 export function convertType(ecsType: string): string {
