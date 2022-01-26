@@ -11,5 +11,5 @@ Automatically generated TypeScript type definitions for the
 1. `yarn build`: Runs `tsc`
 1. `yarn dev`: Runs `tsc` and watches for changes
 1. `yarn test`: Runs unit tests with `jest`
-1. `yarn generate`: Generates a ts file in `generated/ecs.ts`
+1. `yarn generate-ecs-types`: Generates a ts file in `generated/ecs.ts`
 
