@@ -1,48 +1,62 @@
+import { EcsFieldSpec } from '../types';
 import { Helpers } from './helpers';
 
 describe('Helpers', () => {
-  let tester: any;
+  let tester: Helpers;
+  
   beforeEach(() => {
     tester = new Helpers();
-  })
-  it('exists', () => {
-    expect(tester).toBeDefined();
   });
   
   it('builds a root Ecs exported interface name', () => {
-    const ti = {name: 'my_interface', isRootLevel: true, exportInterface: true};
-    const actual = tester.buildInterfaceName(ti.name,ti.isRootLevel, ti.exportInterface);
+    const actual = tester.buildInterfaceName('my_interface', true);
     expect(actual).toMatchInlineSnapshot(`
 "export interface EcsMyInterface {
 "
-`)
-  });
-  
-  it('builds a plain explorted interface name', () => {
-    const ti = {name: 'my_interface', isRootLevel: false, exportInterface: true};
-    const actual = tester.buildInterfaceName(ti.name, ti.isRootLevel, ti.exportInterface);
-    expect(actual).toMatchInlineSnapshot(`
-"export interface MyInterface {
-"
-`)
+`);
   });
   
   it('builds a plain non-exported interface name', () => {
-    const ti = {name: 'my_interface', isRootLevel: false, exportInterface: false};
-    const actual = tester.buildInterfaceName(ti.name, ti.isRootLevel, ti.exportInterface);
+    const actual = tester.buildInterfaceName('my_interface', false);
     expect(actual).toMatchInlineSnapshot(`
 "interface MyInterface {
+"
+`);
+  });
+  
+  it('formats a multiline description string', () => {
+    const testDesc =  "Some realy long\nmultiline description for a property.";
+    
+    expect(tester.buildDescription(testDesc)).toMatchInlineSnapshot(`
+"// Some realy long
+// multiline description for a property."
+`);
+  });
+  
+  it('builds an interface property string', () => {
+    expect(tester.buildInterfacePropString('my_interface')).toMatchInlineSnapshot(`
+"my_interface?: MyInterface;
 "
 `)
   });
   
-  it('formats a multiline description string', () => {
-    const testDesc =  "The agent fields contain the data about the software entity, if any, that collects, detects, or observes events on a host, or takes measurements on a host.\nExamples include Beats. Agents may also run on observers. ECS agent.* fields shall be populated with details of the agent running on the host or observer where the event happened or the measurement was taken.";
-    
-    expect(tester.buildDescription(testDesc)).toMatchInlineSnapshot(`
-      "// The agent fields contain the data about the software entity, if any, that collects, detects, or observes events on a host, or takes measurements on a host.
-      // Examples include Beats. Agents may also run on observers. ECS agent.* fields shall be populated with details of the agent running on the host or observer where the event happened or the measurement was taken."
-      `
-    )
+  it('builds a field property string', () => {
+    const testFieldSpec: EcsFieldSpec = {
+      name: 'my_prop',
+      type: 'text',
+      required: true,
+      dashed_name: 'dashed_name',
+      description: 'description',
+      example: 'example',
+      flat_name: 'flat-name',
+      level: 'core',
+      normalize: [],
+      short: 'my-prop',
+      ignore_above: 0
+    }
+    expect(tester.buildFieldPropString(testFieldSpec)).toMatchInlineSnapshot(`
+"my_prop?: string;
+"
+`)
   });
-})
+});

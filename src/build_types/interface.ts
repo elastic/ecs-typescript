@@ -1,4 +1,3 @@
-import { convertType } from './convert_type';
 import { Helpers } from './helpers';
 import { EcsFieldSpec } from '../types';
 
@@ -17,28 +16,26 @@ export class Interface {
     this.str = ``;
     this.otherInterfaces = [];
   };
-  
+
   addProperty(name: string, value: EcsFieldSpec | Interface): void {
     if (!this.properties.hasOwnProperty(`${name}`)) {
       this.properties[name] = value;
     }
   };
-  
+
   toInterfaceString(exportInterface: boolean): string {
     this.str += h.buildDescription(this.description);
     this.str += `
-    ${h.buildInterfaceName(this.name, true, exportInterface)}`
+    ${h.buildInterfaceName(this.name, exportInterface)}`
     for (const [key, value] of Object.entries(this.properties)) {
       if (this.properties[key] instanceof Interface) {
-        this.str += `${value.name}?: ${Helpers.asPascalCase(value.name)};\n`; 
+        this.str += h.buildInterfacePropString(value.name); 
         this.otherInterfaces.push(value as Interface);
       } else {
-        const opt = ((value as EcsFieldSpec).required === true) ? `?` : ``;
-        this.str += `${value?.name}${opt}: ${convertType((value as EcsFieldSpec)?.type)};\n`
+        this.str += h.buildFieldPropString(value as EcsFieldSpec);
       }
     }
-    this.str += `
-    }`
+    this.str += `}\n`
     this.otherInterfaces.forEach((int: Interface) => this.str += int.toInterfaceString(false))
     return this.str;
   };

@@ -74,7 +74,11 @@ Interface {
 "// main interface
     export interface EcsMain {
 myinterface_property?: MyinterfaceProperty;
-    }"
+}
+// My interface property description
+    interface MyinterfaceProperty {
+}
+"
 `)
   });
   
@@ -116,22 +120,12 @@ Interface {
     expect(intAsString).toMatchInlineSnapshot(`
 "// main interface
     export interface EcsMain {
-test_prop?: string
-    }"
+test_prop?: string;
+}
+"
 `)
   });
-  it.only('writes all dedicated interfaces', () => {
-  /**
-    export interface EcsCloud {
-      availability_zone?: string;
-      account?: Account;
-    }
-      interface Account {
-        id?: string,
-        name?: string
-      }
-    } 
-*/
+  it('writes all dedicated interfaces', () => {
     const cloudInterface = new Interface({ name: 'cloud', description: 'cloud description' });
     const availabilityZone: EcsFieldSpec = {
       dashed_name: 'cloud-availability-zone',
@@ -153,7 +147,7 @@ test_prop?: string
       example: '666777888999',
       flat_name: 'cloud.account.id',
       level: 'extended',
-      name: 'account.id',
+      name: 'id',
       normalize: [],
       required: false,
       short: 'The cloud account or organization id.',
@@ -173,12 +167,12 @@ test_prop?: string
     export interface EcsCloud {
 availability_zone: string;
 account?: Account;
-
-    }// account description
-    interface EcsAccount {
-account.id: string;
-
-    }"
+}
+// account description
+    interface Account {
+id: string;
+}
+"
 `)
   });
 });
