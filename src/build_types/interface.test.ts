@@ -38,10 +38,12 @@ describe('Interface', () => {
 Interface {
   "description": "main interface",
   "name": "main",
+  "otherInterfaces": Array [],
   "properties": Object {
     "test_prop": Interface {
       "description": "My interface property description",
       "name": "myinterface_property",
+      "otherInterfaces": Array [],
       "properties": Object {},
       "str": "",
     },
@@ -85,6 +87,7 @@ myinterface_property?: MyinterfaceProperty;
 Interface {
   "description": "main interface",
   "name": "main",
+  "otherInterfaces": Array [],
   "properties": Object {
     "test_prop": Object {
       "dashed_name": "test_prop",
@@ -116,6 +119,67 @@ Interface {
 test_prop?: string
     }"
 `)
-  })
-  
+  });
+  it.only('writes all dedicated interfaces', () => {
+  /**
+    export interface EcsCloud {
+      availability_zone?: string;
+      account?: Account;
+    }
+      interface Account {
+        id?: string,
+        name?: string
+      }
+    } 
+*/
+    const cloudInterface = new Interface({ name: 'cloud', description: 'cloud description' });
+    const availabilityZone: EcsFieldSpec = {
+      dashed_name: 'cloud-availability-zone',
+      description: 'Availability zone in which this host, ',
+      example: 'fus-east-1coo',
+      flat_name: 'cloud.availability_zone',
+      level: 'extended',
+      name: 'availability_zone',
+      normalize: [],
+      required: false,
+      short: 'Availability zone in which this host, resource, or service is located.',
+      type: 'keyword',
+      ignore_above: 1024
+    };
+    const accountInterface = new Interface({ name: 'account', description: 'account description'});
+    const accountInterfaceProps: EcsFieldSpec = {
+      dashed_name: 'cloud-account-id',
+      description: 'The cloud account or organization id used to identify different\n entities in a multi-tenant environment.',
+      example: '666777888999',
+      flat_name: 'cloud.account.id',
+      level: 'extended',
+      name: 'account.id',
+      normalize: [],
+      required: false,
+      short: 'The cloud account or organization id.',
+      type: 'keyword',
+      ignore_above: 1024
+    };
+    accountInterface.addProperty(accountInterfaceProps.name, accountInterfaceProps);
+    cloudInterface.addProperty(availabilityZone.name, availabilityZone);
+    cloudInterface.addProperty(accountInterface.name, accountInterface);
+    
+    expect(cloudInterface.properties).toStrictEqual(expect.objectContaining({
+      availability_zone: expect.any(Object),
+      account: expect.any(Interface),
+    }));
+    expect(cloudInterface.toInterfaceString(true)).toMatchInlineSnapshot(`
+"// cloud description
+    export interface EcsCloud {
+availability_zone: string;
+account?: Account;
+
+    }// account description
+    interface EcsAccount {
+account.id: string;
+
+    }"
+`)
+  });
 });
+
