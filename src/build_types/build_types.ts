@@ -1,5 +1,5 @@
 import { convertType } from './convert_type';
-import { Helpers } from './utils/helpers';
+import { Helpers } from './helpers';
 
 const helper = new Helpers();
 
