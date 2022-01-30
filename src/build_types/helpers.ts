@@ -1,5 +1,5 @@
-import { EcsFieldSpec } from "../types";
-import { convertType } from "./convert_type";
+import { EcsFieldSpec } from '../types';
+import { convertType } from './convert_type';
 
 export class Helpers {
   private static asCamelCase = (str: string) =>
@@ -20,9 +20,9 @@ export class Helpers {
 
   public buildDescription(desc: string): string {
     return desc
-      .split("\n")
+      .split('\n')
       .map((line: string) => `// ${line}`)
-      .join("\n");
+      .join('\n');
   }
 
   public buildInterfacePropString(name: string): string {

@@ -1,5 +1,5 @@
-import { convertType } from "./convert_type";
-import { Helpers } from "./utils/helpers";
+import { convertType } from './convert_type';
+import { Helpers } from './utils/helpers';
 
 const helper = new Helpers();
 
@@ -9,8 +9,8 @@ export function buildTypes(spec: Record<string, any>): string {
 
 ${description}
 export interface Test {
-  ${spec.agent.fields["agent.name"].name}?: ${convertType(
-    spec.agent.fields["agent.name"].type
+  ${spec.agent.fields['agent.name'].name}?: ${convertType(
+    spec.agent.fields['agent.name'].type
   )};
 }
   `;

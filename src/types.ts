@@ -30,7 +30,7 @@ export interface EcsFieldSpec {
   example: string;
   flat_name: string;
   ignore_above: number;
-  level: "core" | "extended";
+  level: 'core' | 'extended';
   name: string;
   normalize: string[];
   required?: boolean;

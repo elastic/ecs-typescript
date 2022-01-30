@@ -1,5 +1,5 @@
-import { Helpers } from "./helpers";
-import { EcsFieldSpec } from "../types";
+import { Helpers } from './helpers';
+import { EcsFieldSpec } from '../types';
 
 const h = new Helpers();
 export class Interface {
