@@ -1,6 +1,6 @@
 /**
  * Represents the top-level structure of the ecs_nested.yml.
- * 
+ *
  * This is not a full representation of the spec, just some
  * of the fields we care about.
  */
@@ -29,8 +29,8 @@ export interface EcsFieldSpec {
   description: string;
   example: string;
   flat_name: string;
-  ignore_above: number
-  level: 'core' | 'extended';
+  ignore_above: number;
+  level: "core" | "extended";
   name: string;
   normalize: string[];
   required?: boolean;
