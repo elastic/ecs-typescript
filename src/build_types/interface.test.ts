@@ -71,13 +71,15 @@ Interface {
     testMainInterface.addProperty(testProp.name, testInterface);
     const intAsString = testMainInterface.toInterfaceString(true);
     expect(intAsString).toMatchInlineSnapshot(`
-"// main interface
-    export interface EcsMain {
-myinterface_property?: MyinterfaceProperty;
+"
+export interface EcsMain {
+  myinterface_property?: MyinterfaceProperty;
 }
-// My interface property description
-    interface MyinterfaceProperty {
+
+
+interface MyinterfaceProperty {
 }
+
 "
 `)
   });
@@ -118,10 +120,11 @@ Interface {
     testMainInterface.addProperty(testMeta.name, testMeta);
     const intAsString = testMainInterface.toInterfaceString(true);
     expect(intAsString).toMatchInlineSnapshot(`
-"// main interface
-    export interface EcsMain {
-test_prop?: string;
+"
+export interface EcsMain {
+  test_prop: string;
 }
+
 "
 `)
   });
@@ -163,15 +166,17 @@ test_prop?: string;
       account: expect.any(Interface),
     }));
     expect(cloudInterface.toInterfaceString(true)).toMatchInlineSnapshot(`
-"// cloud description
-    export interface EcsCloud {
-availability_zone: string;
-account?: Account;
+"
+export interface EcsCloud {
+  availability_zone?: string;
+  account?: Account;
 }
-// account description
-    interface Account {
-id: string;
+
+
+interface Account {
+  id?: string;
 }
+
 "
 `)
   });
