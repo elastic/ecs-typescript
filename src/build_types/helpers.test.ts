@@ -34,9 +34,8 @@ describe('Helpers', () => {
   });
 
   it('builds an interface property string', () => {
-    expect(tester.buildInterfacePropString('my_interface'))
-      .toMatchInlineSnapshot(`
-"my_interface?: MyInterface;
+    expect(tester.buildInterfacePropString('my_interface')).toMatchInlineSnapshot(`
+"  my_interface?: MyInterface;
 "
 `);
   });
@@ -56,7 +55,7 @@ describe('Helpers', () => {
       ignore_above: 0,
     };
     expect(tester.buildFieldPropString(testFieldSpec)).toMatchInlineSnapshot(`
-"my_prop?: string;
+"  my_prop: string;
 "
 `);
   });

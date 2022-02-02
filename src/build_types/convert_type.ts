@@ -5,8 +5,16 @@ const typeMapping: Record<string, string> = {
   date: 'string',
   constant_keyword: 'string',
   float: 'number',
+  scaled_float: 'number',
   long: 'number',
   boolean: 'boolean',
+  geo_point: '{ lat: number; lon: number }',
+  ip: 'string',
+  object: 'Record<string, unknown>',
+  flattened: 'Record<string, unknown>',
+  nested: 'Record<string, unknown>',
+  wildcard: 'string',
+  match_only_text: 'string',
 };
 
 export function convertType(ecsType: string): string {

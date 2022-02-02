@@ -9,7 +9,7 @@ export type EcsNestedSpec = Record<string, EcsGroupSpec>;
 /**
  * Metadata for each of the top-level items in the EcsSpec.
  */
-export interface EcsGroupSpec {
+export type EcsGroupSpec = {
   description: string;
   fields: Record<string, EcsFieldSpec>;
   footnote?: string;
@@ -19,7 +19,7 @@ export interface EcsGroupSpec {
   short: string;
   title: string;
   type: string;
-}
+};
 
 /**
  * Metadata for each field in a EcsGroupSpec.
