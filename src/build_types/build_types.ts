@@ -97,7 +97,7 @@ export function buildInterfaceProps(
 export function buildTypes(spec: EcsNestedSpec): Interface[] {
   const json = buildSpecJson(spec);
 
-  const interfaces = [];
+  const interfaces: Interface[] = [];
 
   for (const [groupName, groupProps] of Object.entries(json)) {
     if (isGroupSpec(groupProps)) {
@@ -110,5 +110,5 @@ export function buildTypes(spec: EcsNestedSpec): Interface[] {
     }
   }
 
-  return interfaces;
+  return Array.from(interfaces.values());
 }
