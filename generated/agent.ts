@@ -1,4 +1,3 @@
-
 export interface EcsAgent {
   build?: Build;
   ephemeral_id?: string;
@@ -8,8 +7,6 @@ export interface EcsAgent {
   version?: string;
 }
 
-
 interface Build {
   original?: string;
 }
-

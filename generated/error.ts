@@ -1,4 +1,3 @@
-
 export interface EcsError {
   code?: string;
   id?: string;
@@ -6,4 +5,3 @@ export interface EcsError {
   stack_trace?: string;
   type?: string;
 }
-

@@ -1,4 +1,1 @@
-
-export interface EcsTracing {
-}
-
+export interface EcsTracing {}

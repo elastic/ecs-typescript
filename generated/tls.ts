@@ -1,4 +1,3 @@
-
 export interface EcsTls {
   cipher?: string;
   client?: Client;
@@ -10,7 +9,6 @@ export interface EcsTls {
   version?: string;
   version_protocol?: string;
 }
-
 
 interface Client {
   certificate?: string;
@@ -26,13 +24,11 @@ interface Client {
   x509?: X509;
 }
 
-
 interface Hash {
   md5?: string;
   sha1?: string;
   sha256?: string;
 }
-
 
 interface X509 {
   alternative_names?: string;
@@ -49,7 +45,6 @@ interface X509 {
   version_number?: string;
 }
 
-
 interface Issuer {
   common_name?: string;
   country?: string;
@@ -60,7 +55,6 @@ interface Issuer {
   state_or_province?: string;
 }
 
-
 interface Subject {
   common_name?: string;
   country?: string;
@@ -70,7 +64,6 @@ interface Subject {
   organizational_unit?: string;
   state_or_province?: string;
 }
-
 
 interface Server {
   certificate?: string;
@@ -84,13 +77,11 @@ interface Server {
   x509?: X509;
 }
 
-
 interface Hash {
   md5?: string;
   sha1?: string;
   sha256?: string;
 }
-
 
 interface X509 {
   alternative_names?: string;
@@ -107,7 +98,6 @@ interface X509 {
   version_number?: string;
 }
 
-
 interface Issuer {
   common_name?: string;
   country?: string;
@@ -118,7 +108,6 @@ interface Issuer {
   state_or_province?: string;
 }
 
-
 interface Subject {
   common_name?: string;
   country?: string;
@@ -128,4 +117,3 @@ interface Subject {
   organizational_unit?: string;
   state_or_province?: string;
 }
-

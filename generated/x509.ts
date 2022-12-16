@@ -1,4 +1,3 @@
-
 export interface EcsX509 {
   alternative_names?: string;
   issuer?: Issuer;
@@ -14,7 +13,6 @@ export interface EcsX509 {
   version_number?: string;
 }
 
-
 interface Issuer {
   common_name?: string;
   country?: string;
@@ -25,7 +23,6 @@ interface Issuer {
   state_or_province?: string;
 }
 
-
 interface Subject {
   common_name?: string;
   country?: string;
@@ -35,4 +32,3 @@ interface Subject {
   organizational_unit?: string;
   state_or_province?: string;
 }
-

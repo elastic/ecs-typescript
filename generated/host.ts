@@ -1,6 +1,6 @@
-
 export interface EcsHost {
   architecture?: string;
+  boot?: Boot;
   cpu?: Cpu;
   disk?: Disk;
   domain?: string;
@@ -12,31 +12,32 @@ export interface EcsHost {
   name?: string;
   network?: Network;
   os?: Os;
+  pid_ns_ino?: string;
+  risk?: Risk;
   type?: string;
   uptime?: number;
 }
 
+interface Boot {
+  id?: string;
+}
 
 interface Cpu {
   usage?: number;
 }
-
 
 interface Disk {
   read?: Read;
   write?: Write;
 }
 
-
 interface Read {
   bytes?: number;
 }
 
-
 interface Write {
   bytes?: number;
 }
-
 
 interface Geo {
   city_name?: string;
@@ -52,24 +53,20 @@ interface Geo {
   timezone?: string;
 }
 
-
 interface Network {
   egress?: Egress;
   ingress?: Ingress;
 }
-
 
 interface Egress {
   bytes?: number;
   packets?: number;
 }
 
-
 interface Ingress {
   bytes?: number;
   packets?: number;
 }
-
 
 interface Os {
   family?: string;
@@ -81,3 +78,11 @@ interface Os {
   version?: string;
 }
 
+interface Risk {
+  calculated_level?: string;
+  calculated_score?: number;
+  calculated_score_norm?: number;
+  static_level?: string;
+  static_score?: number;
+  static_score_norm?: number;
+}

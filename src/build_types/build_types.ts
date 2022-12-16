@@ -4,16 +4,19 @@ import type { EcsFieldSpec, EcsGroupSpec, EcsNestedSpec } from '../types';
 
 const SPEC_IDENTIFIER = '__spec';
 const DESCRIPTION_IDENTIFIER = '__description';
-const BASE_GROUP_NAME = 'base';
+const PARENT_GROUP_IDENTIFIER = '__parent_group';
 
 type SpecJson = Record<string, unknown | SpecInternals>;
 type SpecInternals = {
-  __description?: string;
-  __spec?: EcsFieldSpec;
+  [DESCRIPTION_IDENTIFIER]?: string;
+  [SPEC_IDENTIFIER]?: EcsFieldSpec;
+  [PARENT_GROUP_IDENTIFIER]?: string;
 };
 
 function isGroupSpec(spec: unknown): spec is EcsGroupSpec & SpecInternals {
-  return (spec as EcsGroupSpec & SpecInternals)[DESCRIPTION_IDENTIFIER] !== undefined;
+  return (
+    (spec as EcsGroupSpec & SpecInternals)[DESCRIPTION_IDENTIFIER] !== undefined
+  );
 }
 
 function isFieldSpec(spec: unknown): spec is EcsFieldSpec {
@@ -23,20 +26,39 @@ function isFieldSpec(spec: unknown): spec is EcsFieldSpec {
   );
 }
 
+/**
+ * Ensures correct json paths are generated from the flat_name's.
+ * @param group Group name
+ * @param flatName flat_name for the respective field
+ * @returns
+ */
+function resolveFieldPath(group: string, flatName: string): string {
+  return flatName.includes('.') ? flatName : `${group}.${flatName}`;
+}
+
 export function buildSpecJson(spec: EcsNestedSpec): SpecJson {
   const json: SpecJson = {};
 
   for (const [group, groupSpec] of Object.entries(spec)) {
     set(json, group, { [DESCRIPTION_IDENTIFIER]: groupSpec.description });
+
     for (const [, fieldSpec] of Object.entries(groupSpec.fields)) {
-      set(json, `${fieldSpec.flat_name}.${SPEC_IDENTIFIER}`, fieldSpec);
+      set(
+        json,
+        `${resolveFieldPath(group, fieldSpec.flat_name)}.${SPEC_IDENTIFIER}`,
+        fieldSpec
+      );
     }
   }
 
   return json;
 }
 
-export function buildInterfaceProps(i: Interface, groupName: string, groupProps: SpecJson): void {
+export function buildInterfaceProps(
+  i: Interface,
+  groupName: string,
+  groupProps: SpecJson
+): void {
   if (groupProps.hasOwnProperty(SPEC_IDENTIFIER)) {
     const props = groupProps[SPEC_IDENTIFIER];
     if (!isFieldSpec(props)) {
@@ -54,14 +76,17 @@ export function buildInterfaceProps(i: Interface, groupName: string, groupProps:
       continue;
     }
     const description = groupProps.hasOwnProperty(DESCRIPTION_IDENTIFIER)
-      ? groupProps[DESCRIPTION_IDENTIFIER] as string
+      ? (groupProps[DESCRIPTION_IDENTIFIER] as string)
       : '';
 
     const nextGroupSpecJson = nextGroupProps as SpecJson;
     if (nextGroupSpecJson.hasOwnProperty(SPEC_IDENTIFIER)) {
       // if the next node will be a leaf, skip creating a new interface
       // and attach to the existing one instead
-      i.addProperty(nextGroupName, (nextGroupSpecJson[SPEC_IDENTIFIER] as EcsFieldSpec));
+      i.addProperty(
+        nextGroupName,
+        nextGroupSpecJson[SPEC_IDENTIFIER] as EcsFieldSpec
+      );
       buildInterfaceProps(i, nextGroupName, nextGroupSpecJson);
     } else {
       const nextInterface = new Interface({ name: nextGroupName, description });
@@ -75,15 +100,17 @@ export function buildTypes(spec: EcsNestedSpec): Interface[] {
   const json = buildSpecJson(spec);
 
   const interfaces: Interface[] = [];
+
   for (const [groupName, groupProps] of Object.entries(json)) {
-    if (!isGroupSpec(groupProps) || groupName === BASE_GROUP_NAME) {
-      // TODO: Need to handle base / root-level fields
-      continue;
+    if (isGroupSpec(groupProps)) {
+      const i = new Interface({
+        description: groupProps[DESCRIPTION_IDENTIFIER] ?? '',
+        name: groupName,
+      });
+      buildInterfaceProps(i, groupName, groupProps);
+      interfaces.push(i);
     }
-    const i = new Interface({ description: groupProps[DESCRIPTION_IDENTIFIER] ?? '', name: groupName });
-    buildInterfaceProps(i, groupName, groupProps);
-    interfaces.push(i);
   }
 
-  return interfaces;
+  return Array.from(interfaces.values());
 }

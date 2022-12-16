@@ -1,4 +1,3 @@
-
 export interface EcsUrl {
   domain?: string;
   extension?: string;
@@ -15,4 +14,3 @@ export interface EcsUrl {
   top_level_domain?: string;
   username?: string;
 }
-

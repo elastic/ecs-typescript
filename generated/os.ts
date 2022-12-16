@@ -1,4 +1,3 @@
-
 export interface EcsOs {
   family?: string;
   full?: string;
@@ -8,4 +7,3 @@ export interface EcsOs {
   type?: string;
   version?: string;
 }
-

@@ -1,4 +1,3 @@
-
 export interface EcsRule {
   author?: string;
   category?: string;
@@ -11,4 +10,3 @@ export interface EcsRule {
   uuid?: string;
   version?: string;
 }
-

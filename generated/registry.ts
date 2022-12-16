@@ -1,4 +1,3 @@
-
 export interface EcsRegistry {
   data?: Data;
   hive?: string;
@@ -7,10 +6,8 @@ export interface EcsRegistry {
   value?: string;
 }
 
-
 interface Data {
   bytes?: string;
   strings?: string;
   type?: string;
 }
-

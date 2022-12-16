@@ -1,4 +1,3 @@
-
 export interface EcsFile {
   accessed?: string;
   attributes?: string;
@@ -15,6 +14,7 @@ export interface EcsFile {
   group?: string;
   hash?: Hash;
   inode?: string;
+  macho?: Macho;
   mime_type?: string;
   mode?: string;
   mtime?: string;
@@ -29,7 +29,6 @@ export interface EcsFile {
   x509?: X509;
 }
 
-
 interface CodeSignature {
   digest_algorithm?: string;
   exists?: boolean;
@@ -42,21 +41,27 @@ interface CodeSignature {
   valid?: boolean;
 }
 
-
 interface Elf {
   architecture?: string;
   byte_order?: string;
   cpu_type?: string;
   creation_date?: string;
   exports?: Record<string, unknown>;
+  go_import_hash?: string;
+  go_imports?: Record<string, unknown>;
+  go_imports_names_entropy?: number;
+  go_imports_names_var_entropy?: number;
+  go_stripped?: boolean;
   header?: Header;
+  import_hash?: string;
   imports?: Record<string, unknown>;
+  imports_names_entropy?: number;
+  imports_names_var_entropy?: number;
   sections?: Record<string, unknown>;
   segments?: Record<string, unknown>;
   shared_libraries?: string;
   telfhash?: string;
 }
-
 
 interface Header {
   abi_version?: string;
@@ -69,7 +74,6 @@ interface Header {
   version?: string;
 }
 
-
 interface Hash {
   md5?: string;
   sha1?: string;
@@ -80,18 +84,40 @@ interface Hash {
   tlsh?: string;
 }
 
+interface Macho {
+  go_import_hash?: string;
+  go_imports?: Record<string, unknown>;
+  go_imports_names_entropy?: number;
+  go_imports_names_var_entropy?: number;
+  go_stripped?: boolean;
+  import_hash?: string;
+  imports?: Record<string, unknown>;
+  imports_names_entropy?: number;
+  imports_names_var_entropy?: number;
+  sections?: Record<string, unknown>;
+  symhash?: string;
+}
 
 interface Pe {
   architecture?: string;
   company?: string;
   description?: string;
   file_version?: string;
+  go_import_hash?: string;
+  go_imports?: Record<string, unknown>;
+  go_imports_names_entropy?: number;
+  go_imports_names_var_entropy?: number;
+  go_stripped?: boolean;
   imphash?: string;
+  import_hash?: string;
+  imports?: Record<string, unknown>;
+  imports_names_entropy?: number;
+  imports_names_var_entropy?: number;
   original_file_name?: string;
   pehash?: string;
   product?: string;
+  sections?: Record<string, unknown>;
 }
-
 
 interface X509 {
   alternative_names?: string;
@@ -108,7 +134,6 @@ interface X509 {
   version_number?: string;
 }
 
-
 interface Issuer {
   common_name?: string;
   country?: string;
@@ -119,7 +144,6 @@ interface Issuer {
   state_or_province?: string;
 }
 
-
 interface Subject {
   common_name?: string;
   country?: string;
@@ -129,4 +153,3 @@ interface Subject {
   organizational_unit?: string;
   state_or_province?: string;
 }
-
