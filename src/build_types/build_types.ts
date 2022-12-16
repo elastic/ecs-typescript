@@ -110,5 +110,5 @@ export function buildTypes(spec: EcsNestedSpec): Interface[] {
     }
   }
 
-  return interfaces;
+  return Array.from(interfaces.values());
 }
