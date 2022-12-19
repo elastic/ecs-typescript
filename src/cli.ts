@@ -2,7 +2,7 @@ import path from 'path';
 import { Command } from 'commander';
 import { buildTypes } from './build_types';
 import { loadYaml } from './load_yaml';
-import { writeFile } from './write_file';
+import { outputDefinitions } from './output_definitions';
 
 interface Options {
   spec: string;
@@ -39,7 +39,7 @@ export function run() {
   const program = initCommand();
   const options = program.opts() as Options;
 
-  const specPath = path.resolve(__dirname, '..', options.spec);
+  const specPath = path.resolve(process.cwd(), options.spec);
   console.log(`Loading ecs_nested.yml from ${specPath}`);
   const spec = loadYaml(specPath);
   if (!spec) {
@@ -47,17 +47,10 @@ export function run() {
     process.exit(1);
   }
 
-  const outPath = path.resolve(__dirname, '..', options.dir);
+  const outPath = path.resolve(process.cwd(), options.dir);
   const types = buildTypes(spec);
-  for (const type of types) {
-    console.log(
-      `Writing ${type.name} to ${outPath}/${type.name.toLowerCase()}.ts`
-    );
-    writeFile(
-      `${outPath}/${type.name.toLowerCase()}.ts`,
-      type.toInterfaceString(true)
-    );
-  }
+
+  outputDefinitions(types, outPath);
 
   process.exit(0);
 }

@@ -16,41 +16,41 @@ import { Interface } from './interface';
    prop_f?: 'keyword';
  }
  */
- // @ts-ignore unused
+// @ts-ignore unused
 function createInterfaceWithProps(): Interface {
   const interfacesMeta = [
-    { name: "A", description: "Description of A" },
-    { name: "PropB", description: "Description of PropB" },
-    { name: "PropD", description: "Description of PropD" },
+    { name: 'A', description: 'Description of A' },
+    { name: 'PropB', description: 'Description of PropB' },
+    { name: 'PropD', description: 'Description of PropD' },
   ];
   const defaultFieldProps = (
     name: string,
-    type = "keyword",
+    type = 'keyword',
     required = false
   ): EcsFieldSpec => ({
     dashed_name: `dash-${name}`,
-    description: "test_prop description",
-    example: "example",
+    description: 'test_prop description',
+    example: 'example',
     flat_name: `flat_${name}`,
-    level: "core",
+    level: 'core',
     name: `${name}`,
     normalize: [],
     required,
-    short: "short description",
+    short: 'short description',
     type,
     ignore_above: 1024,
   });
   const intfs = interfacesMeta.map(
     (_, index) => new Interface(interfacesMeta[index])
   );
-  intfs[0].addProperty("prop_a", defaultFieldProps("prop_a"));
-  intfs[0].addProperty("prop_b", intfs[1]);
+  intfs[0].addProperty('prop_a', defaultFieldProps('prop_a'));
+  intfs[0].addProperty('prop_b', intfs[1]);
 
-  intfs[1].addProperty("prop_c", defaultFieldProps("prop_c"));
-  intfs[1].addProperty("prop_d", intfs[2]);
+  intfs[1].addProperty('prop_c', defaultFieldProps('prop_c'));
+  intfs[1].addProperty('prop_d', intfs[2]);
 
-  intfs[2].addProperty("prop_e", defaultFieldProps("prop_e"));
-  intfs[2].addProperty("prop_f", defaultFieldProps("prop_f"));
+  intfs[2].addProperty('prop_e', defaultFieldProps('prop_e'));
+  intfs[2].addProperty('prop_f', defaultFieldProps('prop_f'));
   return intfs[0];
 }
 
@@ -93,22 +93,22 @@ describe('Interface', () => {
     testMainInterface.addProperty(testProp.name, testInterface);
 
     expect(testMainInterface).toMatchInlineSnapshot(`
-Interface {
-  "description": "main interface",
-  "name": "main",
-  "otherInterfaces": Array [],
-  "properties": Object {
-    "test_prop": Interface {
-      "description": "My interface property description",
-      "name": "myinterface_property",
-      "otherInterfaces": Array [],
-      "properties": Object {},
-      "str": "",
-    },
-  },
-  "str": "",
-}
-`);
+      Interface {
+        "description": "main interface",
+        "name": "main",
+        "otherInterfaces": Array [],
+        "properties": Object {
+          "test_prop": Interface {
+            "description": "My interface property description",
+            "name": "myinterface_property",
+            "otherInterfaces": Array [],
+            "properties": Object {},
+            "str": "",
+          },
+        },
+        "str": "",
+      }
+    `);
   });
   it('converts an Interface to a string representation', () => {
     const testMainInterface = mainInt;
@@ -130,31 +130,23 @@ Interface {
       type: 'keyword',
     };
     testMainInterface.addProperty(testProp.name, testInterface);
-    const intAsString = testMainInterface.toInterfaceString(true);
+    const intAsString = testMainInterface.toString(true);
     expect(intAsString).toMatchInlineSnapshot(`
-<<<<<<< HEAD
-"/**
-=======
-"/*
->>>>>>> d905550 (Add descriptions as comments)
-* main interface
-*/
-export interface EcsMain {
-  myinterface_property?: MyinterfaceProperty;
-}
+      "/**
+      * main interface
+      */
+      export interface EcsMain {
+        myinterface_property?: MyinterfaceProperty;
+      }
 
-<<<<<<< HEAD
-/**
-=======
-/*
->>>>>>> d905550 (Add descriptions as comments)
-* My interface property description
-*/
-interface MyinterfaceProperty {
-}
+      /**
+      * My interface property description
+      */
+      interface MyinterfaceProperty {
+      }
 
-"
-`);
+      "
+    `);
   });
 
   it('allows adding a field spec as a property', () => {
@@ -163,56 +155,48 @@ interface MyinterfaceProperty {
     testMainInterface.addProperty(testProp.name, testMeta);
 
     expect(testMainInterface).toMatchInlineSnapshot(`
-Interface {
-  "description": "main interface",
-  "name": "main",
-  "otherInterfaces": Array [],
-  "properties": Object {
-    "test_prop": Object {
-      "dashed_name": "test_prop",
-      "description": "test_prop description",
-      "example": "example",
-      "flat_name": "test_prop",
-      "ignore_above": 100,
-      "level": "core",
-      "name": "test_prop",
-      "normalize": Array [],
-      "required": true,
-      "short": "short description",
-      "type": "keyword",
-    },
-  },
-  "str": "",
-}
-`);
+      Interface {
+        "description": "main interface",
+        "name": "main",
+        "otherInterfaces": Array [],
+        "properties": Object {
+          "test_prop": Object {
+            "dashed_name": "test_prop",
+            "description": "test_prop description",
+            "example": "example",
+            "flat_name": "test_prop",
+            "ignore_above": 100,
+            "level": "core",
+            "name": "test_prop",
+            "normalize": Array [],
+            "required": true,
+            "short": "short description",
+            "type": "keyword",
+          },
+        },
+        "str": "",
+      }
+    `);
   });
 
   it('converts field meta to a string representation', () => {
     const testMainInterface = mainInt;
     const testMeta = testProp;
     testMainInterface.addProperty(testMeta.name, testMeta);
-    const intAsString = testMainInterface.toInterfaceString(true);
+    const intAsString = testMainInterface.toString(true);
     expect(intAsString).toMatchInlineSnapshot(`
-<<<<<<< HEAD
-"/**
-* main interface
-*/
-export interface EcsMain {
-/**
-=======
-"/*
-* main interface
-*/
-export interface EcsMain {
-/*
->>>>>>> d905550 (Add descriptions as comments)
-* test_prop description
-*/
-  test_prop: string;
-}
+      "/**
+      * main interface
+      */
+      export interface EcsMain {
+      /**
+      * test_prop description
+      */
+        test_prop: string;
+      }
 
-"
-`);
+      "
+    `);
   });
   it('writes all dedicated interfaces', () => {
     const cloudInterface = new Interface({
@@ -264,46 +248,121 @@ export interface EcsMain {
         account: expect.any(Interface),
       })
     );
-    expect(cloudInterface.toInterfaceString(true)).toMatchInlineSnapshot(`
-<<<<<<< HEAD
-"/**
-* cloud description
-*/
-export interface EcsCloud {
-/**
-=======
-"/*
-* cloud description
-*/
-export interface EcsCloud {
-/*
->>>>>>> d905550 (Add descriptions as comments)
-* Availability zone in which this host, 
-*/
-  availability_zone?: string;
-  account?: Account;
-}
+    expect(cloudInterface.toString(true)).toMatchInlineSnapshot(`
+      "/**
+      * cloud description
+      */
+      export interface EcsCloud {
+      /**
+      * Availability zone in which this host, 
+      */
+        availability_zone?: string;
+        account?: Account;
+      }
 
-<<<<<<< HEAD
-/**
-* account description
-*/
-interface Account {
-/**
-=======
-/*
-* account description
-*/
-interface Account {
-/*
->>>>>>> d905550 (Add descriptions as comments)
-* The cloud account or organization id used to identify different
-*  entities in a multi-tenant environment.
-*/
-  id?: string;
-}
+      /**
+      * account description
+      */
+      interface Account {
+      /**
+      * The cloud account or organization id used to identify different
+      *  entities in a multi-tenant environment.
+      */
+        id?: string;
+      }
 
-"
-`);
+      "
+    `);
+    expect(cloudInterface.toString(true)).toMatchInlineSnapshot(`
+      "/**
+      * cloud description
+      */
+      export interface EcsCloud {
+      /**
+      * Availability zone in which this host, 
+      */
+        availability_zone?: string;
+        account?: Account;
+      }
+
+      /**
+      * account description
+      */
+      interface Account {
+      /**
+      * The cloud account or organization id used to identify different
+      *  entities in a multi-tenant environment.
+      */
+        id?: string;
+      }
+
+      /**
+      * cloud description
+      */
+      export interface EcsCloud {
+      /**
+      * Availability zone in which this host, 
+      */
+        availability_zone?: string;
+        account?: Account;
+      }
+
+      /**
+      * account description
+      */
+      interface Account {
+      /**
+      * The cloud account or organization id used to identify different
+      *  entities in a multi-tenant environment.
+      */
+        id?: string;
+      }
+
+      /**
+      * account description
+      */
+      interface Account {
+      /**
+      * The cloud account or organization id used to identify different
+      *  entities in a multi-tenant environment.
+      */
+        id?: string;
+      }
+
+      /**
+      * account description
+      */
+      interface Account {
+      /**
+      * The cloud account or organization id used to identify different
+      *  entities in a multi-tenant environment.
+      */
+        id?: string;
+      }
+
+      /**
+      * account description
+      */
+      interface Account {
+      /**
+      * The cloud account or organization id used to identify different
+      *  entities in a multi-tenant environment.
+      */
+        id?: string;
+      }
+
+      /**
+      * account description
+      */
+      interface Account {
+      /**
+      * The cloud account or organization id used to identify different
+      *  entities in a multi-tenant environment.
+      */
+        id?: string;
+      }
+
+      "
+    `);
   });
 });
