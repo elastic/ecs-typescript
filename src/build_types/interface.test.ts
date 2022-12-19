@@ -132,14 +132,22 @@ Interface {
     testMainInterface.addProperty(testProp.name, testInterface);
     const intAsString = testMainInterface.toInterfaceString(true);
     expect(intAsString).toMatchInlineSnapshot(`
+<<<<<<< HEAD
 "/**
+=======
+"/*
+>>>>>>> d905550 (Add descriptions as comments)
 * main interface
 */
 export interface EcsMain {
   myinterface_property?: MyinterfaceProperty;
 }
 
+<<<<<<< HEAD
 /**
+=======
+/*
+>>>>>>> d905550 (Add descriptions as comments)
 * My interface property description
 */
 interface MyinterfaceProperty {
@@ -185,11 +193,19 @@ Interface {
     testMainInterface.addProperty(testMeta.name, testMeta);
     const intAsString = testMainInterface.toInterfaceString(true);
     expect(intAsString).toMatchInlineSnapshot(`
+<<<<<<< HEAD
 "/**
 * main interface
 */
 export interface EcsMain {
 /**
+=======
+"/*
+* main interface
+*/
+export interface EcsMain {
+/*
+>>>>>>> d905550 (Add descriptions as comments)
 * test_prop description
 */
   test_prop: string;
@@ -249,22 +265,38 @@ export interface EcsMain {
       })
     );
     expect(cloudInterface.toInterfaceString(true)).toMatchInlineSnapshot(`
+<<<<<<< HEAD
 "/**
 * cloud description
 */
 export interface EcsCloud {
 /**
+=======
+"/*
+* cloud description
+*/
+export interface EcsCloud {
+/*
+>>>>>>> d905550 (Add descriptions as comments)
 * Availability zone in which this host, 
 */
   availability_zone?: string;
   account?: Account;
 }
 
+<<<<<<< HEAD
 /**
 * account description
 */
 interface Account {
 /**
+=======
+/*
+* account description
+*/
+interface Account {
+/*
+>>>>>>> d905550 (Add descriptions as comments)
 * The cloud account or organization id used to identify different
 *  entities in a multi-tenant environment.
 */
