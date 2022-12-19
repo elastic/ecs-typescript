@@ -2,6 +2,7 @@ import { Helpers } from './helpers';
 import { EcsFieldSpec } from '../types';
 
 const h = new Helpers();
+
 export class Interface {
   description: string;
   name: string;
@@ -24,7 +25,7 @@ export class Interface {
   }
 
   toInterfaceString(exportInterface: boolean = true): string {
-    // this.str += h.buildDescription(this.description);
+    this.str += h.buildDescription(this.description);
     this.str += `
 ${h.buildInterfaceName(this.name, exportInterface)}`;
     for (const [key, value] of Object.entries(this.properties)) {
