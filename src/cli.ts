@@ -5,7 +5,7 @@ import { loadYaml } from './load_yaml';
 import { outputDefinitions } from './output_definitions';
 
 interface Options {
-  spec: string;
+  ref: string;
   dir: string;
 }
 
@@ -20,9 +20,9 @@ function initCommand() {
         'of the Elastic Common Schema (ECS).'
     )
     .option(
-      '-s, --spec <path>',
-      'path to the ecs_nested.yml spec',
-      'tmp/ecs_nested.yml'
+      '-r, --ref <ref>',
+      'elstic/ecs ref to load ecs_nested.yml spec from',
+      'main'
     )
     .option(
       '-d, --dir <directory>',
@@ -35,20 +35,21 @@ function initCommand() {
   return program;
 }
 
-export function run() {
+export async function run() {
   const program = initCommand();
   const options = program.opts() as Options;
 
-  const specPath = path.resolve(process.cwd(), options.spec);
-  console.log(`Loading ecs_nested.yml from ${specPath}`);
-  const spec = loadYaml(specPath);
-  if (!spec) {
-    console.error(`Failed to load spec from ${options.spec}`);
+  console.log(`Loading ecs_nested.yml from elastic/ecs@${options.ref}`);
+
+  const ref = await loadYaml(options.ref);
+
+  if (!ref) {
+    console.error(`Failed to load spec from ${options.ref}`);
     process.exit(1);
   }
 
   const outPath = path.resolve(process.cwd(), options.dir);
-  const types = buildTypes(spec);
+  const types = buildTypes(ref);
 
   outputDefinitions(types, outPath);
 

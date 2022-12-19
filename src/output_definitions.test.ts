@@ -10,14 +10,14 @@ describe('outputDefinitions()', () => {
   it('should call writeFile', () => {
     outputDefinitions(
       [new Interface({ name: 'base', description: '' })],
-      process.cwd()
+      'output'
     );
 
     expect(writeFile).toHaveBeenCalledTimes(2);
 
     expect(jest.mocked(writeFile).mock.calls[0]).toMatchInlineSnapshot(`
 Array [
-  "/home/luke/projects/ecs-typescript/base.ts",
+  "output/base.ts",
   "
 export interface EcsBase {
 }
@@ -28,7 +28,7 @@ export interface EcsBase {
 
     expect(jest.mocked(writeFile).mock.calls[1]).toMatchInlineSnapshot(`
 Array [
-  "/home/luke/projects/ecs-typescript/index.ts",
+  "output/index.ts",
   "export * from './base';",
 ]
 `);
