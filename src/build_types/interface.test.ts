@@ -17,6 +17,7 @@ import { Interface } from './interface';
    prop_f?: 'keyword';
  }
  */
+ // @ts-ignore unused
 function createInterfaceWithProps(): Interface {
   const interfacesMeta = [
     { name: "A", description: "Description of A" },
