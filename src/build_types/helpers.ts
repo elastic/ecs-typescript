@@ -15,18 +15,24 @@ export class Helpers {
   };
   
   public buildDescription(desc: string): string {
+    if (!desc.length) {
+      return '';
+    }
     return desc.split('\n')
       .map((line: string) => `// ${line}`)
       .join('\n');
   };
   
   public buildInterfacePropString(name: string): string {
-    return `${name}?: ${Helpers.asPascalCase(name)};\n`
+    return `  ${name}?: ${Helpers.asPascalCase(name)};\n`
   };
   
   public buildFieldPropString(value: EcsFieldSpec) {
     const { required, name, type } = value;
-    const opt = required === true ? `?` : ``;
-    return `${name}${opt}: ${convertType(type)};\n`;
+    // If the name includes a dot, only use the last part
+    // TODO: handle @timestamp
+    const propName = name.split('.').pop();
+    const opt = required === true ? `` : `?`;
+    return `  ${propName}${opt}: ${convertType(type)};\n`;
   };
 };

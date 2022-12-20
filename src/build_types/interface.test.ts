@@ -123,13 +123,15 @@ Interface {
     testMainInterface.addProperty(testProp.name, testInterface);
     const intAsString = testMainInterface.toInterfaceString(true);
     expect(intAsString).toMatchInlineSnapshot(`
-"// main interface
-    export interface EcsMain {
-myinterface_property?: MyinterfaceProperty;
+"
+export interface EcsMain {
+  myinterface_property?: MyinterfaceProperty;
 }
-// My interface property description
-    interface MyinterfaceProperty {
+
+
+interface MyinterfaceProperty {
 }
+
 "
 `)
   });
@@ -170,32 +172,63 @@ Interface {
     testMainInterface.addProperty(testMeta.name, testMeta);
     const intAsString = testMainInterface.toInterfaceString(true);
     expect(intAsString).toMatchInlineSnapshot(`
-"// main interface
-    export interface EcsMain {
-test_prop?: string;
+"
+export interface EcsMain {
+  test_prop: string;
 }
+
 "
 `)
   });
-  
-  it("writes all dedicated interfaces", () => {
-    const testInterface = createInterfaceWithProps();
-    expect(testInterface.toInterfaceString(true)).toMatchInlineSnapshot(`
-"// Description of A
-    export interface EcsA {
-prop_a: string;
-PropB?: PropB;
+  it('writes all dedicated interfaces', () => {
+    const cloudInterface = new Interface({ name: 'cloud', description: 'cloud description' });
+    const availabilityZone: EcsFieldSpec = {
+      dashed_name: 'cloud-availability-zone',
+      description: 'Availability zone in which this host, ',
+      example: 'fus-east-1coo',
+      flat_name: 'cloud.availability_zone',
+      level: 'extended',
+      name: 'availability_zone',
+      normalize: [],
+      required: false,
+      short: 'Availability zone in which this host, resource, or service is located.',
+      type: 'keyword',
+      ignore_above: 1024
+    };
+    const accountInterface = new Interface({ name: 'account', description: 'account description'});
+    const accountInterfaceProps: EcsFieldSpec = {
+      dashed_name: 'cloud-account-id',
+      description: 'The cloud account or organization id used to identify different\n entities in a multi-tenant environment.',
+      example: '666777888999',
+      flat_name: 'cloud.account.id',
+      level: 'extended',
+      name: 'id',
+      normalize: [],
+      required: false,
+      short: 'The cloud account or organization id.',
+      type: 'keyword',
+      ignore_above: 1024
+    };
+    accountInterface.addProperty(accountInterfaceProps.name, accountInterfaceProps);
+    cloudInterface.addProperty(availabilityZone.name, availabilityZone);
+    cloudInterface.addProperty(accountInterface.name, accountInterface);
+    
+    expect(cloudInterface.properties).toStrictEqual(expect.objectContaining({
+      availability_zone: expect.any(Object),
+      account: expect.any(Interface),
+    }));
+    expect(cloudInterface.toInterfaceString(true)).toMatchInlineSnapshot(`
+"
+export interface EcsCloud {
+  availability_zone?: string;
+  account?: Account;
 }
-// Description of PropB
-    interface PropB {
-prop_c: string;
-PropD?: PropD;
+
+
+interface Account {
+  id?: string;
 }
-// Description of PropD
-    interface PropD {
-prop_e: string;
-prop_f: string;
-}
+
 "
 `);
   });
