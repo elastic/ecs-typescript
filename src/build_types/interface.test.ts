@@ -2,6 +2,59 @@
 import { EcsFieldSpec } from '../types';
 import { Interface } from './interface';
 
+/**
+ * utility to create a test fixture with the following shape:
+ * interface A {
+   prop_a?: 'keyword';
+   prop_b?: PropB;
+ }
+ interface PropB {
+   prop_c: 'keyword';
+   prop_d?: PropD;
+ }
+ interface PropD {
+   prop_e?: 'keyword';
+   prop_f?: 'keyword';
+ }
+ */
+ // @ts-ignore unused
+function createInterfaceWithProps(): Interface {
+  const interfacesMeta = [
+    { name: "A", description: "Description of A" },
+    { name: "PropB", description: "Description of PropB" },
+    { name: "PropD", description: "Description of PropD" },
+  ];
+  const defaultFieldProps = (
+    name: string,
+    type = "keyword",
+    required = false
+  ): EcsFieldSpec => ({
+    dashed_name: `dash-${name}`,
+    description: "test_prop description",
+    example: "example",
+    flat_name: `flat_${name}`,
+    level: "core",
+    name: `${name}`,
+    normalize: [],
+    required,
+    short: "short description",
+    type,
+    ignore_above: 1024,
+  });
+  const intfs = interfacesMeta.map(
+    (_, index) => new Interface(interfacesMeta[index])
+  );
+  intfs[0].addProperty("prop_a", defaultFieldProps("prop_a"));
+  intfs[0].addProperty("prop_b", intfs[1]);
+
+  intfs[1].addProperty("prop_c", defaultFieldProps("prop_c"));
+  intfs[1].addProperty("prop_d", intfs[2]);
+
+  intfs[2].addProperty("prop_e", defaultFieldProps("prop_e"));
+  intfs[2].addProperty("prop_f", defaultFieldProps("prop_f"));
+  return intfs[0];
+}
+
 describe('Interface', () => {
   let mainInt: Interface;
   let testProp: EcsFieldSpec;
@@ -178,7 +231,7 @@ interface Account {
 }
 
 "
-`)
+`);
   });
 });
 
