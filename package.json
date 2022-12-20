@@ -9,7 +9,7 @@
   "scripts": {
     "build": "rm -rf build && tsc",
     "dev": "rm -rf build && tsc --watch",
-    "generate-ecs-types": "rm -rf generated/*.ts && node bin/generate-ecs-types.js && prettier --write .",
+    "generate-ecs-types": "rm -rf generated/*.ts && node bin/generate-ecs-types.js && prettier --write ./generated",
     "test": "jest"
   },
   "repository": {
