@@ -15,13 +15,13 @@ export class Interface {
     this.name = meta.name;
     this.str = ``;
     this.otherInterfaces = [];
-  };
+  }
 
   addProperty(name: string, value: EcsFieldSpec | Interface): void {
     if (!this.properties.hasOwnProperty(`${name}`)) {
       this.properties[name] = value;
     }
-  };
+  }
 
   toInterfaceString(exportInterface: boolean = true): string {
     // this.str += h.buildDescription(this.description);
@@ -29,7 +29,7 @@ export class Interface {
 ${h.buildInterfaceName(this.name, exportInterface)}`;
     for (const [key, value] of Object.entries(this.properties)) {
       if (this.properties[key] instanceof Interface) {
-        this.str += h.buildInterfacePropString(value.name); 
+        this.str += h.buildInterfacePropString(value.name);
         this.otherInterfaces.push(value as Interface);
       } else {
         this.str += h.buildFieldPropString(value as EcsFieldSpec);
@@ -38,5 +38,5 @@ ${h.buildInterfaceName(this.name, exportInterface)}`;
     this.str += `}\n\n`;
     this.otherInterfaces.forEach((int: Interface) => this.str += int.toInterfaceString(false))
     return this.str;
-  };
+  }
 }

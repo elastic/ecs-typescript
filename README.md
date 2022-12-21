@@ -1,6 +1,6 @@
 # @elastic/ecs
 
-Automatically generated TypeScript type definitions for the 
+Automatically generated TypeScript type definitions for the
 [Elastic Common Schema](https://www.elastic.co/guide/en/ecs/current/index.html).
 
 ## Local development
@@ -11,5 +11,4 @@ Automatically generated TypeScript type definitions for the
 1. `yarn build`: Runs `tsc`
 1. `yarn dev`: Runs `tsc` and watches for changes
 1. `yarn test`: Runs unit tests with `jest`
-1. `yarn generate-ecs-types`: Generates ts files in `generated/ecs.ts`
-
+1. `yarn generate-ecs-types`: Generates a ts file in `generated/ecs.ts`

@@ -1,4 +1,3 @@
-
 import { EcsFieldSpec } from '../types';
 import { Interface } from './interface';
 
@@ -71,22 +70,28 @@ describe('Interface', () => {
       required: true,
       short: 'short description',
       type: 'keyword',
-      ignore_above: 100
+      ignore_above: 100,
     };
   });
-  
+
   it('builds a simple interface', () => {
-    const testMeta = { name: 'myinterface', description: 'My interface description' };
+    const testMeta = {
+      name: 'myinterface',
+      description: 'My interface description',
+    };
     const testInterface = new Interface(testMeta);
     expect(testInterface instanceof Interface).toBe(true);
   });
   it('allows adding an Interface as a property', () => {
     const testMainInterface = mainInt;
-    const testMeta = { name: 'myinterface_property', description: 'My interface property description' };
+    const testMeta = {
+      name: 'myinterface_property',
+      description: 'My interface property description',
+    };
     const testInterface = new Interface(testMeta);
 
     testMainInterface.addProperty(testProp.name, testInterface);
-    
+
     expect(testMainInterface).toMatchInlineSnapshot(`
 Interface {
   "description": "main interface",
@@ -103,11 +108,14 @@ Interface {
   },
   "str": "",
 }
-`)
+`);
   });
   it('converts an Interface to a string representation', () => {
     const testMainInterface = mainInt;
-    const testMeta = { name: 'myinterface_property', description: 'My interface property description' };
+    const testMeta = {
+      name: 'myinterface_property',
+      description: 'My interface property description',
+    };
     const testInterface = new Interface(testMeta);
     const testProp = {
       dashed_name: 'test_prop',
@@ -119,7 +127,7 @@ Interface {
       normalize: [],
       required: true,
       short: 'pr',
-      type: 'keyword'
+      type: 'keyword',
     };
     testMainInterface.addProperty(testProp.name, testInterface);
     const intAsString = testMainInterface.toInterfaceString(true);
@@ -134,14 +142,14 @@ interface MyinterfaceProperty {
 }
 
 "
-`)
+`);
   });
-  
+
   it('allows adding a field spec as a property', () => {
     const testMainInterface = mainInt;
     const testMeta = testProp;
     testMainInterface.addProperty(testProp.name, testMeta);
-    
+
     expect(testMainInterface).toMatchInlineSnapshot(`
 Interface {
   "description": "main interface",
@@ -164,9 +172,9 @@ Interface {
   },
   "str": "",
 }
-`)
+`);
   });
-  
+
   it('converts field meta to a string representation', () => {
     const testMainInterface = mainInt;
     const testMeta = testProp;
@@ -179,10 +187,13 @@ export interface EcsMain {
 }
 
 "
-`)
+`);
   });
   it('writes all dedicated interfaces', () => {
-    const cloudInterface = new Interface({ name: 'cloud', description: 'cloud description' });
+    const cloudInterface = new Interface({
+      name: 'cloud',
+      description: 'cloud description',
+    });
     const availabilityZone: EcsFieldSpec = {
       dashed_name: 'cloud-availability-zone',
       description: 'Availability zone in which this host, ',
@@ -192,14 +203,19 @@ export interface EcsMain {
       name: 'availability_zone',
       normalize: [],
       required: false,
-      short: 'Availability zone in which this host, resource, or service is located.',
+      short:
+        'Availability zone in which this host, resource, or service is located.',
       type: 'keyword',
-      ignore_above: 1024
+      ignore_above: 1024,
     };
-    const accountInterface = new Interface({ name: 'account', description: 'account description'});
+    const accountInterface = new Interface({
+      name: 'account',
+      description: 'account description',
+    });
     const accountInterfaceProps: EcsFieldSpec = {
       dashed_name: 'cloud-account-id',
-      description: 'The cloud account or organization id used to identify different\n entities in a multi-tenant environment.',
+      description:
+        'The cloud account or organization id used to identify different\n entities in a multi-tenant environment.',
       example: '666777888999',
       flat_name: 'cloud.account.id',
       level: 'extended',
@@ -208,16 +224,21 @@ export interface EcsMain {
       required: false,
       short: 'The cloud account or organization id.',
       type: 'keyword',
-      ignore_above: 1024
+      ignore_above: 1024,
     };
-    accountInterface.addProperty(accountInterfaceProps.name, accountInterfaceProps);
+    accountInterface.addProperty(
+      accountInterfaceProps.name,
+      accountInterfaceProps
+    );
     cloudInterface.addProperty(availabilityZone.name, availabilityZone);
     cloudInterface.addProperty(accountInterface.name, accountInterface);
-    
-    expect(cloudInterface.properties).toStrictEqual(expect.objectContaining({
-      availability_zone: expect.any(Object),
-      account: expect.any(Interface),
-    }));
+
+    expect(cloudInterface.properties).toStrictEqual(
+      expect.objectContaining({
+        availability_zone: expect.any(Object),
+        account: expect.any(Interface),
+      })
+    );
     expect(cloudInterface.toInterfaceString(true)).toMatchInlineSnapshot(`
 "
 export interface EcsCloud {
@@ -234,4 +255,3 @@ interface Account {
 `);
   });
 });
-

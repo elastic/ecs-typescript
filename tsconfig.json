@@ -10,16 +10,8 @@
     "target": "ESNext",
     "module": "CommonJS",
     "sourceMap": true,
-    "lib": [
-      "dom",
-      "ESNext"
-    ],
-    "types": [
-      "jest",
-      "node"
-    ]
+    "lib": ["dom", "ESNext"],
+    "types": ["jest", "node"]
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }
