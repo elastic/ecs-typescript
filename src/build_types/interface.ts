@@ -24,7 +24,7 @@ export class Interface {
     }
   }
 
-  toInterfaceString(exportInterface: boolean = true): string {
+  toString(exportInterface: boolean = true): string {
     this.str += h.buildDescription(this.description);
     this.str += `
 ${h.buildInterfaceName(this.name, exportInterface)}`;
@@ -38,7 +38,7 @@ ${h.buildInterfaceName(this.name, exportInterface)}`;
     }
     this.str += `}\n\n`;
     this.otherInterfaces.forEach(
-      (int: Interface) => (this.str += int.toInterfaceString(false))
+      (int: Interface) => (this.str += int.toString(false))
     );
     return this.str;
   }

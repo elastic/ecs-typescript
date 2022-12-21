@@ -97,7 +97,7 @@ export function buildInterfaceProps(
 export function buildTypes(spec: EcsNestedSpec): Interface[] {
   const json = buildSpecJson(spec);
 
-  const interfaces: Interface[] = [];
+  const interfaces = [];
 
   for (const [groupName, groupProps] of Object.entries(json)) {
     if (isGroupSpec(groupProps)) {
