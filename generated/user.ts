@@ -1,4 +1,3 @@
-
 export interface EcsUser {
   changes?: Changes;
   domain?: string;
@@ -9,10 +8,10 @@ export interface EcsUser {
   hash?: string;
   id?: string;
   name?: string;
+  risk?: Risk;
   roles?: string;
   target?: Target;
 }
-
 
 interface Changes {
   domain?: string;
@@ -25,13 +24,11 @@ interface Changes {
   roles?: string;
 }
 
-
 interface Group {
   domain?: string;
   id?: string;
   name?: string;
 }
-
 
 interface Effective {
   domain?: string;
@@ -44,6 +41,11 @@ interface Effective {
   roles?: string;
 }
 
+interface Group {
+  domain?: string;
+  id?: string;
+  name?: string;
+}
 
 interface Group {
   domain?: string;
@@ -51,13 +53,14 @@ interface Group {
   name?: string;
 }
 
-
-interface Group {
-  domain?: string;
-  id?: string;
-  name?: string;
+interface Risk {
+  calculated_level?: string;
+  calculated_score?: number;
+  calculated_score_norm?: number;
+  static_level?: string;
+  static_score?: number;
+  static_score_norm?: number;
 }
-
 
 interface Target {
   domain?: string;
@@ -70,10 +73,8 @@ interface Target {
   roles?: string;
 }
 
-
 interface Group {
   domain?: string;
   id?: string;
   name?: string;
 }
-

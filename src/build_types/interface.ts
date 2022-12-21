@@ -8,8 +8,8 @@ export class Interface {
   properties: Record<string, Interface | EcsFieldSpec>;
   private str: string;
   private otherInterfaces: Interface[];
-  
-  constructor(meta: { name: string, description: string }) {
+
+  constructor(meta: { name: string; description: string }) {
     this.description = meta.description;
     this.properties = {};
     this.name = meta.name;
@@ -36,7 +36,9 @@ ${h.buildInterfaceName(this.name, exportInterface)}`;
       }
     }
     this.str += `}\n\n`;
-    this.otherInterfaces.forEach((int: Interface) => this.str += int.toInterfaceString(false))
+    this.otherInterfaces.forEach(
+      (int: Interface) => (this.str += int.toInterfaceString(false))
+    );
     return this.str;
   }
 }

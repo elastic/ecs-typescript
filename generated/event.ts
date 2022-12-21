@@ -1,4 +1,3 @@
-
 export interface EcsEvent {
   action?: string;
   agent_id_status?: string;
@@ -27,4 +26,3 @@ export interface EcsEvent {
   type?: string;
   url?: string;
 }
-

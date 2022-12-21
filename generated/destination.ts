@@ -1,4 +1,3 @@
-
 export interface EcsDestination {
   address?: string;
   as?: As;
@@ -16,17 +15,14 @@ export interface EcsDestination {
   user?: User;
 }
 
-
 interface As {
   number?: number;
   organization?: Organization;
 }
 
-
 interface Organization {
   name?: string;
 }
-
 
 interface Geo {
   city_name?: string;
@@ -42,12 +38,10 @@ interface Geo {
   timezone?: string;
 }
 
-
 interface Nat {
   ip?: string;
   port?: number;
 }
-
 
 interface User {
   domain?: string;
@@ -60,10 +54,8 @@ interface User {
   roles?: string;
 }
 
-
 interface Group {
   domain?: string;
   id?: string;
   name?: string;
 }
-

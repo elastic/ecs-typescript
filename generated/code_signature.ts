@@ -1,4 +1,3 @@
-
 export interface EcsCodeSignature {
   digest_algorithm?: string;
   exists?: boolean;
@@ -10,4 +9,3 @@ export interface EcsCodeSignature {
   trusted?: boolean;
   valid?: boolean;
 }
-

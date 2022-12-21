@@ -1,4 +1,3 @@
-
 export interface EcsPackage {
   architecture?: string;
   build_version?: string;
@@ -14,4 +13,3 @@ export interface EcsPackage {
   type?: string;
   version?: string;
 }
-

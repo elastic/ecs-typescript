@@ -1,10 +1,8 @@
-
 export interface EcsHttp {
   request?: Request;
   response?: Response;
   version?: string;
 }
-
 
 interface Request {
   body?: Body;
@@ -15,12 +13,10 @@ interface Request {
   referrer?: string;
 }
 
-
 interface Body {
   bytes?: number;
   content?: string;
 }
-
 
 interface Response {
   body?: Body;
@@ -29,9 +25,7 @@ interface Response {
   status_code?: number;
 }
 
-
 interface Body {
   bytes?: number;
   content?: string;
 }
-

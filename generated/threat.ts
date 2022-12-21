@@ -1,14 +1,21 @@
-
 export interface EcsThreat {
   enrichments?: Record<string, unknown>;
+  feed?: Feed;
   framework?: string;
   group?: Group;
   indicator?: Indicator;
   software?: Software;
   tactic?: Tactic;
   technique?: Technique;
+  threat?: Threat;
 }
 
+interface Feed {
+  dashboard_id?: string;
+  description?: string;
+  name?: string;
+  reference?: string;
+}
 
 interface Group {
   alias?: string;
@@ -16,7 +23,6 @@ interface Group {
   name?: string;
   reference?: string;
 }
-
 
 interface Indicator {
   as?: As;
@@ -41,22 +47,18 @@ interface Indicator {
   x509?: X509;
 }
 
-
 interface As {
   number?: number;
   organization?: Organization;
 }
 
-
 interface Organization {
   name?: string;
 }
 
-
 interface Email {
   address?: string;
 }
-
 
 interface File {
   accessed?: string;
@@ -88,7 +90,6 @@ interface File {
   x509?: X509;
 }
 
-
 interface CodeSignature {
   digest_algorithm?: string;
   exists?: boolean;
@@ -101,21 +102,27 @@ interface CodeSignature {
   valid?: boolean;
 }
 
-
 interface Elf {
   architecture?: string;
   byte_order?: string;
   cpu_type?: string;
   creation_date?: string;
   exports?: Record<string, unknown>;
+  go_import_hash?: string;
+  go_imports?: Record<string, unknown>;
+  go_imports_names_entropy?: number;
+  go_imports_names_var_entropy?: number;
+  go_stripped?: boolean;
   header?: Header;
+  import_hash?: string;
   imports?: Record<string, unknown>;
+  imports_names_entropy?: number;
+  imports_names_var_entropy?: number;
   sections?: Record<string, unknown>;
   segments?: Record<string, unknown>;
   shared_libraries?: string;
   telfhash?: string;
 }
-
 
 interface Header {
   abi_version?: string;
@@ -128,7 +135,6 @@ interface Header {
   version?: string;
 }
 
-
 interface Hash {
   md5?: string;
   sha1?: string;
@@ -139,18 +145,26 @@ interface Hash {
   tlsh?: string;
 }
 
-
 interface Pe {
   architecture?: string;
   company?: string;
   description?: string;
   file_version?: string;
+  go_import_hash?: string;
+  go_imports?: Record<string, unknown>;
+  go_imports_names_entropy?: number;
+  go_imports_names_var_entropy?: number;
+  go_stripped?: boolean;
   imphash?: string;
+  import_hash?: string;
+  imports?: Record<string, unknown>;
+  imports_names_entropy?: number;
+  imports_names_var_entropy?: number;
   original_file_name?: string;
   pehash?: string;
   product?: string;
+  sections?: Record<string, unknown>;
 }
-
 
 interface X509 {
   alternative_names?: string;
@@ -167,7 +181,6 @@ interface X509 {
   version_number?: string;
 }
 
-
 interface Issuer {
   common_name?: string;
   country?: string;
@@ -178,7 +191,6 @@ interface Issuer {
   state_or_province?: string;
 }
 
-
 interface Subject {
   common_name?: string;
   country?: string;
@@ -188,7 +200,6 @@ interface Subject {
   organizational_unit?: string;
   state_or_province?: string;
 }
-
 
 interface Geo {
   city_name?: string;
@@ -204,11 +215,9 @@ interface Geo {
   timezone?: string;
 }
 
-
 interface Marking {
   tlp?: string;
 }
-
 
 interface Registry {
   data?: Data;
@@ -218,13 +227,11 @@ interface Registry {
   value?: string;
 }
 
-
 interface Data {
   bytes?: string;
   strings?: string;
   type?: string;
 }
-
 
 interface Url {
   domain?: string;
@@ -243,7 +250,6 @@ interface Url {
   username?: string;
 }
 
-
 interface X509 {
   alternative_names?: string;
   issuer?: Issuer;
@@ -259,7 +265,6 @@ interface X509 {
   version_number?: string;
 }
 
-
 interface Issuer {
   common_name?: string;
   country?: string;
@@ -269,7 +274,6 @@ interface Issuer {
   organizational_unit?: string;
   state_or_province?: string;
 }
-
 
 interface Subject {
   common_name?: string;
@@ -281,7 +285,6 @@ interface Subject {
   state_or_province?: string;
 }
 
-
 interface Software {
   alias?: string;
   id?: string;
@@ -291,13 +294,11 @@ interface Software {
   type?: string;
 }
 
-
 interface Tactic {
   id?: string;
   name?: string;
   reference?: string;
 }
-
 
 interface Technique {
   id?: string;
@@ -306,10 +307,24 @@ interface Technique {
   subtechnique?: Subtechnique;
 }
 
-
 interface Subtechnique {
   id?: string;
   name?: string;
   reference?: string;
 }
 
+interface Threat {
+  indicator?: Indicator;
+}
+
+interface Indicator {
+  marking?: Marking;
+}
+
+interface Marking {
+  tlp?: Tlp;
+}
+
+interface Tlp {
+  version?: string;
+}

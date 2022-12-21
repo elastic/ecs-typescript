@@ -1,4 +1,3 @@
-
 export interface EcsNetwork {
   application?: string;
   bytes?: number;
@@ -15,9 +14,7 @@ export interface EcsNetwork {
   vlan?: Vlan;
 }
 
-
 interface Vlan {
   id?: string;
   name?: string;
 }
-

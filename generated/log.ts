@@ -1,4 +1,3 @@
-
 export interface EcsLog {
   file?: File;
   level?: string;
@@ -7,20 +6,16 @@ export interface EcsLog {
   syslog?: Record<string, unknown>;
 }
 
-
 interface File {
   path?: string;
 }
-
 
 interface Origin {
   file?: File;
   function?: string;
 }
 
-
 interface File {
   line?: number;
   name?: string;
 }
-

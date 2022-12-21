@@ -1,4 +1,3 @@
-
 export interface EcsUserAgent {
   device?: Device;
   name?: string;
@@ -7,11 +6,9 @@ export interface EcsUserAgent {
   version?: string;
 }
 
-
 interface Device {
   name?: string;
 }
-
 
 interface Os {
   family?: string;
@@ -22,4 +19,3 @@ interface Os {
   type?: string;
   version?: string;
 }
-

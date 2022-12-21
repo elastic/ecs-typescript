@@ -34,7 +34,8 @@ describe('Helpers', () => {
   });
 
   it('builds an interface property string', () => {
-    expect(tester.buildInterfacePropString('my_interface')).toMatchInlineSnapshot(`
+    expect(tester.buildInterfacePropString('my_interface'))
+      .toMatchInlineSnapshot(`
 "  my_interface?: MyInterface;
 "
 `);
@@ -56,6 +57,26 @@ describe('Helpers', () => {
     };
     expect(tester.buildFieldPropString(testFieldSpec)).toMatchInlineSnapshot(`
 "  my_prop: string;
+"
+`);
+  });
+
+  it("wraps fields containing '@' with single quotes", () => {
+    const testFieldSpec: EcsFieldSpec = {
+      name: '@my_prop',
+      type: 'text',
+      required: true,
+      dashed_name: 'dashed_name',
+      description: 'description',
+      example: 'example',
+      flat_name: 'flat-name',
+      level: 'core',
+      normalize: [],
+      short: 'my-prop',
+      ignore_above: 0,
+    };
+    expect(tester.buildFieldPropString(testFieldSpec)).toMatchInlineSnapshot(`
+"  '@my_prop': string;
 "
 `);
   });

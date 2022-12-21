@@ -1,4 +1,3 @@
-
 export interface EcsGeo {
   city_name?: string;
   continent_code?: string;
@@ -12,4 +11,3 @@ export interface EcsGeo {
   region_name?: string;
   timezone?: string;
 }
-

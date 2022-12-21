@@ -1,4 +1,3 @@
-
 export interface EcsHash {
   md5?: string;
   sha1?: string;
@@ -8,4 +7,3 @@ export interface EcsHash {
   ssdeep?: string;
   tlsh?: string;
 }
-

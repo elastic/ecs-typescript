@@ -1,4 +1,3 @@
-
 export interface EcsService {
   address?: string;
   environment?: string;
@@ -13,11 +12,11 @@ export interface EcsService {
   version?: string;
 }
 
-
 interface Node {
   name?: string;
+  role?: string;
+  roles?: string;
 }
-
 
 interface Origin {
   address?: string;
@@ -31,11 +30,11 @@ interface Origin {
   version?: string;
 }
 
-
 interface Node {
   name?: string;
+  role?: string;
+  roles?: string;
 }
-
 
 interface Target {
   address?: string;
@@ -49,8 +48,8 @@ interface Target {
   version?: string;
 }
 
-
 interface Node {
   name?: string;
+  role?: string;
+  roles?: string;
 }
-

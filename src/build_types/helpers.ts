@@ -12,6 +12,18 @@ export class Helpers {
     );
   };
 
+  private static escape(propName: string | undefined) {
+    if (!propName) {
+      return '';
+    }
+
+    if (/^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(propName)) {
+      return propName;
+    } else {
+      return `'${propName}'`;
+    }
+  }
+
   public buildInterfaceName(name: string, exportInterface = false): string {
     return exportInterface
       ? `export interface Ecs${Helpers.asPascalCase(name)} {\n`
@@ -22,21 +34,20 @@ export class Helpers {
     if (!desc.length) {
       return '';
     }
-    return desc.split('\n')
+    return desc
+      .split('\n')
       .map((line: string) => `// ${line}`)
       .join('\n');
   }
 
   public buildInterfacePropString(name: string): string {
-    return `  ${name}?: ${Helpers.asPascalCase(name)};\n`
-  };
-  
+    return `  ${name}?: ${Helpers.asPascalCase(name)};\n`;
+  }
+
   public buildFieldPropString(value: EcsFieldSpec) {
     const { required, name, type } = value;
-    // If the name includes a dot, only use the last part
-    // TODO: handle @timestamp
     const propName = name.split('.').pop();
     const opt = required === true ? `` : `?`;
-    return `  ${propName}${opt}: ${convertType(type)};\n`;
-  };
-};
+    return `  ${Helpers.escape(propName)}${opt}: ${convertType(type)};\n`;
+  }
+}

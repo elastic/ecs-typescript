@@ -1,4 +1,3 @@
-
 export interface EcsDns {
   answers?: Record<string, unknown>;
   header_flags?: string;
@@ -10,7 +9,6 @@ export interface EcsDns {
   type?: string;
 }
 
-
 interface Question {
   class?: string;
   name?: string;
@@ -19,4 +17,3 @@ interface Question {
   top_level_domain?: string;
   type?: string;
 }
-

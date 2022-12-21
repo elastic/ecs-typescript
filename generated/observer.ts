@@ -1,4 +1,3 @@
-
 export interface EcsObserver {
   egress?: Record<string, unknown>;
   geo?: Geo;
@@ -15,7 +14,6 @@ export interface EcsObserver {
   version?: string;
 }
 
-
 interface Geo {
   city_name?: string;
   continent_code?: string;
@@ -30,7 +28,6 @@ interface Geo {
   timezone?: string;
 }
 
-
 interface Os {
   family?: string;
   full?: string;
@@ -40,4 +37,3 @@ interface Os {
   type?: string;
   version?: string;
 }
-

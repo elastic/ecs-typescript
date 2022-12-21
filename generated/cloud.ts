@@ -1,4 +1,3 @@
-
 export interface EcsCloud {
   account?: Account;
   availability_zone?: string;
@@ -12,23 +11,19 @@ export interface EcsCloud {
   target?: Target;
 }
 
-
 interface Account {
   id?: string;
   name?: string;
 }
-
 
 interface Instance {
   id?: string;
   name?: string;
 }
 
-
 interface Machine {
   type?: string;
 }
-
 
 interface Origin {
   account?: Account;
@@ -41,45 +36,37 @@ interface Origin {
   service?: Service;
 }
 
-
 interface Account {
   id?: string;
   name?: string;
 }
-
 
 interface Instance {
   id?: string;
   name?: string;
 }
 
-
 interface Machine {
   type?: string;
 }
 
+interface Project {
+  id?: string;
+  name?: string;
+}
+
+interface Service {
+  name?: string;
+}
 
 interface Project {
   id?: string;
   name?: string;
 }
 
-
 interface Service {
   name?: string;
 }
-
-
-interface Project {
-  id?: string;
-  name?: string;
-}
-
-
-interface Service {
-  name?: string;
-}
-
 
 interface Target {
   account?: Account;
@@ -92,31 +79,25 @@ interface Target {
   service?: Service;
 }
 
-
 interface Account {
   id?: string;
   name?: string;
 }
-
 
 interface Instance {
   id?: string;
   name?: string;
 }
 
-
 interface Machine {
   type?: string;
 }
-
 
 interface Project {
   id?: string;
   name?: string;
 }
 
-
 interface Service {
   name?: string;
 }
-
