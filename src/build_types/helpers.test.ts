@@ -28,8 +28,10 @@ describe('Helpers', () => {
     const testDesc = 'Some realy long\nmultiline description for a property.';
 
     expect(tester.buildDescription(testDesc)).toMatchInlineSnapshot(`
-"// Some realy long
-// multiline description for a property."
+"/**
+* Some realy long
+* multiline description for a property.
+*/"
 `);
   });
 
@@ -56,7 +58,10 @@ describe('Helpers', () => {
       ignore_above: 0,
     };
     expect(tester.buildFieldPropString(testFieldSpec)).toMatchInlineSnapshot(`
-"  my_prop: string;
+"/**
+* description
+*/
+  my_prop: string;
 "
 `);
   });
@@ -76,7 +81,10 @@ describe('Helpers', () => {
       ignore_above: 0,
     };
     expect(tester.buildFieldPropString(testFieldSpec)).toMatchInlineSnapshot(`
-"  '@my_prop': string;
+"/**
+* description
+*/
+  '@my_prop': string;
 "
 `);
   });

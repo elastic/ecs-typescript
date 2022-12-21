@@ -97,7 +97,7 @@ Array [
         "type": "long",
       },
       "nested": Interface {
-        "description": "a group description",
+        "description": "",
         "name": "nested",
         "otherInterfaces": Array [],
         "properties": Object {

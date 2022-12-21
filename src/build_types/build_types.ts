@@ -4,13 +4,11 @@ import type { EcsFieldSpec, EcsGroupSpec, EcsNestedSpec } from '../types';
 
 const SPEC_IDENTIFIER = '__spec';
 const DESCRIPTION_IDENTIFIER = '__description';
-const PARENT_GROUP_IDENTIFIER = '__parent_group';
 
 type SpecJson = Record<string, unknown | SpecInternals>;
 type SpecInternals = {
   [DESCRIPTION_IDENTIFIER]?: string;
   [SPEC_IDENTIFIER]?: EcsFieldSpec;
-  [PARENT_GROUP_IDENTIFIER]?: string;
 };
 
 function isGroupSpec(spec: unknown): spec is EcsGroupSpec & SpecInternals {
@@ -75,11 +73,8 @@ export function buildInterfaceProps(
     if (nextGroupName === DESCRIPTION_IDENTIFIER) {
       continue;
     }
-    const description = groupProps.hasOwnProperty(DESCRIPTION_IDENTIFIER)
-      ? (groupProps[DESCRIPTION_IDENTIFIER] as string)
-      : '';
-
     const nextGroupSpecJson = nextGroupProps as SpecJson;
+
     if (nextGroupSpecJson.hasOwnProperty(SPEC_IDENTIFIER)) {
       // if the next node will be a leaf, skip creating a new interface
       // and attach to the existing one instead
@@ -89,7 +84,10 @@ export function buildInterfaceProps(
       );
       buildInterfaceProps(i, nextGroupName, nextGroupSpecJson);
     } else {
-      const nextInterface = new Interface({ name: nextGroupName, description });
+      const nextInterface = new Interface({
+        name: nextGroupName,
+        description: '',
+      });
       i.addProperty(nextGroupName, nextInterface);
       buildInterfaceProps(nextInterface, nextGroupName, nextGroupSpecJson);
     }
@@ -112,5 +110,5 @@ export function buildTypes(spec: EcsNestedSpec): Interface[] {
     }
   }
 
-  return Array.from(interfaces.values());
+  return interfaces;
 }

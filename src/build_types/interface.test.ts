@@ -132,12 +132,16 @@ Interface {
     testMainInterface.addProperty(testProp.name, testInterface);
     const intAsString = testMainInterface.toInterfaceString(true);
     expect(intAsString).toMatchInlineSnapshot(`
-"
+"/**
+* main interface
+*/
 export interface EcsMain {
   myinterface_property?: MyinterfaceProperty;
 }
 
-
+/**
+* My interface property description
+*/
 interface MyinterfaceProperty {
 }
 
@@ -181,8 +185,13 @@ Interface {
     testMainInterface.addProperty(testMeta.name, testMeta);
     const intAsString = testMainInterface.toInterfaceString(true);
     expect(intAsString).toMatchInlineSnapshot(`
-"
+"/**
+* main interface
+*/
 export interface EcsMain {
+/**
+* test_prop description
+*/
   test_prop: string;
 }
 
@@ -240,14 +249,25 @@ export interface EcsMain {
       })
     );
     expect(cloudInterface.toInterfaceString(true)).toMatchInlineSnapshot(`
-"
+"/**
+* cloud description
+*/
 export interface EcsCloud {
+/**
+* Availability zone in which this host, 
+*/
   availability_zone?: string;
   account?: Account;
 }
 
-
+/**
+* account description
+*/
 interface Account {
+/**
+* The cloud account or organization id used to identify different
+*  entities in a multi-tenant environment.
+*/
   id?: string;
 }
 

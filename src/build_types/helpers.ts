@@ -34,10 +34,10 @@ export class Helpers {
     if (!desc.length) {
       return '';
     }
-    return desc
+    return `/**\n${desc
       .split('\n')
-      .map((line: string) => `// ${line}`)
-      .join('\n');
+      .map((line: string) => `* ${line}`)
+      .join('\n')}\n*/`;
   }
 
   public buildInterfacePropString(name: string): string {
@@ -48,6 +48,7 @@ export class Helpers {
     const { required, name, type } = value;
     const propName = name.split('.').pop();
     const opt = required === true ? `` : `?`;
-    return `  ${Helpers.escape(propName)}${opt}: ${convertType(type)};\n`;
+    return `${this.buildDescription(value.description)}
+  ${Helpers.escape(propName)}${opt}: ${convertType(type)};\n`;
   }
 }
