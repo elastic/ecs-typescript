@@ -7,7 +7,7 @@ describe('interfaceToDefinitionFilename(interface)', () => {
       interfaceToDefinitionFileName(
         new Interface({ name: 'Base', description: '' })
       )
-    ).toEqual('base.ts');
+    ).toEqual('base.d.ts');
 
     expect(
       interfaceToDefinitionFileName(

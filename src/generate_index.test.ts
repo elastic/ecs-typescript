@@ -9,8 +9,15 @@ describe('generateIndex()', () => {
         new Interface({ name: 'Agent', description: 'Agent interface' }),
       ])
     ).toMatchInlineSnapshot(`
-"export * from './base';
-export * from './agent';"
-`);
+      "import {EcsBase} from './base';
+      import {EcsAgent} from './agent';
+        
+      export type { EcsBase,
+      EcsAgent };
+
+        export type Ecs = EcsBase & EcsTracing & {
+          
+        }"
+    `);
   });
 });

@@ -19,6 +19,9 @@ export type EcsGroupSpec = {
   short: string;
   title: string;
   type: string;
+  reusable?: {
+    top_level: boolean;
+  };
 };
 
 /**
