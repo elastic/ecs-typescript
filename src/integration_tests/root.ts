@@ -12,3 +12,4 @@ ecs['@timestamp'];
 ecs.message;
 ecs.event?.category;
 ecs.threat?.indicator.marking.tlp;
+ecs.ecs.version;

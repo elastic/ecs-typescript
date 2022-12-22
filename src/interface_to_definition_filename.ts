@@ -1,8 +1,8 @@
-import { Interface } from './build_types/interface';
+import { EcsInterfaceLike } from './build_types/interface';
 import { EXTENSION } from './constants';
 
 export function interfaceToDefinitionFileName(
-  ecsInterface: Interface,
+  ecsInterface: EcsInterfaceLike,
   withExtension: boolean = true
 ): string {
   return `${ecsInterface.name.toLowerCase()}${withExtension ? EXTENSION : ''}`;

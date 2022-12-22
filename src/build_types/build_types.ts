@@ -1,5 +1,5 @@
 import { set } from 'lodash';
-import { Interface } from './interface';
+import { EcsInterface, EcsInterfaceLike } from './interface';
 import type { EcsFieldSpec, EcsGroupSpec, EcsNestedSpec } from '../types';
 
 const SPEC_IDENTIFIER = '__spec';
@@ -73,7 +73,7 @@ export function buildSpecJson(spec: EcsNestedSpec): SpecJson {
 }
 
 export function buildInterfaceProps(
-  i: Interface,
+  i: EcsInterface,
   groupName: string,
   groupProps: SpecJson
 ): void {
@@ -109,7 +109,7 @@ export function buildInterfaceProps(
       );
       buildInterfaceProps(i, nextGroupName, nextGroupSpecJson);
     } else {
-      const nextInterface = new Interface({
+      const nextInterface = new EcsInterface({
         name: nextGroupName,
         description: '',
         reusable: false,
@@ -120,14 +120,14 @@ export function buildInterfaceProps(
   }
 }
 
-export function buildTypes(spec: EcsNestedSpec): Interface[] {
+export function buildTypes(spec: EcsNestedSpec): EcsInterfaceLike[] {
   const json = buildSpecJson(spec);
 
-  const interfaces: Interface[] = [];
+  const interfaces: EcsInterface[] = [];
 
   for (const [groupName, groupProps] of Object.entries(json)) {
     if (isGroupSpec(groupProps)) {
-      const i = new Interface({
+      const i = new EcsInterface({
         description: groupProps[DESCRIPTION_IDENTIFIER] ?? '',
         name: groupName,
         reusable: groupProps[TOP_LEVEL_IDENTIFIER],

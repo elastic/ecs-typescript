@@ -50,6 +50,8 @@ import { EcsVlan } from './vlan';
 import { EcsVulnerability } from './vulnerability';
 import { EcsX509 } from './x509';
 
+export const version = '8.7.0-dev' as const;
+
 export type {
   EcsAgent,
   EcsAs,
@@ -116,7 +118,7 @@ export type Ecs = EcsBase &
     device?: EcsDevice;
     dll?: EcsDll;
     dns?: EcsDns;
-    ecs?: EcsEcs;
+    ecs: EcsEcs;
     email?: EcsEmail;
     error?: EcsError;
     event?: EcsEvent;

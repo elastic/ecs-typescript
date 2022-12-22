@@ -3,12 +3,9 @@ import { EcsFieldSpec } from '../types';
 
 const h = new Helpers();
 
-export class Interface {
-  description: string;
+export interface EcsInterfaceLike {
   name: string;
-  properties: Record<string, Interface | EcsFieldSpec>;
-  private str: string;
-
+  toString(exportInterface: boolean, inline?: boolean): string;
   /**
    * Should this interface be exported
    */
@@ -17,6 +14,16 @@ export class Interface {
   /**
    * Flatten this interface at the Ecs root interface instead of doing named export
    */
+  root: boolean;
+}
+
+export class EcsInterface implements EcsInterfaceLike {
+  name: string;
+  description: string;
+  properties: Record<string, EcsInterface | EcsFieldSpec>;
+  private str: string;
+
+  reusable: boolean;
   root: boolean;
 
   constructor(meta: {
@@ -33,7 +40,7 @@ export class Interface {
     this.root = !!meta.root;
   }
 
-  addProperty(name: string, value: EcsFieldSpec | Interface): void {
+  addProperty(name: string, value: EcsFieldSpec | EcsInterface): void {
     if (!this.properties.hasOwnProperty(`${name}`)) {
       this.properties[name] = value;
     }
@@ -48,7 +55,7 @@ export class Interface {
     }
 
     for (const [key, value] of Object.entries(this.properties)) {
-      if (this.properties[key] instanceof Interface) {
+      if (this.properties[key] instanceof EcsInterface) {
         this.str += `${key}: {`;
         this.str += this.properties[key].toString(false, true);
       } else {

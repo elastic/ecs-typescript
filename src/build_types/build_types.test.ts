@@ -89,7 +89,7 @@ describe('buildTypes', () => {
   it('returns the expected type string', () => {
     expect(buildTypes(spec)).toMatchInlineSnapshot(`
       Array [
-        Interface {
+        EcsInterface {
           "description": "a group description",
           "name": "a",
           "properties": Object {
@@ -99,7 +99,7 @@ describe('buildTypes', () => {
               "name": "a1",
               "type": "long",
             },
-            "nested": Interface {
+            "nested": EcsInterface {
               "description": "",
               "name": "nested",
               "properties": Object {
@@ -119,7 +119,7 @@ describe('buildTypes', () => {
           "root": false,
           "str": "",
         },
-        Interface {
+        EcsInterface {
           "description": "a group description",
           "name": "b",
           "properties": Object {

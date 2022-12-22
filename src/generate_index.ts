@@ -1,14 +1,11 @@
-import { Interface } from './build_types/interface';
+import { EcsInterfaceLike } from './build_types/interface';
 import { interfaceToDefinitionFileName } from './interface_to_definition_filename';
 
 import { Helpers } from './build_types/helpers';
-import { TYPE_PREFIX } from './constants';
+import { REQUIRED_ROOT_FIELDS, TYPE_PREFIX } from './constants';
+import { Context } from './types';
 
-function interfaceToEcsRootProperty(i: Interface): string {
-  return `${i.name}?: ${TYPE_PREFIX}${Helpers.asPascalCase(i.name)};`;
-}
-
-function buildRootTypesUnion(interfaces: Interface[]) {
+function buildRootTypesUnion(interfaces: EcsInterfaceLike[]) {
   const rootInterfaces = interfaces.filter((i) => i.root);
 
   return rootInterfaces
@@ -16,7 +13,7 @@ function buildRootTypesUnion(interfaces: Interface[]) {
     .join(' ');
 }
 
-function buildImports(interfaces: Interface[]) {
+function buildImports(interfaces: EcsInterfaceLike[]) {
   return interfaces
     .map(
       (i) =>
@@ -27,7 +24,7 @@ function buildImports(interfaces: Interface[]) {
     .join('\n');
 }
 
-function buildEcsNestedFields(interfaces: Interface[]) {
+function buildEcsNestedFields(interfaces: EcsInterfaceLike[]) {
   const reusableInterfaces = interfaces.filter((i) => i.reusable);
 
   return reusableInterfaces
@@ -35,18 +32,25 @@ function buildEcsNestedFields(interfaces: Interface[]) {
     .join('\n');
 }
 
-function buildExports(interfaces: Interface[]) {
+function buildExports(interfaces: EcsInterfaceLike[]) {
   return `export type { ${interfaces
     .map((i) => `${TYPE_PREFIX}${Helpers.asPascalCase(i.name)}`)
     .join(',\n')} };`;
 }
 
-export function generateIndex(interfaces: Interface[]) {
+export function generateIndex(ctx: Context, interfaces: EcsInterfaceLike[]) {
   return `${buildImports(interfaces)}
+
+  export const version = "${ctx.ecsVersionString}" as const;
   
   ${buildExports(interfaces)}
 
   export type ${TYPE_PREFIX} = ${buildRootTypesUnion(interfaces)} {
     ${buildEcsNestedFields(interfaces)}
   }`;
+}
+
+function interfaceToEcsRootProperty(i: EcsInterfaceLike): string {
+  const opt = REQUIRED_ROOT_FIELDS.includes(i.name) ? '' : '?';
+  return `${i.name}${opt}: ${TYPE_PREFIX}${Helpers.asPascalCase(i.name)};`;
 }
