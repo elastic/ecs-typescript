@@ -46,6 +46,7 @@ describe('buildSpecJson', () => {
       Object {
         "a": Object {
           "__description": "a group description",
+          "__root": false,
           "__top_level": true,
           "a1": Object {
             "__spec": Object {
@@ -68,6 +69,7 @@ describe('buildSpecJson', () => {
         },
         "b": Object {
           "__description": "a group description",
+          "__root": false,
           "__top_level": true,
           "b1": Object {
             "__spec": Object {
@@ -109,10 +111,12 @@ describe('buildTypes', () => {
                 },
               },
               "reusable": false,
+              "root": false,
               "str": "",
             },
           },
           "reusable": true,
+          "root": false,
           "str": "",
         },
         Interface {
@@ -127,6 +131,7 @@ describe('buildTypes', () => {
             },
           },
           "reusable": true,
+          "root": false,
           "str": "",
         },
       ]

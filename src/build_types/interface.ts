@@ -10,16 +10,27 @@ export class Interface {
   private str: string;
 
   /**
-   * Should this interface be exported at top level?
+   * Should this interface be exported
    */
   reusable: boolean;
 
-  constructor(meta: { name: string; description: string; reusable?: boolean }) {
+  /**
+   * Flatten this interface at the Ecs root interface instead of doing named export
+   */
+  root: boolean;
+
+  constructor(meta: {
+    name: string;
+    description: string;
+    reusable?: boolean;
+    root?: boolean;
+  }) {
     this.description = meta.description;
     this.properties = {};
     this.name = meta.name;
     this.str = ``;
     this.reusable = !!meta.reusable;
+    this.root = !!meta.root;
   }
 
   addProperty(name: string, value: EcsFieldSpec | Interface): void {

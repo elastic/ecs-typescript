@@ -102,10 +102,12 @@ describe('Interface', () => {
             "name": "myinterface_property",
             "properties": Object {},
             "reusable": false,
+            "root": false,
             "str": "",
           },
         },
         "reusable": false,
+        "root": false,
         "str": "",
       }
     `);
@@ -171,6 +173,7 @@ describe('Interface', () => {
           },
         },
         "reusable": false,
+        "root": false,
         "str": "",
       }
     `);

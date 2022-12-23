@@ -12,10 +12,10 @@ describe('generateIndex()', () => {
       "import {EcsBase} from './base';
       import {EcsAgent} from './agent';
         
-      export type { EcsBase,
+        export type { EcsBase,
       EcsAgent };
 
-        export type Ecs = EcsBase & EcsTracing & {
+        export type Ecs =  {
           
         }"
     `);

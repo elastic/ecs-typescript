@@ -10,7 +10,8 @@
     "build": "rm -rf build && tsc",
     "dev": "rm -rf build && tsc --watch",
     "generate-ecs-types": "rm -rf generated/*.ts && node bin/generate-ecs-types.js && prettier --write ./generated",
-    "test": "jest"
+    "test:unit": "jest",
+    "test:integration": "tsc src/integration_tests/root.ts --noEmit"
   },
   "repository": {
     "type": "git",

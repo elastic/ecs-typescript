@@ -107,6 +107,7 @@ export type {
 export type Ecs = EcsBase &
   EcsTracing & {
     agent?: EcsAgent;
+    base?: EcsBase;
     client?: EcsClient;
     cloud?: EcsCloud;
     container?: EcsContainer;
@@ -139,6 +140,7 @@ export type Ecs = EcsBase &
     source?: EcsSource;
     threat?: EcsThreat;
     tls?: EcsTls;
+    tracing?: EcsTracing;
     url?: EcsUrl;
     user?: EcsUser;
     user_agent?: EcsUserAgent;

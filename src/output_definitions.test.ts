@@ -31,9 +31,9 @@ describe('outputDefinitions()', () => {
         "output/index.d.ts",
         "import {EcsBase} from './base';
         
-      export type { EcsBase };
+        export type { EcsBase };
 
-        export type Ecs = EcsBase & EcsTracing & {
+        export type Ecs =  {
           
         }",
       ]
