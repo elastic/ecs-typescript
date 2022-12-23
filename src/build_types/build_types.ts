@@ -1,4 +1,4 @@
-import { set } from 'lodash';
+import { has, set } from 'lodash';
 import { EcsInterface } from './interface';
 import type { EcsFieldSpec, EcsGroupSpec, EcsNestedSpec } from '../types';
 
@@ -77,7 +77,7 @@ export function buildInterfaceProps(
   groupName: string,
   groupProps: SpecJson
 ): void {
-  if (groupProps.hasOwnProperty(SPEC_IDENTIFIER)) {
+  if (has(groupProps, SPEC_IDENTIFIER)) {
     const props = groupProps[SPEC_IDENTIFIER];
     if (!isFieldSpec(props)) {
       return;
@@ -100,7 +100,7 @@ export function buildInterfaceProps(
 
     const nextGroupSpecJson = nextGroupProps as SpecJson;
 
-    if (nextGroupSpecJson.hasOwnProperty(SPEC_IDENTIFIER)) {
+    if (has(nextGroupSpecJson, SPEC_IDENTIFIER)) {
       // if the next node will be a leaf, skip creating a new interface
       // and attach to the existing one instead
       i.addProperty(

@@ -1,5 +1,6 @@
 import { Helpers } from './helpers';
 import { EcsFieldSpec } from '../types';
+import { has } from 'lodash';
 
 const h = new Helpers();
 
@@ -39,7 +40,7 @@ export class EcsInterface implements EcsInterface {
   }
 
   addProperty(name: string, value: EcsFieldSpec | EcsInterface): void {
-    if (!this.properties.hasOwnProperty(`${name}`)) {
+    if (!has(this.properties, `${name}`)) {
       this.properties[name] = value;
     }
   }

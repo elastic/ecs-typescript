@@ -13,7 +13,7 @@ export async function loadYaml(ref: string) {
 
   try {
     const doc = load(response.data);
-    return doc as Record<string, any>;
+    return doc as Record<string, unknown>;
   } catch (e) {
     console.error(`Failed to load spec from ${url}`);
     console.error(e);

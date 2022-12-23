@@ -21,6 +21,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
     - run: yarn install --frozen-lockfile
+    - run: yarn lint
     - run: yarn test:unit
     - run: yarn build && yarn generate-ecs-types
     - run: yarn test:integration
