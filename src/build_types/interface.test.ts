@@ -132,7 +132,7 @@ describe('EcsInterface', () => {
       type: 'keyword',
     };
     testMainInterface.addProperty(testProp.name, testInterface);
-    const intAsString = testMainInterface.toString(true);
+    const intAsString = testMainInterface.toString({ exportInterface: true });
     expect(intAsString).toMatchInlineSnapshot(`
       "/**
       * main interface
@@ -183,7 +183,7 @@ describe('EcsInterface', () => {
     const testMainInterface = mainInt;
     const testMeta = testProp;
     testMainInterface.addProperty(testMeta.name, testMeta);
-    const intAsString = testMainInterface.toString(true);
+    const intAsString = testMainInterface.toString({ exportInterface: true });
     expect(intAsString).toMatchInlineSnapshot(`
       "/**
       * main interface
@@ -248,7 +248,8 @@ describe('EcsInterface', () => {
         account: expect.any(EcsInterface),
       })
     );
-    expect(cloudInterface.toString(true)).toMatchInlineSnapshot(`
+    expect(cloudInterface.toString({ exportInterface: true }))
+      .toMatchInlineSnapshot(`
       "/**
       * cloud description
       */
@@ -270,7 +271,8 @@ describe('EcsInterface', () => {
 
       "
     `);
-    expect(cloudInterface.toString(true)).toMatchInlineSnapshot(`
+    expect(cloudInterface.toString({ exportInterface: true }))
+      .toMatchInlineSnapshot(`
       "/**
       * cloud description
       */

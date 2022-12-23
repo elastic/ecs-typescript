@@ -3,9 +3,17 @@ import { EcsFieldSpec } from '../types';
 
 const h = new Helpers();
 
-export interface EcsInterfaceLike {
+interface ToStringOptions {
+  exportInterface: boolean;
+  inline?: boolean;
+}
+
+export class EcsInterface implements EcsInterface {
   name: string;
-  toString(exportInterface: boolean, inline?: boolean): string;
+  description: string;
+  properties: Record<string, EcsInterface | EcsFieldSpec>;
+  private str: string;
+
   /**
    * Should this interface be exported
    */
@@ -14,16 +22,6 @@ export interface EcsInterfaceLike {
   /**
    * Flatten this interface at the Ecs root interface instead of doing named export
    */
-  root: boolean;
-}
-
-export class EcsInterface implements EcsInterfaceLike {
-  name: string;
-  description: string;
-  properties: Record<string, EcsInterface | EcsFieldSpec>;
-  private str: string;
-
-  reusable: boolean;
   root: boolean;
 
   constructor(meta: {
@@ -46,18 +44,21 @@ export class EcsInterface implements EcsInterfaceLike {
     }
   }
 
-  toString(exportInterface: boolean = true, inline = false): string {
+  toString(options: ToStringOptions): string {
     this.str += h.buildDescription(this.description);
 
-    if (!inline) {
+    if (!options.inline) {
       this.str += `
-      ${h.buildInterfaceName(this.name, exportInterface)}`;
+      ${h.buildInterfaceName(this.name, options.exportInterface)}`;
     }
 
     for (const [key, value] of Object.entries(this.properties)) {
       if (this.properties[key] instanceof EcsInterface) {
         this.str += `${key}: {`;
-        this.str += this.properties[key].toString(false, true);
+        this.str += this.properties[key].toString({
+          inline: true,
+          exportInterface: false,
+        });
       } else {
         this.str += h.buildFieldPropString(value as EcsFieldSpec);
       }

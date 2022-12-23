@@ -12,7 +12,7 @@ describe('generateIndex()', () => {
       "import {EcsBase} from './base';
       import {EcsAgent} from './agent';
 
-        export const version = \\"main\\" as const;
+        export const EcsVersion = \\"main\\" as const;
         
         export type { EcsBase,
       EcsAgent };

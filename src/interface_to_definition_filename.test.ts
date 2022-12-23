@@ -5,13 +5,13 @@ describe('interfaceToDefinitionFilename(interface)', () => {
   it('should generate correct names when asked for variants with and without the extension', () => {
     expect(
       interfaceToDefinitionFileName(
-        new EcsInterface({ name: 'Base', description: '' })
+        new EcsInterface({ name: 'base', description: '' })
       )
     ).toEqual('base.ts');
 
     expect(
       interfaceToDefinitionFileName(
-        new EcsInterface({ name: 'Base', description: '' }),
+        new EcsInterface({ name: 'base', description: '' }),
         false
       )
     ).toEqual('base');

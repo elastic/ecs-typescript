@@ -1,11 +1,11 @@
-import { EcsInterfaceLike } from './build_types/interface';
+import { EcsInterface } from './build_types/interface';
 import { interfaceToDefinitionFileName } from './interface_to_definition_filename';
 
 import { Helpers } from './build_types/helpers';
 import { REQUIRED_ROOT_FIELDS, TYPE_PREFIX } from './constants';
 import { Context } from './types';
 
-function buildRootTypesUnion(interfaces: EcsInterfaceLike[]) {
+function buildRootTypesUnion(interfaces: EcsInterface[]) {
   const rootInterfaces = interfaces.filter((i) => i.root);
 
   return rootInterfaces
@@ -13,7 +13,7 @@ function buildRootTypesUnion(interfaces: EcsInterfaceLike[]) {
     .join(' ');
 }
 
-function buildImports(interfaces: EcsInterfaceLike[]) {
+function buildImports(interfaces: EcsInterface[]) {
   return interfaces
     .map(
       (i) =>
@@ -24,7 +24,7 @@ function buildImports(interfaces: EcsInterfaceLike[]) {
     .join('\n');
 }
 
-function buildEcsNestedFields(interfaces: EcsInterfaceLike[]) {
+function buildEcsNestedFields(interfaces: EcsInterface[]) {
   const reusableInterfaces = interfaces.filter((i) => i.reusable);
 
   return reusableInterfaces
@@ -32,16 +32,16 @@ function buildEcsNestedFields(interfaces: EcsInterfaceLike[]) {
     .join('\n');
 }
 
-function buildExports(interfaces: EcsInterfaceLike[]) {
+function buildExports(interfaces: EcsInterface[]) {
   return `export type { ${interfaces
     .map((i) => `${TYPE_PREFIX}${Helpers.asPascalCase(i.name)}`)
     .join(',\n')} };`;
 }
 
-export function generateIndex(ctx: Context, interfaces: EcsInterfaceLike[]) {
+export function generateIndex(ctx: Context, interfaces: EcsInterface[]) {
   return `${buildImports(interfaces)}
 
-  export const version = "${ctx.ecsVersionString}" as const;
+  export const EcsVersion = "${ctx.ecsVersionString}" as const;
   
   ${buildExports(interfaces)}
 
@@ -50,7 +50,7 @@ export function generateIndex(ctx: Context, interfaces: EcsInterfaceLike[]) {
   }`;
 }
 
-function interfaceToEcsRootProperty(i: EcsInterfaceLike): string {
+function interfaceToEcsRootProperty(i: EcsInterface): string {
   const opt = REQUIRED_ROOT_FIELDS.includes(i.name) ? '' : '?';
   return `${i.name}${opt}: ${TYPE_PREFIX}${Helpers.asPascalCase(i.name)};`;
 }

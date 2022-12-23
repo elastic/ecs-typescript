@@ -1,5 +1,5 @@
 import { set } from 'lodash';
-import { EcsInterface, EcsInterfaceLike } from './interface';
+import { EcsInterface } from './interface';
 import type { EcsFieldSpec, EcsGroupSpec, EcsNestedSpec } from '../types';
 
 const SPEC_IDENTIFIER = '__spec';
@@ -120,7 +120,7 @@ export function buildInterfaceProps(
   }
 }
 
-export function buildTypes(spec: EcsNestedSpec): EcsInterfaceLike[] {
+export function buildTypes(spec: EcsNestedSpec): EcsInterface[] {
   const json = buildSpecJson(spec);
 
   const interfaces: EcsInterface[] = [];

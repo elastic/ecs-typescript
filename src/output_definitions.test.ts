@@ -32,7 +32,7 @@ describe('outputDefinitions()', () => {
         "output/index.ts",
         "import {EcsBase} from './base';
 
-        export const version = \\"main\\" as const;
+        export const EcsVersion = \\"main\\" as const;
         
         export type { EcsBase };
 
