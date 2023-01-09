@@ -96,16 +96,18 @@ describe('Interface', () => {
       Interface {
         "description": "main interface",
         "name": "main",
-        "otherInterfaces": Array [],
         "properties": Object {
           "test_prop": Interface {
             "description": "My interface property description",
             "name": "myinterface_property",
-            "otherInterfaces": Array [],
             "properties": Object {},
+            "reusable": false,
+            "root": false,
             "str": "",
           },
         },
+        "reusable": false,
+        "root": false,
         "str": "",
       }
     `);
@@ -135,14 +137,11 @@ describe('Interface', () => {
       "/**
       * main interface
       */
-      export interface EcsMain {
-        myinterface_property?: MyinterfaceProperty;
-      }
-
-      /**
+            export interface EcsMain {
+      testProp: {/**
       * My interface property description
-      */
-      interface MyinterfaceProperty {
+      */}
+
       }
 
       "
@@ -158,7 +157,6 @@ describe('Interface', () => {
       Interface {
         "description": "main interface",
         "name": "main",
-        "otherInterfaces": Array [],
         "properties": Object {
           "test_prop": Object {
             "dashed_name": "test_prop",
@@ -174,6 +172,8 @@ describe('Interface', () => {
             "type": "keyword",
           },
         },
+        "reusable": false,
+        "root": false,
         "str": "",
       }
     `);
@@ -188,7 +188,7 @@ describe('Interface', () => {
       "/**
       * main interface
       */
-      export interface EcsMain {
+            export interface EcsMain {
       /**
       * test_prop description
       */
@@ -252,23 +252,20 @@ describe('Interface', () => {
       "/**
       * cloud description
       */
-      export interface EcsCloud {
+            export interface EcsCloud {
       /**
       * Availability zone in which this host, 
       */
         availability_zone?: string;
-        account?: Account;
-      }
-
-      /**
+      account: {/**
       * account description
-      */
-      interface Account {
-      /**
+      *//**
       * The cloud account or organization id used to identify different
       *  entities in a multi-tenant environment.
       */
         id?: string;
+      }
+
       }
 
       "
@@ -277,41 +274,33 @@ describe('Interface', () => {
       "/**
       * cloud description
       */
-      export interface EcsCloud {
+            export interface EcsCloud {
       /**
       * Availability zone in which this host, 
       */
         availability_zone?: string;
-        account?: Account;
-      }
-
-      /**
+      account: {/**
       * account description
-      */
-      interface Account {
-      /**
+      *//**
       * The cloud account or organization id used to identify different
       *  entities in a multi-tenant environment.
       */
         id?: string;
+      }
+
       }
 
       /**
       * cloud description
       */
-      export interface EcsCloud {
+            export interface EcsCloud {
       /**
       * Availability zone in which this host, 
       */
         availability_zone?: string;
-        account?: Account;
-      }
-
-      /**
+      account: {/**
       * account description
-      */
-      interface Account {
-      /**
+      *//**
       * The cloud account or organization id used to identify different
       *  entities in a multi-tenant environment.
       */
@@ -320,46 +309,13 @@ describe('Interface', () => {
 
       /**
       * account description
-      */
-      interface Account {
-      /**
+      *//**
       * The cloud account or organization id used to identify different
       *  entities in a multi-tenant environment.
       */
         id?: string;
       }
 
-      /**
-      * account description
-      */
-      interface Account {
-      /**
-      * The cloud account or organization id used to identify different
-      *  entities in a multi-tenant environment.
-      */
-        id?: string;
-      }
-
-      /**
-      * account description
-      */
-      interface Account {
-      /**
-      * The cloud account or organization id used to identify different
-      *  entities in a multi-tenant environment.
-      */
-        id?: string;
-      }
-
-      /**
-      * account description
-      */
-      interface Account {
-      /**
-      * The cloud account or organization id used to identify different
-      *  entities in a multi-tenant environment.
-      */
-        id?: string;
       }
 
       "

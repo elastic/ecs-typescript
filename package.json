@@ -2,7 +2,7 @@
   "name": "@elastic/ecs",
   "version": "1.0.0-alpha.1",
   "private": true,
-  "main": "generated/index.ts",
+  "main": "generated/index.d.ts",
   "bin": {
     "generate-ecs-types": "./bin/generate-ecs-types.js"
   },
@@ -10,7 +10,8 @@
     "build": "rm -rf build && tsc",
     "dev": "rm -rf build && tsc --watch",
     "generate-ecs-types": "rm -rf generated/*.ts && node bin/generate-ecs-types.js && prettier --write ./generated",
-    "test": "jest"
+    "test:unit": "jest",
+    "test:integration": "tsc src/integration_tests/root.ts --noEmit"
   },
   "repository": {
     "type": "git",

@@ -8,14 +8,29 @@ export class Interface {
   name: string;
   properties: Record<string, Interface | EcsFieldSpec>;
   private str: string;
-  private otherInterfaces: Interface[];
 
-  constructor(meta: { name: string; description: string }) {
+  /**
+   * Should this interface be exported
+   */
+  reusable: boolean;
+
+  /**
+   * Flatten this interface at the Ecs root interface instead of doing named export
+   */
+  root: boolean;
+
+  constructor(meta: {
+    name: string;
+    description: string;
+    reusable?: boolean;
+    root?: boolean;
+  }) {
     this.description = meta.description;
     this.properties = {};
     this.name = meta.name;
     this.str = ``;
-    this.otherInterfaces = [];
+    this.reusable = !!meta.reusable;
+    this.root = !!meta.root;
   }
 
   addProperty(name: string, value: EcsFieldSpec | Interface): void {
@@ -24,22 +39,24 @@ export class Interface {
     }
   }
 
-  toString(exportInterface: boolean = true): string {
+  toString(exportInterface: boolean = true, inline = false): string {
     this.str += h.buildDescription(this.description);
-    this.str += `
-${h.buildInterfaceName(this.name, exportInterface)}`;
+
+    if (!inline) {
+      this.str += `
+      ${h.buildInterfaceName(this.name, exportInterface)}`;
+    }
+
     for (const [key, value] of Object.entries(this.properties)) {
       if (this.properties[key] instanceof Interface) {
-        this.str += h.buildInterfacePropString(value.name);
-        this.otherInterfaces.push(value as Interface);
+        this.str += `${key}: {`;
+        this.str += this.properties[key].toString(false, true);
       } else {
         this.str += h.buildFieldPropString(value as EcsFieldSpec);
       }
     }
     this.str += `}\n\n`;
-    this.otherInterfaces.forEach(
-      (int: Interface) => (this.str += int.toString(false))
-    );
+
     return this.str;
   }
 }

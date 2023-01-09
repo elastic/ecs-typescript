@@ -13,5 +13,6 @@
     "lib": ["dom", "ESNext"],
     "types": ["jest", "node"]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["src/integration_tests"]
 }

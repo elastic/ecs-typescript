@@ -1,3 +1,4 @@
+import { TYPE_PREFIX } from '../constants';
 import { EcsFieldSpec } from '../types';
 import { convertType } from './convert_type';
 
@@ -26,7 +27,7 @@ export class Helpers {
 
   public buildInterfaceName(name: string, exportInterface = false): string {
     return exportInterface
-      ? `export interface Ecs${Helpers.asPascalCase(name)} {\n`
+      ? `export interface ${TYPE_PREFIX}${Helpers.asPascalCase(name)} {\n`
       : `interface ${Helpers.asPascalCase(name)} {\n`;
   }
 
