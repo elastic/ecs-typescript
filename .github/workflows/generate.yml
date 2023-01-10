@@ -29,6 +29,7 @@ jobs:
         cache: 'yarn'
     - run: yarn install --frozen-lockfile
     - run: yarn build && yarn generate-ecs-types -r ${{ inputs.ecsRef }} && yarn test:integration
+    - run: yarn version --minor
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v4
       with:
