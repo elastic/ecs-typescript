@@ -630,6 +630,10 @@ export interface EcsThreat {
      */
     modified_at?: string;
     /**
+     * The display name indicator in an UI friendly format
+     */
+    name?: string;
+    /**
      * Identifies a threat indicator as a port number (irrespective of direction).
      */
     port?: number;
