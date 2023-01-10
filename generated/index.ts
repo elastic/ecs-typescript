@@ -50,7 +50,12 @@ import { EcsVlan } from './vlan';
 import { EcsVulnerability } from './vulnerability';
 import { EcsX509 } from './x509';
 
-export const version = '8.7.0-dev' as const;
+export const EcsVersion = '8.7.0-dev' as const;
+
+/**
+ * Exporting ecs_flat schema used to generate the typings in this package, as object literal.
+ */
+export { EcsSchema } from './schema';
 
 export type {
   EcsAgent,
