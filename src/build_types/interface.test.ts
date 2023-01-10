@@ -16,7 +16,6 @@ import { EcsInterface } from './interface';
    prop_f?: 'keyword';
  }
  */
-// @ts-ignore unused
 function createInterfaceWithProps(): EcsInterface {
   const interfacesMeta = [
     { name: 'A', description: 'Description of A' },
@@ -58,7 +57,7 @@ describe('EcsInterface', () => {
   let mainInt: EcsInterface;
   let testProp: EcsFieldSpec;
   beforeEach(() => {
-    mainInt = new EcsInterface({ name: 'main', description: 'main interface' });
+    mainInt = createInterfaceWithProps();
     testProp = {
       dashed_name: 'test_prop',
       description: 'test_prop description',
@@ -94,9 +93,79 @@ describe('EcsInterface', () => {
 
     expect(testMainInterface).toMatchInlineSnapshot(`
       EcsInterface {
-        "description": "main interface",
-        "name": "main",
+        "description": "Description of A",
+        "name": "A",
         "properties": Object {
+          "prop_a": Object {
+            "dashed_name": "dash-prop_a",
+            "description": "test_prop description",
+            "example": "example",
+            "flat_name": "flat_prop_a",
+            "ignore_above": 1024,
+            "level": "core",
+            "name": "prop_a",
+            "normalize": Array [],
+            "required": false,
+            "short": "short description",
+            "type": "keyword",
+          },
+          "prop_b": EcsInterface {
+            "description": "Description of PropB",
+            "name": "PropB",
+            "properties": Object {
+              "prop_c": Object {
+                "dashed_name": "dash-prop_c",
+                "description": "test_prop description",
+                "example": "example",
+                "flat_name": "flat_prop_c",
+                "ignore_above": 1024,
+                "level": "core",
+                "name": "prop_c",
+                "normalize": Array [],
+                "required": false,
+                "short": "short description",
+                "type": "keyword",
+              },
+              "prop_d": EcsInterface {
+                "description": "Description of PropD",
+                "name": "PropD",
+                "properties": Object {
+                  "prop_e": Object {
+                    "dashed_name": "dash-prop_e",
+                    "description": "test_prop description",
+                    "example": "example",
+                    "flat_name": "flat_prop_e",
+                    "ignore_above": 1024,
+                    "level": "core",
+                    "name": "prop_e",
+                    "normalize": Array [],
+                    "required": false,
+                    "short": "short description",
+                    "type": "keyword",
+                  },
+                  "prop_f": Object {
+                    "dashed_name": "dash-prop_f",
+                    "description": "test_prop description",
+                    "example": "example",
+                    "flat_name": "flat_prop_f",
+                    "ignore_above": 1024,
+                    "level": "core",
+                    "name": "prop_f",
+                    "normalize": Array [],
+                    "required": false,
+                    "short": "short description",
+                    "type": "keyword",
+                  },
+                },
+                "reusable": false,
+                "root": false,
+                "str": "",
+              },
+            },
+            "reusable": false,
+            "root": false,
+            "str": "",
+          },
           "test_prop": EcsInterface {
             "description": "My interface property description",
             "name": "myinterface_property",
@@ -135,9 +204,33 @@ describe('EcsInterface', () => {
     const intAsString = testMainInterface.toString({ exportInterface: true });
     expect(intAsString).toMatchInlineSnapshot(`
       "/**
-      * main interface
+      * Description of A
       */
-            export interface EcsMain {
+            export interface EcsA {
+      /**
+      * test_prop description
+      */
+        prop_a?: string;
+      prop_b: {/**
+      * Description of PropB
+      *//**
+      * test_prop description
+      */
+        prop_c?: string;
+      prop_d: {/**
+      * Description of PropD
+      *//**
+      * test_prop description
+      */
+        prop_e?: string;
+      /**
+      * test_prop description
+      */
+        prop_f?: string;
+      }
+
+      }
+
       testProp: {/**
       * My interface property description
       */}
@@ -155,9 +248,79 @@ describe('EcsInterface', () => {
 
     expect(testMainInterface).toMatchInlineSnapshot(`
       EcsInterface {
-        "description": "main interface",
-        "name": "main",
+        "description": "Description of A",
+        "name": "A",
         "properties": Object {
+          "prop_a": Object {
+            "dashed_name": "dash-prop_a",
+            "description": "test_prop description",
+            "example": "example",
+            "flat_name": "flat_prop_a",
+            "ignore_above": 1024,
+            "level": "core",
+            "name": "prop_a",
+            "normalize": Array [],
+            "required": false,
+            "short": "short description",
+            "type": "keyword",
+          },
+          "prop_b": EcsInterface {
+            "description": "Description of PropB",
+            "name": "PropB",
+            "properties": Object {
+              "prop_c": Object {
+                "dashed_name": "dash-prop_c",
+                "description": "test_prop description",
+                "example": "example",
+                "flat_name": "flat_prop_c",
+                "ignore_above": 1024,
+                "level": "core",
+                "name": "prop_c",
+                "normalize": Array [],
+                "required": false,
+                "short": "short description",
+                "type": "keyword",
+              },
+              "prop_d": EcsInterface {
+                "description": "Description of PropD",
+                "name": "PropD",
+                "properties": Object {
+                  "prop_e": Object {
+                    "dashed_name": "dash-prop_e",
+                    "description": "test_prop description",
+                    "example": "example",
+                    "flat_name": "flat_prop_e",
+                    "ignore_above": 1024,
+                    "level": "core",
+                    "name": "prop_e",
+                    "normalize": Array [],
+                    "required": false,
+                    "short": "short description",
+                    "type": "keyword",
+                  },
+                  "prop_f": Object {
+                    "dashed_name": "dash-prop_f",
+                    "description": "test_prop description",
+                    "example": "example",
+                    "flat_name": "flat_prop_f",
+                    "ignore_above": 1024,
+                    "level": "core",
+                    "name": "prop_f",
+                    "normalize": Array [],
+                    "required": false,
+                    "short": "short description",
+                    "type": "keyword",
+                  },
+                },
+                "reusable": false,
+                "root": false,
+                "str": "",
+              },
+            },
+            "reusable": false,
+            "root": false,
+            "str": "",
+          },
           "test_prop": Object {
             "dashed_name": "test_prop",
             "description": "test_prop description",
@@ -186,9 +349,33 @@ describe('EcsInterface', () => {
     const intAsString = testMainInterface.toString({ exportInterface: true });
     expect(intAsString).toMatchInlineSnapshot(`
       "/**
-      * main interface
+      * Description of A
       */
-            export interface EcsMain {
+            export interface EcsA {
+      /**
+      * test_prop description
+      */
+        prop_a?: string;
+      prop_b: {/**
+      * Description of PropB
+      *//**
+      * test_prop description
+      */
+        prop_c?: string;
+      prop_d: {/**
+      * Description of PropD
+      *//**
+      * test_prop description
+      */
+        prop_e?: string;
+      /**
+      * test_prop description
+      */
+        prop_f?: string;
+      }
+
+      }
+
       /**
       * test_prop description
       */

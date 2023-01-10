@@ -3,7 +3,7 @@ import { EXTENSION } from './constants';
 
 export function interfaceToDefinitionFileName(
   ecsInterface: EcsInterface,
-  withExtension: boolean = true
+  withExtension = true
 ): string {
   return `${ecsInterface.name.toLowerCase()}${withExtension ? EXTENSION : ''}`;
 }

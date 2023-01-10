@@ -3,7 +3,7 @@ import { Command } from 'commander';
 import { buildTypes } from './build_types';
 import { loadYaml } from './load_yaml';
 import { outputDefinitions } from './output_definitions';
-import { Context } from './types';
+import { Context, EcsNestedSpec } from './types';
 import { loadVersion } from './load_version';
 import { outputSchema } from './output_schema';
 
@@ -59,7 +59,7 @@ export async function run() {
     ecsVersionString: await loadVersion(options.ref),
   };
 
-  const types = buildTypes(yamlAsJson);
+  const types = buildTypes(yamlAsJson as EcsNestedSpec);
 
   outputDefinitions(types, context);
 
