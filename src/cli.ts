@@ -5,6 +5,7 @@ import { loadYaml } from './load_yaml';
 import { outputDefinitions } from './output_definitions';
 import { Context } from './types';
 import { loadVersion } from './load_version';
+import { outputSchema } from './output_schema';
 
 interface Options {
   ref: string;
@@ -61,6 +62,8 @@ export async function run() {
   const types = buildTypes(yamlAsJson);
 
   outputDefinitions(types, context);
+
+  outputSchema(context, yamlAsJson);
 
   process.exit(0);
 }

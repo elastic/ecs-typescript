@@ -14,6 +14,11 @@ describe('generateIndex()', () => {
 
         export const EcsVersion = \\"main\\" as const;
         
+        /**
+         * Exporting ecs_flat schema used to generate the typings in this package, as object literal.
+         */
+      export { EcsSchema } from './schema';
+
         export type { EcsBase,
       EcsAgent };
 

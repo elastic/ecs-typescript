@@ -2,7 +2,11 @@ import { EcsInterface } from './build_types/interface';
 import { interfaceToDefinitionFileName } from './interface_to_definition_filename';
 
 import { Helpers } from './build_types/helpers';
-import { REQUIRED_ROOT_FIELDS, TYPE_PREFIX } from './constants';
+import {
+  RAW_SCHEMA_FILENAME,
+  REQUIRED_ROOT_FIELDS,
+  TYPE_PREFIX,
+} from './constants';
 import { Context } from './types';
 
 function buildRootTypesUnion(interfaces: EcsInterface[]) {
@@ -41,8 +45,13 @@ function buildExports(interfaces: EcsInterface[]) {
 export function generateIndex(ctx: Context, interfaces: EcsInterface[]) {
   return `${buildImports(interfaces)}
 
-  export const EcsVersion = "${ctx.ecsVersionString}" as const;
+  export const ${TYPE_PREFIX}Version = "${ctx.ecsVersionString}" as const;
   
+  /**
+   * Exporting ecs_flat schema used to generate the typings in this package, as object literal.
+   */
+export { ${TYPE_PREFIX}Schema } from './${RAW_SCHEMA_FILENAME}';
+
   ${buildExports(interfaces)}
 
   export type ${TYPE_PREFIX} = ${buildRootTypesUnion(interfaces)} {
