@@ -1,5 +1,5 @@
 import { EcsFieldSpec } from '../types';
-import { Interface } from './interface';
+import { EcsInterface } from './interface';
 
 /**
  * utility to create a test fixture with the following shape:
@@ -17,7 +17,7 @@ import { Interface } from './interface';
  }
  */
 // @ts-ignore unused
-function createInterfaceWithProps(): Interface {
+function createInterfaceWithProps(): EcsInterface {
   const interfacesMeta = [
     { name: 'A', description: 'Description of A' },
     { name: 'PropB', description: 'Description of PropB' },
@@ -41,7 +41,7 @@ function createInterfaceWithProps(): Interface {
     ignore_above: 1024,
   });
   const intfs = interfacesMeta.map(
-    (_, index) => new Interface(interfacesMeta[index])
+    (_, index) => new EcsInterface(interfacesMeta[index])
   );
   intfs[0].addProperty('prop_a', defaultFieldProps('prop_a'));
   intfs[0].addProperty('prop_b', intfs[1]);
@@ -54,11 +54,11 @@ function createInterfaceWithProps(): Interface {
   return intfs[0];
 }
 
-describe('Interface', () => {
-  let mainInt: Interface;
+describe('EcsInterface', () => {
+  let mainInt: EcsInterface;
   let testProp: EcsFieldSpec;
   beforeEach(() => {
-    mainInt = new Interface({ name: 'main', description: 'main interface' });
+    mainInt = new EcsInterface({ name: 'main', description: 'main interface' });
     testProp = {
       dashed_name: 'test_prop',
       description: 'test_prop description',
@@ -79,8 +79,8 @@ describe('Interface', () => {
       name: 'myinterface',
       description: 'My interface description',
     };
-    const testInterface = new Interface(testMeta);
-    expect(testInterface instanceof Interface).toBe(true);
+    const testInterface = new EcsInterface(testMeta);
+    expect(testInterface instanceof EcsInterface).toBe(true);
   });
   it('allows adding an Interface as a property', () => {
     const testMainInterface = mainInt;
@@ -88,16 +88,16 @@ describe('Interface', () => {
       name: 'myinterface_property',
       description: 'My interface property description',
     };
-    const testInterface = new Interface(testMeta);
+    const testInterface = new EcsInterface(testMeta);
 
     testMainInterface.addProperty(testProp.name, testInterface);
 
     expect(testMainInterface).toMatchInlineSnapshot(`
-      Interface {
+      EcsInterface {
         "description": "main interface",
         "name": "main",
         "properties": Object {
-          "test_prop": Interface {
+          "test_prop": EcsInterface {
             "description": "My interface property description",
             "name": "myinterface_property",
             "properties": Object {},
@@ -118,7 +118,7 @@ describe('Interface', () => {
       name: 'myinterface_property',
       description: 'My interface property description',
     };
-    const testInterface = new Interface(testMeta);
+    const testInterface = new EcsInterface(testMeta);
     const testProp = {
       dashed_name: 'test_prop',
       description: 'test_prop description',
@@ -132,7 +132,7 @@ describe('Interface', () => {
       type: 'keyword',
     };
     testMainInterface.addProperty(testProp.name, testInterface);
-    const intAsString = testMainInterface.toString(true);
+    const intAsString = testMainInterface.toString({ exportInterface: true });
     expect(intAsString).toMatchInlineSnapshot(`
       "/**
       * main interface
@@ -154,7 +154,7 @@ describe('Interface', () => {
     testMainInterface.addProperty(testProp.name, testMeta);
 
     expect(testMainInterface).toMatchInlineSnapshot(`
-      Interface {
+      EcsInterface {
         "description": "main interface",
         "name": "main",
         "properties": Object {
@@ -183,7 +183,7 @@ describe('Interface', () => {
     const testMainInterface = mainInt;
     const testMeta = testProp;
     testMainInterface.addProperty(testMeta.name, testMeta);
-    const intAsString = testMainInterface.toString(true);
+    const intAsString = testMainInterface.toString({ exportInterface: true });
     expect(intAsString).toMatchInlineSnapshot(`
       "/**
       * main interface
@@ -199,7 +199,7 @@ describe('Interface', () => {
     `);
   });
   it('writes all dedicated interfaces', () => {
-    const cloudInterface = new Interface({
+    const cloudInterface = new EcsInterface({
       name: 'cloud',
       description: 'cloud description',
     });
@@ -217,7 +217,7 @@ describe('Interface', () => {
       type: 'keyword',
       ignore_above: 1024,
     };
-    const accountInterface = new Interface({
+    const accountInterface = new EcsInterface({
       name: 'account',
       description: 'account description',
     });
@@ -245,10 +245,11 @@ describe('Interface', () => {
     expect(cloudInterface.properties).toStrictEqual(
       expect.objectContaining({
         availability_zone: expect.any(Object),
-        account: expect.any(Interface),
+        account: expect.any(EcsInterface),
       })
     );
-    expect(cloudInterface.toString(true)).toMatchInlineSnapshot(`
+    expect(cloudInterface.toString({ exportInterface: true }))
+      .toMatchInlineSnapshot(`
       "/**
       * cloud description
       */
@@ -270,7 +271,8 @@ describe('Interface', () => {
 
       "
     `);
-    expect(cloudInterface.toString(true)).toMatchInlineSnapshot(`
+    expect(cloudInterface.toString({ exportInterface: true }))
+      .toMatchInlineSnapshot(`
       "/**
       * cloud description
       */

@@ -3,6 +3,8 @@ import { Command } from 'commander';
 import { buildTypes } from './build_types';
 import { loadYaml } from './load_yaml';
 import { outputDefinitions } from './output_definitions';
+import { Context } from './types';
+import { loadVersion } from './load_version';
 
 interface Options {
   ref: string;
@@ -41,17 +43,24 @@ export async function run() {
 
   console.log(`Loading ecs_nested.yml from elastic/ecs@${options.ref}`);
 
-  const ref = await loadYaml(options.ref);
+  const yamlAsJson = await loadYaml(options.ref);
 
-  if (!ref) {
+  if (!yamlAsJson) {
     console.error(`Failed to load spec from ${options.ref}`);
     process.exit(1);
   }
 
   const outPath = path.resolve(process.cwd(), options.dir);
-  const types = buildTypes(ref);
 
-  outputDefinitions(types, outPath);
+  const context: Context = {
+    outPath,
+    ref: options.ref,
+    ecsVersionString: await loadVersion(options.ref),
+  };
+
+  const types = buildTypes(yamlAsJson);
+
+  outputDefinitions(types, context);
 
   process.exit(0);
 }

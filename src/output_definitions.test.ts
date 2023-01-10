@@ -1,4 +1,4 @@
-import { Interface } from './build_types/interface';
+import { EcsInterface } from './build_types/interface';
 import { outputDefinitions } from './output_definitions';
 import { writeFile } from './write_file';
 
@@ -8,16 +8,17 @@ describe('outputDefinitions()', () => {
   beforeEach(jest.clearAllMocks);
 
   it('should call writeFile', () => {
-    outputDefinitions(
-      [new Interface({ name: 'base', description: '' })],
-      'output'
-    );
+    outputDefinitions([new EcsInterface({ name: 'base', description: '' })], {
+      outPath: 'output',
+      ref: 'main',
+      ecsVersionString: 'main',
+    });
 
     expect(writeFile).toHaveBeenCalledTimes(2);
 
     expect(jest.mocked(writeFile).mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        "output/base.d.ts",
+        "output/base.ts",
         "
             export interface EcsBase {
       }
@@ -28,8 +29,10 @@ describe('outputDefinitions()', () => {
 
     expect(jest.mocked(writeFile).mock.calls[1]).toMatchInlineSnapshot(`
       Array [
-        "output/index.d.ts",
+        "output/index.ts",
         "import {EcsBase} from './base';
+
+        export const EcsVersion = \\"main\\" as const;
         
         export type { EcsBase };
 

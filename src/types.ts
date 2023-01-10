@@ -40,3 +40,15 @@ export interface EcsFieldSpec {
   short: string;
   type: string; // TODO: include string literals
 }
+
+/**
+ * Program context
+ */
+export interface Context {
+  outPath: string;
+  ref: string;
+  /**
+   * The actual version string stored in the ECS repository
+   */
+  ecsVersionString: string;
+}
