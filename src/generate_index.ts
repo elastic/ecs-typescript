@@ -52,7 +52,7 @@ export function generateIndex(ctx: Context, interfaces: EcsInterface[]) {
   /**
    * Exporting ecs_flat schema used to generate the typings in this package, as object literal.
    */
-export { ${TYPE_PREFIX}Schema } from './${RAW_SCHEMA_FILENAME}';
+export { ${TYPE_PREFIX}Nested } from './${RAW_SCHEMA_FILENAME}';
 
   ${buildExports(interfaces)}
 

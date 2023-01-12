@@ -9,6 +9,6 @@ export function outputSchema(
 ) {
   writeFile(
     path.join(outPath, `${RAW_SCHEMA_FILENAME}${EXTENSION}`),
-    `export const ${TYPE_PREFIX}Schema = ${JSON.stringify(yamlAsJson)};`
+    `export const ${TYPE_PREFIX}Nested = ${JSON.stringify(yamlAsJson)};`
   );
 }

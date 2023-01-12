@@ -19,8 +19,8 @@ describe('outputDefinitions()', () => {
     expect(writeFile).toHaveBeenCalledTimes(1);
     expect(jest.mocked(writeFile).mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        "output/schema.ts",
-        "export const EcsSchema = {};",
+        "output/ecs_nested.ts",
+        "export const EcsNested = {};",
       ]
     `);
   });

@@ -62,7 +62,7 @@ export const EcsVersion = "8.6.0" as const;
 /**
  * Exporting ecs_flat schema used to generate the typings in this package, as object literal.
  */
-export { EcsSchema } from "./schema";
+export { EcsNested } from "./ecs_nested";
 
 export type {
   EcsAgent,
