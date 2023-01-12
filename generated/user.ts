@@ -11,7 +11,7 @@
  * Fields can have one entry or multiple entries. If a user has more than one id, provide an array that includes all of them.
  */
 export interface EcsUser {
-  changes: {
+  changes?: {
     /**
      * Name of the directory the user is a member of.
      * For example, an LDAP or Active Directory domain name.
@@ -25,7 +25,7 @@ export interface EcsUser {
      * User's full name, if available.
      */
     full_name?: string;
-    group: {
+    group?: {
       /**
        * Name of the directory the group is a member of.
        * For example, an LDAP or Active Directory domain name.
@@ -57,7 +57,7 @@ export interface EcsUser {
     /**
      * Array of user roles at the time of the event.
      */
-    roles?: string;
+    roles?: string | string[];
   };
 
   /**
@@ -65,7 +65,7 @@ export interface EcsUser {
    * For example, an LDAP or Active Directory domain name.
    */
   domain?: string;
-  effective: {
+  effective?: {
     /**
      * Name of the directory the user is a member of.
      * For example, an LDAP or Active Directory domain name.
@@ -79,7 +79,7 @@ export interface EcsUser {
      * User's full name, if available.
      */
     full_name?: string;
-    group: {
+    group?: {
       /**
        * Name of the directory the group is a member of.
        * For example, an LDAP or Active Directory domain name.
@@ -111,7 +111,7 @@ export interface EcsUser {
     /**
      * Array of user roles at the time of the event.
      */
-    roles?: string;
+    roles?: string | string[];
   };
 
   /**
@@ -122,7 +122,7 @@ export interface EcsUser {
    * User's full name, if available.
    */
   full_name?: string;
-  group: {
+  group?: {
     /**
      * Name of the directory the group is a member of.
      * For example, an LDAP or Active Directory domain name.
@@ -151,7 +151,7 @@ export interface EcsUser {
    * Short name or login of the user.
    */
   name?: string;
-  risk: {
+  risk?: {
     /**
      * A risk classification level calculated by an internal system as part of entity analytics and entity risk scoring.
      */
@@ -181,8 +181,8 @@ export interface EcsUser {
   /**
    * Array of user roles at the time of the event.
    */
-  roles?: string;
-  target: {
+  roles?: string | string[];
+  target?: {
     /**
      * Name of the directory the user is a member of.
      * For example, an LDAP or Active Directory domain name.
@@ -196,7 +196,7 @@ export interface EcsUser {
      * User's full name, if available.
      */
     full_name?: string;
-    group: {
+    group?: {
       /**
        * Name of the directory the group is a member of.
        * For example, an LDAP or Active Directory domain name.
@@ -228,6 +228,6 @@ export interface EcsUser {
     /**
      * Array of user roles at the time of the event.
      */
-    roles?: string;
+    roles?: string | string[];
   };
 }

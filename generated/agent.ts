@@ -11,7 +11,7 @@
  * Examples include Beats. Agents may also run on observers. ECS agent.* fields shall be populated with details of the agent running on the host or observer where the event happened or the measurement was taken.
  */
 export interface EcsAgent {
-  build: {
+  build?: {
     /**
      * Extended build information for the agent.
      * This field is intended to contain any build information that a data source may provide, no specific formatting is required.

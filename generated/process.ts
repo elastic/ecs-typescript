@@ -15,13 +15,13 @@ export interface EcsProcess {
    * Array of process arguments, starting with the absolute path to the executable.
    * May be filtered to protect sensitive information.
    */
-  args?: string;
+  args?: string | string[];
   /**
    * Length of the process.args array.
    * This field can be useful for querying or performing bucket analysis on how many arguments were provided to start a process. More arguments may be an indication of suspicious activity.
    */
   args_count?: number;
-  code_signature: {
+  code_signature?: {
     /**
      * The hashing algorithm used to sign the process.
      * This value can distinguish signatures when a file is signed multiple times by the same signer but with a different digest algorithm.
@@ -71,7 +71,7 @@ export interface EcsProcess {
    * Some arguments may be filtered to protect sensitive information.
    */
   command_line?: string;
-  elf: {
+  elf?: {
     /**
      * Machine architecture of the ELF file.
      */
@@ -91,8 +91,8 @@ export interface EcsProcess {
     /**
      * List of exported element names and types.
      */
-    exports?: Record<string, unknown>;
-    header: {
+    exports?: Record<string, unknown> | Record<string, unknown>[];
+    header?: {
       /**
        * Version of the ELF Application Binary Interface (ABI).
        */
@@ -130,21 +130,21 @@ export interface EcsProcess {
     /**
      * List of imported element names and types.
      */
-    imports?: Record<string, unknown>;
+    imports?: Record<string, unknown> | Record<string, unknown>[];
     /**
      * An array containing an object for each section of the ELF file.
      * The keys that should be present in these objects are defined by sub-fields underneath `elf.sections.*`.
      */
-    sections?: Record<string, unknown>;
+    sections?: Record<string, unknown> | Record<string, unknown>[];
     /**
      * An array containing an object for each segment of the ELF file.
      * The keys that should be present in these objects are defined by sub-fields underneath `elf.segments.*`.
      */
-    segments?: Record<string, unknown>;
+    segments?: Record<string, unknown> | Record<string, unknown>[];
     /**
      * List of shared libraries used by this ELF object.
      */
-    shared_libraries?: string;
+    shared_libraries?: string | string[];
     /**
      * telfhash symbol hash for ELF file.
      */
@@ -161,25 +161,25 @@ export interface EcsProcess {
    * Constructing a globally unique identifier is a common practice to mitigate PID reuse as well as to identify a specific process over time, across multiple monitored hosts.
    */
   entity_id?: string;
-  entry_leader: {
+  entry_leader?: {
     /**
      * Array of process arguments, starting with the absolute path to the executable.
      * May be filtered to protect sensitive information.
      */
-    args?: string;
+    args?: string | string[];
     /**
      * Length of the process.args array.
      * This field can be useful for querying or performing bucket analysis on how many arguments were provided to start a process. More arguments may be an indication of suspicious activity.
      */
     args_count?: number;
-    attested_groups: {
+    attested_groups?: {
       /**
        * Name of the group.
        */
       name?: string;
     };
 
-    attested_user: {
+    attested_user?: {
       /**
        * Unique identifier of the user.
        */
@@ -201,8 +201,8 @@ export interface EcsProcess {
      * Constructing a globally unique identifier is a common practice to mitigate PID reuse as well as to identify a specific process over time, across multiple monitored hosts.
      */
     entity_id?: string;
-    entry_meta: {
-      source: {
+    entry_meta?: {
+      source?: {
         /**
          * IP address of the source (IPv4 or IPv6).
          */
@@ -220,7 +220,7 @@ export interface EcsProcess {
      * Absolute path to the process executable.
      */
     executable?: string;
-    group: {
+    group?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -242,7 +242,7 @@ export interface EcsProcess {
      * Sometimes called program name or similar.
      */
     name?: string;
-    parent: {
+    parent?: {
       /**
        * Unique identifier for the process.
        * The implementation of this is specified by the data source, but some examples of what could be used here are a process-generated UUID, Sysmon Process GUIDs, or a hash of some uniquely identifying components of a process.
@@ -253,7 +253,7 @@ export interface EcsProcess {
        * Process id.
        */
       pid?: number;
-      session_leader: {
+      session_leader?: {
         /**
          * Unique identifier for the process.
          * The implementation of this is specified by the data source, but some examples of what could be used here are a process-generated UUID, Sysmon Process GUIDs, or a hash of some uniquely identifying components of a process.
@@ -280,7 +280,7 @@ export interface EcsProcess {
      * Process id.
      */
     pid?: number;
-    real_group: {
+    real_group?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -291,7 +291,7 @@ export interface EcsProcess {
       name?: string;
     };
 
-    real_user: {
+    real_user?: {
       /**
        * Unique identifier of the user.
        */
@@ -310,7 +310,7 @@ export interface EcsProcess {
      * Note: This field is only set on `process.entry_leader`, `process.session_leader` and `process.group_leader`.
      */
     same_as_process?: boolean;
-    saved_group: {
+    saved_group?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -321,7 +321,7 @@ export interface EcsProcess {
       name?: string;
     };
 
-    saved_user: {
+    saved_user?: {
       /**
        * Unique identifier of the user.
        */
@@ -336,7 +336,7 @@ export interface EcsProcess {
      * The time the process started.
      */
     start?: string;
-    supplemental_groups: {
+    supplemental_groups?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -351,7 +351,7 @@ export interface EcsProcess {
      * Information about the controlling TTY device. If set, the process belongs to an interactive session.
      */
     tty?: Record<string, unknown>;
-    user: {
+    user?: {
       /**
        * Unique identifier of the user.
        */
@@ -372,7 +372,7 @@ export interface EcsProcess {
    * Array of environment variable bindings. Captured from a snapshot of the environment at the time of execution.
    * May be filtered to protect sensitive information.
    */
-  env_vars?: string;
+  env_vars?: string | string[];
   /**
    * Absolute path to the process executable.
    */
@@ -382,12 +382,12 @@ export interface EcsProcess {
    * The field should be absent if there is no exit code for the event (e.g. process start).
    */
   exit_code?: number;
-  group_leader: {
+  group_leader?: {
     /**
      * Array of process arguments, starting with the absolute path to the executable.
      * May be filtered to protect sensitive information.
      */
-    args?: string;
+    args?: string | string[];
     /**
      * Length of the process.args array.
      * This field can be useful for querying or performing bucket analysis on how many arguments were provided to start a process. More arguments may be an indication of suspicious activity.
@@ -408,7 +408,7 @@ export interface EcsProcess {
      * Absolute path to the process executable.
      */
     executable?: string;
-    group: {
+    group?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -434,7 +434,7 @@ export interface EcsProcess {
      * Process id.
      */
     pid?: number;
-    real_group: {
+    real_group?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -445,7 +445,7 @@ export interface EcsProcess {
       name?: string;
     };
 
-    real_user: {
+    real_user?: {
       /**
        * Unique identifier of the user.
        */
@@ -464,7 +464,7 @@ export interface EcsProcess {
      * Note: This field is only set on `process.entry_leader`, `process.session_leader` and `process.group_leader`.
      */
     same_as_process?: boolean;
-    saved_group: {
+    saved_group?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -475,7 +475,7 @@ export interface EcsProcess {
       name?: string;
     };
 
-    saved_user: {
+    saved_user?: {
       /**
        * Unique identifier of the user.
        */
@@ -490,7 +490,7 @@ export interface EcsProcess {
      * The time the process started.
      */
     start?: string;
-    supplemental_groups: {
+    supplemental_groups?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -505,7 +505,7 @@ export interface EcsProcess {
      * Information about the controlling TTY device. If set, the process belongs to an interactive session.
      */
     tty?: Record<string, unknown>;
-    user: {
+    user?: {
       /**
        * Unique identifier of the user.
        */
@@ -522,7 +522,7 @@ export interface EcsProcess {
     working_directory?: string;
   };
 
-  hash: {
+  hash?: {
     /**
      * MD5 hash.
      */
@@ -569,18 +569,18 @@ export interface EcsProcess {
    * Sometimes called program name or similar.
    */
   name?: string;
-  parent: {
+  parent?: {
     /**
      * Array of process arguments, starting with the absolute path to the executable.
      * May be filtered to protect sensitive information.
      */
-    args?: string;
+    args?: string | string[];
     /**
      * Length of the process.args array.
      * This field can be useful for querying or performing bucket analysis on how many arguments were provided to start a process. More arguments may be an indication of suspicious activity.
      */
     args_count?: number;
-    code_signature: {
+    code_signature?: {
       /**
        * The hashing algorithm used to sign the process.
        * This value can distinguish signatures when a file is signed multiple times by the same signer but with a different digest algorithm.
@@ -630,7 +630,7 @@ export interface EcsProcess {
      * Some arguments may be filtered to protect sensitive information.
      */
     command_line?: string;
-    elf: {
+    elf?: {
       /**
        * Machine architecture of the ELF file.
        */
@@ -650,8 +650,8 @@ export interface EcsProcess {
       /**
        * List of exported element names and types.
        */
-      exports?: Record<string, unknown>;
-      header: {
+      exports?: Record<string, unknown> | Record<string, unknown>[];
+      header?: {
         /**
          * Version of the ELF Application Binary Interface (ABI).
          */
@@ -689,21 +689,21 @@ export interface EcsProcess {
       /**
        * List of imported element names and types.
        */
-      imports?: Record<string, unknown>;
+      imports?: Record<string, unknown> | Record<string, unknown>[];
       /**
        * An array containing an object for each section of the ELF file.
        * The keys that should be present in these objects are defined by sub-fields underneath `elf.sections.*`.
        */
-      sections?: Record<string, unknown>;
+      sections?: Record<string, unknown> | Record<string, unknown>[];
       /**
        * An array containing an object for each segment of the ELF file.
        * The keys that should be present in these objects are defined by sub-fields underneath `elf.segments.*`.
        */
-      segments?: Record<string, unknown>;
+      segments?: Record<string, unknown> | Record<string, unknown>[];
       /**
        * List of shared libraries used by this ELF object.
        */
-      shared_libraries?: string;
+      shared_libraries?: string | string[];
       /**
        * telfhash symbol hash for ELF file.
        */
@@ -729,7 +729,7 @@ export interface EcsProcess {
      * The field should be absent if there is no exit code for the event (e.g. process start).
      */
     exit_code?: number;
-    group: {
+    group?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -740,7 +740,7 @@ export interface EcsProcess {
       name?: string;
     };
 
-    group_leader: {
+    group_leader?: {
       /**
        * Unique identifier for the process.
        * The implementation of this is specified by the data source, but some examples of what could be used here are a process-generated UUID, Sysmon Process GUIDs, or a hash of some uniquely identifying components of a process.
@@ -757,7 +757,7 @@ export interface EcsProcess {
       start?: string;
     };
 
-    hash: {
+    hash?: {
       /**
        * MD5 hash.
        */
@@ -799,7 +799,7 @@ export interface EcsProcess {
      * Sometimes called program name or similar.
      */
     name?: string;
-    pe: {
+    pe?: {
       /**
        * CPU architecture target for the file.
        */
@@ -845,7 +845,7 @@ export interface EcsProcess {
      * Process id.
      */
     pid?: number;
-    real_group: {
+    real_group?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -856,7 +856,7 @@ export interface EcsProcess {
       name?: string;
     };
 
-    real_user: {
+    real_user?: {
       /**
        * Unique identifier of the user.
        */
@@ -867,7 +867,7 @@ export interface EcsProcess {
       name?: string;
     };
 
-    saved_group: {
+    saved_group?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -878,7 +878,7 @@ export interface EcsProcess {
       name?: string;
     };
 
-    saved_user: {
+    saved_user?: {
       /**
        * Unique identifier of the user.
        */
@@ -893,7 +893,7 @@ export interface EcsProcess {
      * The time the process started.
      */
     start?: string;
-    supplemental_groups: {
+    supplemental_groups?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -904,7 +904,7 @@ export interface EcsProcess {
       name?: string;
     };
 
-    thread: {
+    thread?: {
       /**
        * Thread ID.
        */
@@ -928,7 +928,7 @@ export interface EcsProcess {
      * Seconds the process has been up.
      */
     uptime?: number;
-    user: {
+    user?: {
       /**
        * Unique identifier of the user.
        */
@@ -945,7 +945,7 @@ export interface EcsProcess {
     working_directory?: string;
   };
 
-  pe: {
+  pe?: {
     /**
      * CPU architecture target for the file.
      */
@@ -991,12 +991,12 @@ export interface EcsProcess {
    * Process id.
    */
   pid?: number;
-  previous: {
+  previous?: {
     /**
      * Array of process arguments, starting with the absolute path to the executable.
      * May be filtered to protect sensitive information.
      */
-    args?: string;
+    args?: string | string[];
     /**
      * Length of the process.args array.
      * This field can be useful for querying or performing bucket analysis on how many arguments were provided to start a process. More arguments may be an indication of suspicious activity.
@@ -1008,7 +1008,7 @@ export interface EcsProcess {
     executable?: string;
   };
 
-  real_group: {
+  real_group?: {
     /**
      * Unique identifier for the group on the system/platform.
      */
@@ -1019,7 +1019,7 @@ export interface EcsProcess {
     name?: string;
   };
 
-  real_user: {
+  real_user?: {
     /**
      * Unique identifier of the user.
      */
@@ -1030,7 +1030,7 @@ export interface EcsProcess {
     name?: string;
   };
 
-  saved_group: {
+  saved_group?: {
     /**
      * Unique identifier for the group on the system/platform.
      */
@@ -1041,7 +1041,7 @@ export interface EcsProcess {
     name?: string;
   };
 
-  saved_user: {
+  saved_user?: {
     /**
      * Unique identifier of the user.
      */
@@ -1052,12 +1052,12 @@ export interface EcsProcess {
     name?: string;
   };
 
-  session_leader: {
+  session_leader?: {
     /**
      * Array of process arguments, starting with the absolute path to the executable.
      * May be filtered to protect sensitive information.
      */
-    args?: string;
+    args?: string | string[];
     /**
      * Length of the process.args array.
      * This field can be useful for querying or performing bucket analysis on how many arguments were provided to start a process. More arguments may be an indication of suspicious activity.
@@ -1078,7 +1078,7 @@ export interface EcsProcess {
      * Absolute path to the process executable.
      */
     executable?: string;
-    group: {
+    group?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -1100,7 +1100,7 @@ export interface EcsProcess {
      * Sometimes called program name or similar.
      */
     name?: string;
-    parent: {
+    parent?: {
       /**
        * Unique identifier for the process.
        * The implementation of this is specified by the data source, but some examples of what could be used here are a process-generated UUID, Sysmon Process GUIDs, or a hash of some uniquely identifying components of a process.
@@ -1111,7 +1111,7 @@ export interface EcsProcess {
        * Process id.
        */
       pid?: number;
-      session_leader: {
+      session_leader?: {
         /**
          * Unique identifier for the process.
          * The implementation of this is specified by the data source, but some examples of what could be used here are a process-generated UUID, Sysmon Process GUIDs, or a hash of some uniquely identifying components of a process.
@@ -1138,7 +1138,7 @@ export interface EcsProcess {
      * Process id.
      */
     pid?: number;
-    real_group: {
+    real_group?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -1149,7 +1149,7 @@ export interface EcsProcess {
       name?: string;
     };
 
-    real_user: {
+    real_user?: {
       /**
        * Unique identifier of the user.
        */
@@ -1168,7 +1168,7 @@ export interface EcsProcess {
      * Note: This field is only set on `process.entry_leader`, `process.session_leader` and `process.group_leader`.
      */
     same_as_process?: boolean;
-    saved_group: {
+    saved_group?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -1179,7 +1179,7 @@ export interface EcsProcess {
       name?: string;
     };
 
-    saved_user: {
+    saved_user?: {
       /**
        * Unique identifier of the user.
        */
@@ -1194,7 +1194,7 @@ export interface EcsProcess {
      * The time the process started.
      */
     start?: string;
-    supplemental_groups: {
+    supplemental_groups?: {
       /**
        * Unique identifier for the group on the system/platform.
        */
@@ -1209,7 +1209,7 @@ export interface EcsProcess {
      * Information about the controlling TTY device. If set, the process belongs to an interactive session.
      */
     tty?: Record<string, unknown>;
-    user: {
+    user?: {
       /**
        * Unique identifier of the user.
        */
@@ -1230,7 +1230,7 @@ export interface EcsProcess {
    * The time the process started.
    */
   start?: string;
-  supplemental_groups: {
+  supplemental_groups?: {
     /**
      * Unique identifier for the group on the system/platform.
      */
@@ -1241,7 +1241,7 @@ export interface EcsProcess {
     name?: string;
   };
 
-  thread: {
+  thread?: {
     /**
      * Thread ID.
      */
@@ -1265,7 +1265,7 @@ export interface EcsProcess {
    * Seconds the process has been up.
    */
   uptime?: number;
-  user: {
+  user?: {
     /**
      * Unique identifier of the user.
      */

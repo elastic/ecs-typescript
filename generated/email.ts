@@ -14,19 +14,19 @@ export interface EcsEmail {
   /**
    * A list of objects describing the attachment files sent along with an email message.
    */
-  attachments?: Record<string, unknown>;
-  bcc: {
+  attachments?: Record<string, unknown> | Record<string, unknown>[];
+  bcc?: {
     /**
      * The email address of BCC recipient
      */
-    address?: string;
+    address?: string | string[];
   };
 
-  cc: {
+  cc?: {
     /**
      * The email address of CC recipient
      */
-    address?: string;
+    address?: string | string[];
   };
 
   /**
@@ -42,11 +42,11 @@ export interface EcsEmail {
    * The direction of the message based on the sending and receiving domains.
    */
   direction?: string;
-  from: {
+  from?: {
     /**
      * The email address of the sender, typically from the RFC 5322 `From:` header field.
      */
-    address?: string;
+    address?: string | string[];
   };
 
   /**
@@ -62,14 +62,14 @@ export interface EcsEmail {
    * The date and time the email message was composed. Many email clients will fill in this value automatically when the message is sent by a user.
    */
   origination_timestamp?: string;
-  reply_to: {
+  reply_to?: {
     /**
      * The address that replies should be delivered to based on the value in the RFC 5322 `Reply-To:` header.
      */
-    address?: string;
+    address?: string | string[];
   };
 
-  sender: {
+  sender?: {
     /**
      * Per RFC 5322, specifies the address responsible for the actual transmission of the message.
      */
@@ -80,11 +80,11 @@ export interface EcsEmail {
    * A brief summary of the topic of the message.
    */
   subject?: string;
-  to: {
+  to?: {
     /**
      * The email address of recipient
      */
-    address?: string;
+    address?: string | string[];
   };
 
   /**

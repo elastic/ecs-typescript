@@ -17,11 +17,16 @@ const typeMapping: Record<string, string> = {
   match_only_text: 'string',
 };
 
-export function convertType(ecsType: string): string {
+export function convertType(ecsType: string, normalize: string[]): string {
   const type = typeMapping[ecsType];
   if (!type) {
     console.error(`Unknown type: ${ecsType}`);
     process.exit(1);
   }
-  return type;
+
+  const addArrayBraces = normalize.includes('array');
+
+  const orArrayOfType = addArrayBraces ? ` | ${type}[]` : '';
+
+  return `${type}${orArrayOfType}`;
 }

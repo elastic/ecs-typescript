@@ -55,7 +55,7 @@ export class EcsInterface implements EcsInterface {
 
     for (const [key, value] of Object.entries(this.properties)) {
       if (this.properties[key] instanceof EcsInterface) {
-        this.str += `${key}: {`;
+        this.str += `${key}?: {`;
         this.str += this.properties[key].toString({
           inline: true,
           exportInterface: false,

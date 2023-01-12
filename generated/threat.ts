@@ -14,8 +14,8 @@ export interface EcsThreat {
   /**
    * A list of associated indicators objects enriching the event, and the context of that association/enrichment.
    */
-  enrichments?: Record<string, unknown>;
-  feed: {
+  enrichments?: Record<string, unknown> | Record<string, unknown>[];
+  feed?: {
     /**
      * The saved object ID of the dashboard belonging to the threat feed for displaying dashboard links to threat feeds in Kibana.
      */
@@ -38,12 +38,12 @@ export interface EcsThreat {
    * Name of the threat framework used to further categorize and classify the tactic and technique of the reported threat. Framework classification can be provided by detecting systems, evaluated at ingest time, or retrospectively tagged to events.
    */
   framework?: string;
-  group: {
+  group?: {
     /**
      * The alias(es) of the group for a set of related intrusion activity that are tracked by a common name in the security community.
      * While not required, you can use a MITRE ATT&CK® group alias(es).
      */
-    alias?: string;
+    alias?: string | string[];
     /**
      * The id of the group for a set of related intrusion activity that are tracked by a common name in the security community.
      * While not required, you can use a MITRE ATT&CK® group id.
@@ -61,13 +61,13 @@ export interface EcsThreat {
     reference?: string;
   };
 
-  indicator: {
-    as: {
+  indicator?: {
+    as?: {
       /**
        * Unique number allocated to the autonomous system. The autonomous system number (ASN) uniquely identifies each network on the Internet.
        */
       number?: number;
-      organization: {
+      organization?: {
         /**
          * Organization name.
          */
@@ -83,14 +83,14 @@ export interface EcsThreat {
      * Describes the type of action conducted by the threat.
      */
     description?: string;
-    email: {
+    email?: {
       /**
        * Identifies a threat indicator as an email address (irrespective of direction).
        */
       address?: string;
     };
 
-    file: {
+    file?: {
       /**
        * Last time the file was accessed.
        * Note that not all filesystems keep track of access time.
@@ -100,8 +100,8 @@ export interface EcsThreat {
        * Array of file attributes.
        * Attributes names will vary by platform. Here's a non-exhaustive list of values that are expected in this field: archive, compressed, directory, encrypted, execute, hidden, read, readonly, system, write.
        */
-      attributes?: string;
-      code_signature: {
+      attributes?: string | string[];
+      code_signature?: {
         /**
          * The hashing algorithm used to sign the process.
          * This value can distinguish signatures when a file is signed multiple times by the same signer but with a different digest algorithm.
@@ -169,7 +169,7 @@ export interface EcsThreat {
        * The value should be uppercase, and not include the colon.
        */
       drive_letter?: string;
-      elf: {
+      elf?: {
         /**
          * Machine architecture of the ELF file.
          */
@@ -189,8 +189,8 @@ export interface EcsThreat {
         /**
          * List of exported element names and types.
          */
-        exports?: Record<string, unknown>;
-        header: {
+        exports?: Record<string, unknown> | Record<string, unknown>[];
+        header?: {
           /**
            * Version of the ELF Application Binary Interface (ABI).
            */
@@ -228,21 +228,21 @@ export interface EcsThreat {
         /**
          * List of imported element names and types.
          */
-        imports?: Record<string, unknown>;
+        imports?: Record<string, unknown> | Record<string, unknown>[];
         /**
          * An array containing an object for each section of the ELF file.
          * The keys that should be present in these objects are defined by sub-fields underneath `elf.sections.*`.
          */
-        sections?: Record<string, unknown>;
+        sections?: Record<string, unknown> | Record<string, unknown>[];
         /**
          * An array containing an object for each segment of the ELF file.
          * The keys that should be present in these objects are defined by sub-fields underneath `elf.segments.*`.
          */
-        segments?: Record<string, unknown>;
+        segments?: Record<string, unknown> | Record<string, unknown>[];
         /**
          * List of shared libraries used by this ELF object.
          */
-        shared_libraries?: string;
+        shared_libraries?: string | string[];
         /**
          * telfhash symbol hash for ELF file.
          */
@@ -268,7 +268,7 @@ export interface EcsThreat {
        * Primary group name of the file.
        */
       group?: string;
-      hash: {
+      hash?: {
         /**
          * MD5 hash.
          */
@@ -327,7 +327,7 @@ export interface EcsThreat {
        * Full path to the file, including the file name. It should include the drive letter, when appropriate.
        */
       path?: string;
-      pe: {
+      pe?: {
         /**
          * CPU architecture target for the file.
          */
@@ -381,20 +381,20 @@ export interface EcsThreat {
        * The user ID (UID) or security identifier (SID) of the file owner.
        */
       uid?: string;
-      x509: {
+      x509?: {
         /**
          * List of subject alternative names (SAN). Name types vary by certificate authority and certificate type but commonly contain IP addresses, DNS names (and wildcards), and email addresses.
          */
-        alternative_names?: string;
-        issuer: {
+        alternative_names?: string | string[];
+        issuer?: {
           /**
            * List of common name (CN) of issuing certificate authority.
            */
-          common_name?: string;
+          common_name?: string | string[];
           /**
            * List of country \(C) codes
            */
-          country?: string;
+          country?: string | string[];
           /**
            * Distinguished name (DN) of issuing certificate authority.
            */
@@ -402,19 +402,19 @@ export interface EcsThreat {
           /**
            * List of locality names (L)
            */
-          locality?: string;
+          locality?: string | string[];
           /**
            * List of organizations (O) of issuing certificate authority.
            */
-          organization?: string;
+          organization?: string | string[];
           /**
            * List of organizational units (OU) of issuing certificate authority.
            */
-          organizational_unit?: string;
+          organizational_unit?: string | string[];
           /**
            * List of state or province names (ST, S, or P)
            */
-          state_or_province?: string;
+          state_or_province?: string | string[];
         };
 
         /**
@@ -449,15 +449,15 @@ export interface EcsThreat {
          * Identifier for certificate signature algorithm. We recommend using names found in Go Lang Crypto library. See https://github.com/golang/go/blob/go1.14/src/crypto/x509/x509.go#L337-L353.
          */
         signature_algorithm?: string;
-        subject: {
+        subject?: {
           /**
            * List of common names (CN) of subject.
            */
-          common_name?: string;
+          common_name?: string | string[];
           /**
            * List of country \(C) code
            */
-          country?: string;
+          country?: string | string[];
           /**
            * Distinguished name (DN) of the certificate subject entity.
            */
@@ -465,19 +465,19 @@ export interface EcsThreat {
           /**
            * List of locality names (L)
            */
-          locality?: string;
+          locality?: string | string[];
           /**
            * List of organizations (O) of subject.
            */
-          organization?: string;
+          organization?: string | string[];
           /**
            * List of organizational units (OU) of subject.
            */
-          organizational_unit?: string;
+          organizational_unit?: string | string[];
           /**
            * List of state or province names (ST, S, or P)
            */
-          state_or_province?: string;
+          state_or_province?: string | string[];
         };
 
         /**
@@ -491,7 +491,7 @@ export interface EcsThreat {
      * The date and time when intelligence source first reported sighting this indicator.
      */
     first_seen?: string;
-    geo: {
+    geo?: {
       /**
        * City name.
        */
@@ -549,7 +549,7 @@ export interface EcsThreat {
      * The date and time when intelligence source last reported sighting this indicator.
      */
     last_seen?: string;
-    marking: {
+    marking?: {
       /**
        * Traffic Light Protocol sharing markings.
        */
@@ -572,8 +572,8 @@ export interface EcsThreat {
      * Reference URL linking to additional information about this indicator.
      */
     reference?: string;
-    registry: {
-      data: {
+    registry?: {
+      data?: {
         /**
          * Original bytes written with base64 encoding.
          * For Windows registry operations, such as SetValueEx and RegQueryValueEx, this corresponds to the data pointed by `lp_data`. This is optional but provides better recoverability and should be populated for REG_BINARY encoded values.
@@ -583,7 +583,7 @@ export interface EcsThreat {
          * Content when writing string types.
          * Populated as an array when writing string data to the registry. For single string registry types (REG_SZ, REG_EXPAND_SZ), this should be an array with one string. For sequences of string with REG_MULTI_SZ, this array will be variable length. For numeric data, such as REG_DWORD and REG_QWORD, this should be populated with the decimal representation (e.g `"1"`).
          */
-        strings?: string;
+        strings?: string | string[];
         /**
          * Standard registry type for encoding contents
          */
@@ -620,7 +620,7 @@ export interface EcsThreat {
      * Type of indicator as represented by Cyber Observable in STIX 2.0.
      */
     type?: string;
-    url: {
+    url?: {
       /**
        * Domain of the url, such as "www.elastic.co".
        * In some cases a URL may refer to an IP and/or port directly, without a domain name. In this case, the IP address would go to the `domain` field.
@@ -693,20 +693,20 @@ export interface EcsThreat {
       username?: string;
     };
 
-    x509: {
+    x509?: {
       /**
        * List of subject alternative names (SAN). Name types vary by certificate authority and certificate type but commonly contain IP addresses, DNS names (and wildcards), and email addresses.
        */
-      alternative_names?: string;
-      issuer: {
+      alternative_names?: string | string[];
+      issuer?: {
         /**
          * List of common name (CN) of issuing certificate authority.
          */
-        common_name?: string;
+        common_name?: string | string[];
         /**
          * List of country \(C) codes
          */
-        country?: string;
+        country?: string | string[];
         /**
          * Distinguished name (DN) of issuing certificate authority.
          */
@@ -714,19 +714,19 @@ export interface EcsThreat {
         /**
          * List of locality names (L)
          */
-        locality?: string;
+        locality?: string | string[];
         /**
          * List of organizations (O) of issuing certificate authority.
          */
-        organization?: string;
+        organization?: string | string[];
         /**
          * List of organizational units (OU) of issuing certificate authority.
          */
-        organizational_unit?: string;
+        organizational_unit?: string | string[];
         /**
          * List of state or province names (ST, S, or P)
          */
-        state_or_province?: string;
+        state_or_province?: string | string[];
       };
 
       /**
@@ -761,15 +761,15 @@ export interface EcsThreat {
        * Identifier for certificate signature algorithm. We recommend using names found in Go Lang Crypto library. See https://github.com/golang/go/blob/go1.14/src/crypto/x509/x509.go#L337-L353.
        */
       signature_algorithm?: string;
-      subject: {
+      subject?: {
         /**
          * List of common names (CN) of subject.
          */
-        common_name?: string;
+        common_name?: string | string[];
         /**
          * List of country \(C) code
          */
-        country?: string;
+        country?: string | string[];
         /**
          * Distinguished name (DN) of the certificate subject entity.
          */
@@ -777,19 +777,19 @@ export interface EcsThreat {
         /**
          * List of locality names (L)
          */
-        locality?: string;
+        locality?: string | string[];
         /**
          * List of organizations (O) of subject.
          */
-        organization?: string;
+        organization?: string | string[];
         /**
          * List of organizational units (OU) of subject.
          */
-        organizational_unit?: string;
+        organizational_unit?: string | string[];
         /**
          * List of state or province names (ST, S, or P)
          */
-        state_or_province?: string;
+        state_or_province?: string | string[];
       };
 
       /**
@@ -799,12 +799,12 @@ export interface EcsThreat {
     };
   };
 
-  software: {
+  software?: {
     /**
      * The alias(es) of the software for a set of related intrusion activity that are tracked by a common name in the security community.
      * While not required, you can use a MITRE ATT&CK® associated software description.
      */
-    alias?: string;
+    alias?: string | string[];
     /**
      * The id of the software used by this threat to conduct behavior commonly modeled using MITRE ATT&CK®.
      * While not required, you can use a MITRE ATT&CK® software id.
@@ -819,7 +819,7 @@ export interface EcsThreat {
      * The platforms of the software used by this threat to conduct behavior commonly modeled using MITRE ATT&CK®.
      * While not required, you can use MITRE ATT&CK® software platform values.
      */
-    platforms?: string;
+    platforms?: string | string[];
     /**
      * The reference URL of the software used by this threat to conduct behavior commonly modeled using MITRE ATT&CK®.
      * While not required, you can use a MITRE ATT&CK® software reference URL.
@@ -832,54 +832,54 @@ export interface EcsThreat {
     type?: string;
   };
 
-  tactic: {
+  tactic?: {
     /**
      * The id of tactic used by this threat. You can use a MITRE ATT&CK® tactic, for example. (ex. https://attack.mitre.org/tactics/TA0002/ )
      */
-    id?: string;
+    id?: string | string[];
     /**
      * Name of the type of tactic used by this threat. You can use a MITRE ATT&CK® tactic, for example. (ex. https://attack.mitre.org/tactics/TA0002/)
      */
-    name?: string;
+    name?: string | string[];
     /**
      * The reference url of tactic used by this threat. You can use a MITRE ATT&CK® tactic, for example. (ex. https://attack.mitre.org/tactics/TA0002/ )
      */
-    reference?: string;
+    reference?: string | string[];
   };
 
-  technique: {
+  technique?: {
     /**
      * The id of technique used by this threat. You can use a MITRE ATT&CK® technique, for example. (ex. https://attack.mitre.org/techniques/T1059/)
      */
-    id?: string;
+    id?: string | string[];
     /**
      * The name of technique used by this threat. You can use a MITRE ATT&CK® technique, for example. (ex. https://attack.mitre.org/techniques/T1059/)
      */
-    name?: string;
+    name?: string | string[];
     /**
      * The reference url of technique used by this threat. You can use a MITRE ATT&CK® technique, for example. (ex. https://attack.mitre.org/techniques/T1059/)
      */
-    reference?: string;
-    subtechnique: {
+    reference?: string | string[];
+    subtechnique?: {
       /**
        * The full id of subtechnique used by this threat. You can use a MITRE ATT&CK® subtechnique, for example. (ex. https://attack.mitre.org/techniques/T1059/001/)
        */
-      id?: string;
+      id?: string | string[];
       /**
        * The name of subtechnique used by this threat. You can use a MITRE ATT&CK® subtechnique, for example. (ex. https://attack.mitre.org/techniques/T1059/001/)
        */
-      name?: string;
+      name?: string | string[];
       /**
        * The reference url of subtechnique used by this threat. You can use a MITRE ATT&CK® subtechnique, for example. (ex. https://attack.mitre.org/techniques/T1059/001/)
        */
-      reference?: string;
+      reference?: string | string[];
     };
   };
 
-  threat: {
-    indicator: {
-      marking: {
-        tlp: {
+  threat?: {
+    indicator?: {
+      marking?: {
+        tlp?: {
           /**
            * Traffic Light Protocol version.
            */

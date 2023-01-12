@@ -15,7 +15,7 @@
  * * Dynamic library (`.dylib`) commonly used on macOS
  */
 export interface EcsDll {
-  code_signature: {
+  code_signature?: {
     /**
      * The hashing algorithm used to sign the process.
      * This value can distinguish signatures when a file is signed multiple times by the same signer but with a different digest algorithm.
@@ -60,7 +60,7 @@ export interface EcsDll {
     valid?: boolean;
   };
 
-  hash: {
+  hash?: {
     /**
      * MD5 hash.
      */
@@ -100,7 +100,7 @@ export interface EcsDll {
    * Full file path of the library.
    */
   path?: string;
-  pe: {
+  pe?: {
     /**
      * CPU architecture target for the file.
      */

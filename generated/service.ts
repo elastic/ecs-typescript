@@ -38,7 +38,7 @@ export interface EcsService {
    * In the case of Elasticsearch the `service.name` could contain the cluster name. For Beats the `service.name` is by default a copy of the `service.type` field if no name is specified.
    */
   name?: string;
-  node: {
+  node?: {
     /**
      * Name of a service node.
      * This allows for two nodes of the same service running on the same host to be differentiated. Therefore, `service.node.name` should typically be unique across nodes of a given service.
@@ -61,10 +61,10 @@ export interface EcsService {
      * In the case of Elasticsearch, the `service.node.role` could be `master` or `data` or both.
      * Other services could use this to distinguish between a `web` and `worker` role running as part of the service.
      */
-    roles?: string;
+    roles?: string | string[];
   };
 
-  origin: {
+  origin?: {
     /**
      * Address where data about this service was collected from.
      * This should be a URI, network address (ipv4:port or [ipv6]:port) or a resource path (sockets).
@@ -92,7 +92,7 @@ export interface EcsService {
      * In the case of Elasticsearch the `service.name` could contain the cluster name. For Beats the `service.name` is by default a copy of the `service.type` field if no name is specified.
      */
     name?: string;
-    node: {
+    node?: {
       /**
        * Name of a service node.
        * This allows for two nodes of the same service running on the same host to be differentiated. Therefore, `service.node.name` should typically be unique across nodes of a given service.
@@ -115,7 +115,7 @@ export interface EcsService {
        * In the case of Elasticsearch, the `service.node.role` could be `master` or `data` or both.
        * Other services could use this to distinguish between a `web` and `worker` role running as part of the service.
        */
-      roles?: string;
+      roles?: string | string[];
     };
 
     /**
@@ -139,7 +139,7 @@ export interface EcsService {
    * Current state of the service.
    */
   state?: string;
-  target: {
+  target?: {
     /**
      * Address where data about this service was collected from.
      * This should be a URI, network address (ipv4:port or [ipv6]:port) or a resource path (sockets).
@@ -167,7 +167,7 @@ export interface EcsService {
      * In the case of Elasticsearch the `service.name` could contain the cluster name. For Beats the `service.name` is by default a copy of the `service.type` field if no name is specified.
      */
     name?: string;
-    node: {
+    node?: {
       /**
        * Name of a service node.
        * This allows for two nodes of the same service running on the same host to be differentiated. Therefore, `service.node.name` should typically be unique across nodes of a given service.
@@ -190,7 +190,7 @@ export interface EcsService {
        * In the case of Elasticsearch, the `service.node.role` could be `master` or `data` or both.
        * Other services could use this to distinguish between a `web` and `worker` role running as part of the service.
        */
-      roles?: string;
+      roles?: string | string[];
     };
 
     /**

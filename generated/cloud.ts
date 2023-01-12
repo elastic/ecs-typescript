@@ -10,7 +10,7 @@
  * Fields related to the cloud or infrastructure the events are coming from.
  */
 export interface EcsCloud {
-  account: {
+  account?: {
     /**
      * The cloud account or organization id used to identify different entities in a multi-tenant environment.
      * Examples: AWS account id, Google Cloud ORG Id, or other unique identifier.
@@ -27,7 +27,7 @@ export interface EcsCloud {
    * Availability zone in which this host, resource, or service is located.
    */
   availability_zone?: string;
-  instance: {
+  instance?: {
     /**
      * Instance ID of the host machine.
      */
@@ -38,15 +38,15 @@ export interface EcsCloud {
     name?: string;
   };
 
-  machine: {
+  machine?: {
     /**
      * Machine type of the host machine.
      */
     type?: string;
   };
 
-  origin: {
-    account: {
+  origin?: {
+    account?: {
       /**
        * The cloud account or organization id used to identify different entities in a multi-tenant environment.
        * Examples: AWS account id, Google Cloud ORG Id, or other unique identifier.
@@ -63,7 +63,7 @@ export interface EcsCloud {
      * Availability zone in which this host, resource, or service is located.
      */
     availability_zone?: string;
-    instance: {
+    instance?: {
       /**
        * Instance ID of the host machine.
        */
@@ -74,14 +74,14 @@ export interface EcsCloud {
       name?: string;
     };
 
-    machine: {
+    machine?: {
       /**
        * Machine type of the host machine.
        */
       type?: string;
     };
 
-    project: {
+    project?: {
       /**
        * The cloud project identifier.
        * Examples: Google Cloud Project id, Azure Project id.
@@ -102,7 +102,7 @@ export interface EcsCloud {
      * Region in which this host, resource, or service is located.
      */
     region?: string;
-    service: {
+    service?: {
       /**
        * The cloud service name is intended to distinguish services running on different platforms within a provider, eg AWS EC2 vs Lambda, GCP GCE vs App Engine, Azure VM vs App Server.
        * Examples: app engine, app service, cloud run, fargate, lambda.
@@ -111,7 +111,7 @@ export interface EcsCloud {
     };
   };
 
-  project: {
+  project?: {
     /**
      * The cloud project identifier.
      * Examples: Google Cloud Project id, Azure Project id.
@@ -132,7 +132,7 @@ export interface EcsCloud {
    * Region in which this host, resource, or service is located.
    */
   region?: string;
-  service: {
+  service?: {
     /**
      * The cloud service name is intended to distinguish services running on different platforms within a provider, eg AWS EC2 vs Lambda, GCP GCE vs App Engine, Azure VM vs App Server.
      * Examples: app engine, app service, cloud run, fargate, lambda.
@@ -140,8 +140,8 @@ export interface EcsCloud {
     name?: string;
   };
 
-  target: {
-    account: {
+  target?: {
+    account?: {
       /**
        * The cloud account or organization id used to identify different entities in a multi-tenant environment.
        * Examples: AWS account id, Google Cloud ORG Id, or other unique identifier.
@@ -158,7 +158,7 @@ export interface EcsCloud {
      * Availability zone in which this host, resource, or service is located.
      */
     availability_zone?: string;
-    instance: {
+    instance?: {
       /**
        * Instance ID of the host machine.
        */
@@ -169,14 +169,14 @@ export interface EcsCloud {
       name?: string;
     };
 
-    machine: {
+    machine?: {
       /**
        * Machine type of the host machine.
        */
       type?: string;
     };
 
-    project: {
+    project?: {
       /**
        * The cloud project identifier.
        * Examples: Google Cloud Project id, Azure Project id.
@@ -197,7 +197,7 @@ export interface EcsCloud {
      * Region in which this host, resource, or service is located.
      */
     region?: string;
-    service: {
+    service?: {
       /**
        * The cloud service name is intended to distinguish services running on different platforms within a provider, eg AWS EC2 vs Lambda, GCP GCE vs App Engine, Azure VM vs App Server.
        * Examples: app engine, app service, cloud run, fargate, lambda.

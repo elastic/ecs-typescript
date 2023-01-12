@@ -21,7 +21,7 @@ export interface EcsDevice {
    * The vendor name of the device manufacturer.
    */
   manufacturer?: string;
-  model: {
+  model?: {
     /**
      * The machine readable identifier of the device model.
      */
