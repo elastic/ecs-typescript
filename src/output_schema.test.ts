@@ -1,4 +1,4 @@
-import { outputSchema } from './output_schema';
+import { outputSchemas } from './output_schemas';
 import { writeFile } from './write_file';
 
 jest.mock('./write_file');
@@ -7,13 +7,13 @@ describe('outputDefinitions()', () => {
   beforeEach(jest.clearAllMocks);
 
   it('should call writeFile', () => {
-    outputSchema(
+    outputSchemas(
       {
         outPath: 'output',
         ref: 'main',
         ecsVersionString: 'main',
       },
-      {}
+      { nested: {} }
     );
 
     expect(writeFile).toHaveBeenCalledTimes(1);

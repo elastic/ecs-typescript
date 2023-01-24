@@ -14,7 +14,7 @@ describe('outputDefinitions()', () => {
       ecsVersionString: 'main',
     });
 
-    expect(writeFile).toHaveBeenCalledTimes(2);
+    expect(writeFile).toHaveBeenCalledTimes(1);
 
     expect(jest.mocked(writeFile).mock.calls[0]).toMatchInlineSnapshot(`
       Array [
@@ -24,26 +24,6 @@ describe('outputDefinitions()', () => {
       }
 
       ",
-      ]
-    `);
-
-    expect(jest.mocked(writeFile).mock.calls[1]).toMatchInlineSnapshot(`
-      Array [
-        "output/index.ts",
-        "import {EcsBase} from './base';
-
-        export const EcsVersion = \\"main\\" as const;
-        
-        /**
-         * Exporting ecs_flat schema used to generate the typings in this package, as object literal.
-         */
-      export { EcsNested } from './ecs_nested';
-
-        export type { EcsBase };
-
-        export type Ecs =  {
-          
-        }",
       ]
     `);
   });
