@@ -15,7 +15,7 @@ export interface EcsProcess {
    * Array of process arguments, starting with the absolute path to the executable.
    * May be filtered to protect sensitive information.
    */
-  args?: string | string[];
+  args?: string[];
   /**
    * Length of the process.args array.
    * This field can be useful for querying or performing bucket analysis on how many arguments were provided to start a process. More arguments may be an indication of suspicious activity.
@@ -91,7 +91,7 @@ export interface EcsProcess {
     /**
      * List of exported element names and types.
      */
-    exports?: Record<string, unknown> | Record<string, unknown>[];
+    exports?: Record<string, unknown>[];
     header?: {
       /**
        * Version of the ELF Application Binary Interface (ABI).
@@ -130,21 +130,21 @@ export interface EcsProcess {
     /**
      * List of imported element names and types.
      */
-    imports?: Record<string, unknown> | Record<string, unknown>[];
+    imports?: Record<string, unknown>[];
     /**
      * An array containing an object for each section of the ELF file.
      * The keys that should be present in these objects are defined by sub-fields underneath `elf.sections.*`.
      */
-    sections?: Record<string, unknown> | Record<string, unknown>[];
+    sections?: Record<string, unknown>[];
     /**
      * An array containing an object for each segment of the ELF file.
      * The keys that should be present in these objects are defined by sub-fields underneath `elf.segments.*`.
      */
-    segments?: Record<string, unknown> | Record<string, unknown>[];
+    segments?: Record<string, unknown>[];
     /**
      * List of shared libraries used by this ELF object.
      */
-    shared_libraries?: string | string[];
+    shared_libraries?: string[];
     /**
      * telfhash symbol hash for ELF file.
      */
@@ -166,7 +166,7 @@ export interface EcsProcess {
      * Array of process arguments, starting with the absolute path to the executable.
      * May be filtered to protect sensitive information.
      */
-    args?: string | string[];
+    args?: string[];
     /**
      * Length of the process.args array.
      * This field can be useful for querying or performing bucket analysis on how many arguments were provided to start a process. More arguments may be an indication of suspicious activity.
@@ -372,7 +372,7 @@ export interface EcsProcess {
    * Array of environment variable bindings. Captured from a snapshot of the environment at the time of execution.
    * May be filtered to protect sensitive information.
    */
-  env_vars?: string | string[];
+  env_vars?: string[];
   /**
    * Absolute path to the process executable.
    */
@@ -387,7 +387,7 @@ export interface EcsProcess {
      * Array of process arguments, starting with the absolute path to the executable.
      * May be filtered to protect sensitive information.
      */
-    args?: string | string[];
+    args?: string[];
     /**
      * Length of the process.args array.
      * This field can be useful for querying or performing bucket analysis on how many arguments were provided to start a process. More arguments may be an indication of suspicious activity.
@@ -574,7 +574,7 @@ export interface EcsProcess {
      * Array of process arguments, starting with the absolute path to the executable.
      * May be filtered to protect sensitive information.
      */
-    args?: string | string[];
+    args?: string[];
     /**
      * Length of the process.args array.
      * This field can be useful for querying or performing bucket analysis on how many arguments were provided to start a process. More arguments may be an indication of suspicious activity.
@@ -650,7 +650,7 @@ export interface EcsProcess {
       /**
        * List of exported element names and types.
        */
-      exports?: Record<string, unknown> | Record<string, unknown>[];
+      exports?: Record<string, unknown>[];
       header?: {
         /**
          * Version of the ELF Application Binary Interface (ABI).
@@ -689,21 +689,21 @@ export interface EcsProcess {
       /**
        * List of imported element names and types.
        */
-      imports?: Record<string, unknown> | Record<string, unknown>[];
+      imports?: Record<string, unknown>[];
       /**
        * An array containing an object for each section of the ELF file.
        * The keys that should be present in these objects are defined by sub-fields underneath `elf.sections.*`.
        */
-      sections?: Record<string, unknown> | Record<string, unknown>[];
+      sections?: Record<string, unknown>[];
       /**
        * An array containing an object for each segment of the ELF file.
        * The keys that should be present in these objects are defined by sub-fields underneath `elf.segments.*`.
        */
-      segments?: Record<string, unknown> | Record<string, unknown>[];
+      segments?: Record<string, unknown>[];
       /**
        * List of shared libraries used by this ELF object.
        */
-      shared_libraries?: string | string[];
+      shared_libraries?: string[];
       /**
        * telfhash symbol hash for ELF file.
        */
@@ -996,7 +996,7 @@ export interface EcsProcess {
      * Array of process arguments, starting with the absolute path to the executable.
      * May be filtered to protect sensitive information.
      */
-    args?: string | string[];
+    args?: string[];
     /**
      * Length of the process.args array.
      * This field can be useful for querying or performing bucket analysis on how many arguments were provided to start a process. More arguments may be an indication of suspicious activity.
@@ -1057,7 +1057,7 @@ export interface EcsProcess {
      * Array of process arguments, starting with the absolute path to the executable.
      * May be filtered to protect sensitive information.
      */
-    args?: string | string[];
+    args?: string[];
     /**
      * Length of the process.args array.
      * This field can be useful for querying or performing bucket analysis on how many arguments were provided to start a process. More arguments may be an indication of suspicious activity.

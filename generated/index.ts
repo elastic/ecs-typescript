@@ -57,11 +57,12 @@ import { EcsVlan } from "./vlan";
 import { EcsVulnerability } from "./vulnerability";
 import { EcsX509 } from "./x509";
 
-export const EcsVersion = "8.6.0" as const;
+export const EcsVersion = "8.6.1" as const;
 
 /**
- * Exporting ecs_flat schema used to generate the typings in this package, as object literal.
+ * Exporting raw schema files for easy programmatic use
  */
+export { EcsFlat } from "./ecs_flat";
 export { EcsNested } from "./ecs_nested";
 
 export type {
