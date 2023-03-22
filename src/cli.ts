@@ -5,7 +5,8 @@ import { loadYaml } from './load_yaml';
 import { outputDefinitions } from './output_definitions';
 import { Context, EcsNestedSpec } from './types';
 import { loadVersion } from './load_version';
-import { outputSchema } from './output_schema';
+import { outputSchemas } from './output_schemas';
+import { outputIndex } from './output_index';
 
 interface Options {
   ref: string;
@@ -38,32 +39,51 @@ function initCommand() {
   return program;
 }
 
+const enum EcsVariant {
+  Flat = 'flat',
+  Nested = 'nested',
+}
+
+const loadSchemas = async (
+  ref: string,
+  variants: EcsVariant[]
+): Promise<Record<string, unknown>> => {
+  const schemas: Array<[variant: EcsVariant, schema: unknown]> =
+    await Promise.all(
+      variants.map(async (variant) => [
+        variant,
+        await loadYaml(ref, `ecs_${variant}.yml`),
+      ])
+    );
+
+  return schemas.reduce((acc, [variant, schema]) => {
+    acc[variant] = schema;
+    return acc;
+  }, {} as Record<EcsVariant, unknown>);
+};
+
 export async function run() {
   const program = initCommand();
   const options = program.opts() as Options;
 
-  console.log(`Loading ecs_nested.yml from elastic/ecs@${options.ref}`);
-
-  const yamlAsJson = await loadYaml(options.ref);
-
-  if (!yamlAsJson) {
-    console.error(`Failed to load spec from ${options.ref}`);
-    process.exit(1);
-  }
-
-  const outPath = path.resolve(process.cwd(), options.dir);
-
   const context: Context = {
-    outPath,
+    outPath: path.resolve(process.cwd(), options.dir),
     ref: options.ref,
     ecsVersionString: await loadVersion(options.ref),
   };
 
-  const types = buildTypes(yamlAsJson as EcsNestedSpec);
+  const schemas = await loadSchemas(options.ref, [
+    EcsVariant.Flat,
+    EcsVariant.Nested,
+  ]);
+
+  const schemaFiles = outputSchemas(context, schemas);
+
+  const types = buildTypes(schemas[EcsVariant.Nested] as EcsNestedSpec);
 
   outputDefinitions(types, context);
 
-  outputSchema(context, yamlAsJson);
+  outputIndex(context, types, schemaFiles);
 
   process.exit(0);
 }

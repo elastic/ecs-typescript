@@ -2,12 +2,9 @@ import { EcsInterface } from './build_types/interface';
 import { interfaceToDefinitionFileName } from './interface_to_definition_filename';
 
 import { Helpers } from './build_types/helpers';
-import {
-  RAW_SCHEMA_FILENAME,
-  REQUIRED_ROOT_FIELDS,
-  TYPE_PREFIX,
-} from './constants';
+import { REQUIRED_ROOT_FIELDS, TYPE_PREFIX } from './constants';
 import { Context } from './types';
+import { SchemaFileDescriptor } from './output_schemas';
 
 function buildRootTypesUnion(interfaces: EcsInterface[]) {
   const rootInterfaces = interfaces.filter((i) => i.root);
@@ -44,15 +41,24 @@ function buildExports(interfaces: EcsInterface[]) {
     .join(',\n')} };`;
 }
 
-export function generateIndex(ctx: Context, interfaces: EcsInterface[]) {
+export function generateIndex(
+  ctx: Context,
+  interfaces: EcsInterface[],
+  schemaFiles: SchemaFileDescriptor[]
+) {
   return `${buildImports(interfaces)}
 
   export const ${TYPE_PREFIX}Version = "${ctx.ecsVersionString}" as const;
   
   /**
-   * Exporting ecs_flat schema used to generate the typings in this package, as object literal.
+   * Exporting raw schema files for easy programmatic use
    */
-export { ${TYPE_PREFIX}Nested } from './${RAW_SCHEMA_FILENAME}';
+  ${schemaFiles
+    .map(
+      (schemaFile) =>
+        `export { ${schemaFile.type} } from './${schemaFile.filename}';`
+    )
+    .join('')}
 
   ${buildExports(interfaces)}
 

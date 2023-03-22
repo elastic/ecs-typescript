@@ -1,13 +1,9 @@
 import path from 'path';
 import type { EcsInterface } from './build_types/interface';
-import { EXTENSION } from './constants';
-import { generateIndex } from './generate_index';
 import { interfaceToDefinitionFileName } from './interface_to_definition_filename';
 import { injectVersion } from './transforms';
 import { Context } from './types';
 import { writeFile } from './write_file';
-
-const ROOT_FILE_NAME = `index${EXTENSION}` as const;
 
 export function outputDefinitions(ecsInterfaces: EcsInterface[], ctx: Context) {
   /**
@@ -27,9 +23,4 @@ export function outputDefinitions(ecsInterfaces: EcsInterface[], ctx: Context) {
       injectVersion(ctx, ecsInterface).toString({ exportInterface: true })
     );
   }
-
-  writeFile(
-    path.join(ctx.outPath, ROOT_FILE_NAME),
-    generateIndex(ctx, ecsInterfaces)
-  );
 }

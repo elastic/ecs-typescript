@@ -2,8 +2,8 @@ import { load } from 'js-yaml';
 
 import axios from 'axios';
 
-export async function loadYaml(ref: string) {
-  const url = `https://raw.githubusercontent.com/elastic/ecs/${ref}/generated/ecs/ecs_nested.yml`;
+export async function loadYaml(ref: string, yamlFile: string) {
+  const url = `https://raw.githubusercontent.com/elastic/ecs/${ref}/generated/ecs/${yamlFile}`;
 
   const response = await axios.get<string>(url);
 

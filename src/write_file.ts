@@ -16,6 +16,7 @@ export function writeFile(filePath: string, content: string) {
 
   const formattedContent = prettier.format(contentWithLicense, {
     parser: 'typescript',
+    singleQuote: true,
   });
 
   try {

@@ -1,5 +1,5 @@
 import path from 'path';
-import { EXTENSION, RAW_SCHEMA_FILENAME, TYPE_PREFIX } from './constants';
+import { OUTPUT_EXTENSION, RAW_SCHEMA_FILENAME, TYPE_PREFIX } from './constants';
 import { Context } from './types';
 import { writeFile } from './write_file';
 
@@ -8,7 +8,7 @@ export function outputSchema(
   yamlAsJson: Record<string, unknown>
 ) {
   writeFile(
-    path.join(outPath, `${RAW_SCHEMA_FILENAME}${EXTENSION}`),
+    path.join(outPath, `${RAW_SCHEMA_FILENAME}${OUTPUT_EXTENSION}`),
     `export const ${TYPE_PREFIX}Nested = ${JSON.stringify(yamlAsJson)};`
   );
 }
