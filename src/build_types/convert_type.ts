@@ -26,7 +26,7 @@ export function convertType(ecsType: string, normalize: string[]): string {
 
   const addArrayBraces = normalize.includes('array');
 
-  const orArrayOfType = addArrayBraces ? ` | ${type}[]` : '';
+  const orArrayOfType = addArrayBraces ? ` | Array<${type}>` : '';
 
   return `${type}${orArrayOfType}`;
 }
