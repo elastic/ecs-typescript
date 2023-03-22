@@ -26,5 +26,9 @@ describe('outputDefinitions()', () => {
       ",
       ]
     `);
+
+    expect(jest.mocked(writeFile).mock.calls[1]).toMatchInlineSnapshot(
+      `undefined`
+    );
   });
 });

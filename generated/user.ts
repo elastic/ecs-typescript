@@ -57,7 +57,7 @@ export interface EcsUser {
     /**
      * Array of user roles at the time of the event.
      */
-    roles?: string[];
+    roles?: string | Array<string>;
   };
 
   /**
@@ -111,7 +111,7 @@ export interface EcsUser {
     /**
      * Array of user roles at the time of the event.
      */
-    roles?: string[];
+    roles?: string | Array<string>;
   };
 
   /**
@@ -181,7 +181,7 @@ export interface EcsUser {
   /**
    * Array of user roles at the time of the event.
    */
-  roles?: string[];
+  roles?: string | Array<string>;
   target?: {
     /**
      * Name of the directory the user is a member of.
@@ -228,6 +228,6 @@ export interface EcsUser {
     /**
      * Array of user roles at the time of the event.
      */
-    roles?: string[];
+    roles?: string | Array<string>;
   };
 }

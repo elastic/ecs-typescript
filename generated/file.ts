@@ -20,7 +20,7 @@ export interface EcsFile {
    * Array of file attributes.
    * Attributes names will vary by platform. Here's a non-exhaustive list of values that are expected in this field: archive, compressed, directory, encrypted, execute, hidden, read, readonly, system, write.
    */
-  attributes?: string[];
+  attributes?: string | Array<string>;
   code_signature?: {
     /**
      * The hashing algorithm used to sign the process.
@@ -109,7 +109,7 @@ export interface EcsFile {
     /**
      * List of exported element names and types.
      */
-    exports?: Record<string, unknown>[];
+    exports?: Record<string, unknown> | Array<Record<string, unknown>>;
     header?: {
       /**
        * Version of the ELF Application Binary Interface (ABI).
@@ -148,21 +148,21 @@ export interface EcsFile {
     /**
      * List of imported element names and types.
      */
-    imports?: Record<string, unknown>[];
+    imports?: Record<string, unknown> | Array<Record<string, unknown>>;
     /**
      * An array containing an object for each section of the ELF file.
      * The keys that should be present in these objects are defined by sub-fields underneath `elf.sections.*`.
      */
-    sections?: Record<string, unknown>[];
+    sections?: Record<string, unknown> | Array<Record<string, unknown>>;
     /**
      * An array containing an object for each segment of the ELF file.
      * The keys that should be present in these objects are defined by sub-fields underneath `elf.segments.*`.
      */
-    segments?: Record<string, unknown>[];
+    segments?: Record<string, unknown> | Array<Record<string, unknown>>;
     /**
      * List of shared libraries used by this ELF object.
      */
-    shared_libraries?: string[];
+    shared_libraries?: string | Array<string>;
     /**
      * telfhash symbol hash for ELF file.
      */
@@ -305,16 +305,16 @@ export interface EcsFile {
     /**
      * List of subject alternative names (SAN). Name types vary by certificate authority and certificate type but commonly contain IP addresses, DNS names (and wildcards), and email addresses.
      */
-    alternative_names?: string[];
+    alternative_names?: string | Array<string>;
     issuer?: {
       /**
        * List of common name (CN) of issuing certificate authority.
        */
-      common_name?: string[];
+      common_name?: string | Array<string>;
       /**
        * List of country \(C) codes
        */
-      country?: string[];
+      country?: string | Array<string>;
       /**
        * Distinguished name (DN) of issuing certificate authority.
        */
@@ -322,19 +322,19 @@ export interface EcsFile {
       /**
        * List of locality names (L)
        */
-      locality?: string[];
+      locality?: string | Array<string>;
       /**
        * List of organizations (O) of issuing certificate authority.
        */
-      organization?: string[];
+      organization?: string | Array<string>;
       /**
        * List of organizational units (OU) of issuing certificate authority.
        */
-      organizational_unit?: string[];
+      organizational_unit?: string | Array<string>;
       /**
        * List of state or province names (ST, S, or P)
        */
-      state_or_province?: string[];
+      state_or_province?: string | Array<string>;
     };
 
     /**
@@ -373,11 +373,11 @@ export interface EcsFile {
       /**
        * List of common names (CN) of subject.
        */
-      common_name?: string[];
+      common_name?: string | Array<string>;
       /**
        * List of country \(C) code
        */
-      country?: string[];
+      country?: string | Array<string>;
       /**
        * Distinguished name (DN) of the certificate subject entity.
        */
@@ -385,19 +385,19 @@ export interface EcsFile {
       /**
        * List of locality names (L)
        */
-      locality?: string[];
+      locality?: string | Array<string>;
       /**
        * List of organizations (O) of subject.
        */
-      organization?: string[];
+      organization?: string | Array<string>;
       /**
        * List of organizational units (OU) of subject.
        */
-      organizational_unit?: string[];
+      organizational_unit?: string | Array<string>;
       /**
        * List of state or province names (ST, S, or P)
        */
-      state_or_province?: string[];
+      state_or_province?: string | Array<string>;
     };
 
     /**
