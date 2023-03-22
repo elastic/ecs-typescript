@@ -70,7 +70,7 @@ export interface EcsNetwork {
    * The field value must be normalized to lowercase for querying.
    */
   type?: string;
-  vlan: {
+  vlan?: {
     /**
      * VLAN ID as reported by the observer.
      */

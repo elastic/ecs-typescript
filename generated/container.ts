@@ -11,22 +11,22 @@
  * These fields help correlate data based containers from any runtime.
  */
 export interface EcsContainer {
-  cpu: {
+  cpu?: {
     /**
      * Percent CPU used which is normalized by the number of CPU cores and it ranges from 0 to 1. Scaling factor: 1000.
      */
     usage?: number;
   };
 
-  disk: {
-    read: {
+  disk?: {
+    read?: {
       /**
        * The total number of bytes (gauge) read successfully (aggregated from all disks) since the last metric collection.
        */
       bytes?: number;
     };
 
-    write: {
+    write?: {
       /**
        * The total number of bytes (gauge) written successfully (aggregated from all disks) since the last metric collection.
        */
@@ -38,12 +38,12 @@ export interface EcsContainer {
    * Unique container id.
    */
   id?: string;
-  image: {
-    hash: {
+  image?: {
+    hash?: {
       /**
        * An array of digests of the image the container was built on. Each digest consists of the hash algorithm and value in this format: `algorithm:value`. Algorithm names should align with the field names in the ECS hash field set.
        */
-      all?: string;
+      all?: string[];
     };
 
     /**
@@ -53,14 +53,14 @@ export interface EcsContainer {
     /**
      * Container image tags.
      */
-    tag?: string;
+    tag?: string[];
   };
 
   /**
    * Image labels.
    */
   labels?: Record<string, unknown>;
-  memory: {
+  memory?: {
     /**
      * Memory usage percentage and it ranges from 0 to 1. Scaling factor: 1000.
      */
@@ -71,15 +71,15 @@ export interface EcsContainer {
    * Container name.
    */
   name?: string;
-  network: {
-    egress: {
+  network?: {
+    egress?: {
       /**
        * The number of bytes (gauge) sent out on all network interfaces by the container since the last metric collection.
        */
       bytes?: number;
     };
 
-    ingress: {
+    ingress?: {
       /**
        * The number of bytes received (gauge) on all network interfaces by the container since the last metric collection.
        */

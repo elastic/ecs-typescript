@@ -10,8 +10,8 @@
  * Fields related to HTTP activity. Use the `url` field set to store the url of the request.
  */
 export interface EcsHttp {
-  request: {
-    body: {
+  request?: {
+    body?: {
       /**
        * Size in bytes of the request body.
        */
@@ -47,8 +47,8 @@ export interface EcsHttp {
     referrer?: string;
   };
 
-  response: {
-    body: {
+  response?: {
+    body?: {
       /**
        * Size in bytes of the response body.
        */

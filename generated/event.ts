@@ -32,7 +32,7 @@ export interface EcsEvent {
    * `event.category` represents the "big buckets" of ECS categories. For example, filtering on `event.category:process` yields all events relating to process activity. This field is closely related to `event.type`, which is used as a subcategory.
    * This field is an array. This will allow proper categorization of some events that fall in multiple categories.
    */
-  category?: string;
+  category?: string[];
   /**
    * Identification code for this event, if one exists.
    * Some event sources use event codes to identify messages unambiguously, regardless of message language or wording adjustments over time. An example of this is the Windows Event ID.
@@ -147,7 +147,7 @@ export interface EcsEvent {
    * `event.type` represents a categorization "sub-bucket" that, when used along with the `event.category` field values, enables filtering events down to a level appropriate for single visualization.
    * This field is an array. This will allow proper categorization of some events that fall in multiple event types.
    */
-  type?: string;
+  type?: string[];
   /**
    * URL linking to an external system to continue investigation of this event.
    * This URL links to another system where in-depth investigation of the specific occurrence of this event can take place. Alert events, indicated by `event.kind:alert`, are a common use case for this field.

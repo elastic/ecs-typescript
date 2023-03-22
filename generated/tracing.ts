@@ -11,7 +11,7 @@
  * Unlike most field sets in ECS, the tracing fields are *not* nested under the field set name. In other words, the correct field name is `trace.id`, not `tracing.trace.id`, and so on.
  */
 export interface EcsTracing {
-  span: {
+  span?: {
     /**
      * Unique identifier of the span within the scope of its trace.
      * A span represents an operation within a transaction, such as a request to another service, or a database query.
@@ -19,7 +19,7 @@ export interface EcsTracing {
     id?: string;
   };
 
-  trace: {
+  trace?: {
     /**
      * Unique identifier of the trace.
      * A trace groups multiple events like transactions that belong together. For example, a user request handled by multiple inter-connected services.
@@ -27,7 +27,7 @@ export interface EcsTracing {
     id?: string;
   };
 
-  transaction: {
+  transaction?: {
     /**
      * Unique identifier of the transaction within the scope of its trace.
      * A transaction is the highest level of work measured within a service, such as a request to a server.

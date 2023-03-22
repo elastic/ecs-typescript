@@ -29,7 +29,9 @@ function buildImports(interfaces: EcsInterface[]) {
 }
 
 function buildEcsNestedFields(interfaces: EcsInterface[]) {
-  const reusableInterfaces = interfaces.filter((i) => i.reusable);
+  const reusableInterfaces = interfaces
+    .filter((i) => i.reusable)
+    .filter((i) => !i.root);
 
   return reusableInterfaces
     .map((i) => interfaceToEcsRootProperty(i))

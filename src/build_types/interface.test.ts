@@ -211,13 +211,13 @@ describe('EcsInterface', () => {
       * test_prop description
       */
         prop_a?: string;
-      prop_b: {/**
+      prop_b?: {/**
       * Description of PropB
       *//**
       * test_prop description
       */
         prop_c?: string;
-      prop_d: {/**
+      prop_d?: {/**
       * Description of PropD
       *//**
       * test_prop description
@@ -231,7 +231,7 @@ describe('EcsInterface', () => {
 
       }
 
-      testProp: {/**
+      testProp?: {/**
       * My interface property description
       */}
 
@@ -356,13 +356,13 @@ describe('EcsInterface', () => {
       * test_prop description
       */
         prop_a?: string;
-      prop_b: {/**
+      prop_b?: {/**
       * Description of PropB
       *//**
       * test_prop description
       */
         prop_c?: string;
-      prop_d: {/**
+      prop_d?: {/**
       * Description of PropD
       *//**
       * test_prop description
@@ -445,7 +445,7 @@ describe('EcsInterface', () => {
       * Availability zone in which this host, 
       */
         availability_zone?: string;
-      account: {/**
+      account?: {/**
       * account description
       *//**
       * The cloud account or organization id used to identify different
@@ -468,7 +468,7 @@ describe('EcsInterface', () => {
       * Availability zone in which this host, 
       */
         availability_zone?: string;
-      account: {/**
+      account?: {/**
       * account description
       *//**
       * The cloud account or organization id used to identify different
@@ -487,7 +487,7 @@ describe('EcsInterface', () => {
       * Availability zone in which this host, 
       */
         availability_zone?: string;
-      account: {/**
+      account?: {/**
       * account description
       *//**
       * The cloud account or organization id used to identify different

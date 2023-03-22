@@ -11,7 +11,7 @@
  * They often show up in web service logs coming from the parsed user agent string.
  */
 export interface EcsUserAgent {
-  device: {
+  device?: {
     /**
      * Name of the device.
      */
@@ -26,7 +26,7 @@ export interface EcsUserAgent {
    * Unparsed user_agent string.
    */
   original?: string;
-  os: {
+  os?: {
     /**
      * OS family (such as redhat, debian, freebsd, windows).
      */

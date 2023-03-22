@@ -14,7 +14,7 @@ export interface EcsTls {
    * String indicating the cipher used during the current connection.
    */
   cipher?: string;
-  client: {
+  client?: {
     /**
      * PEM-encoded stand-alone certificate offered by the client. This is usually mutually-exclusive of `client.certificate_chain` since this value also exists in that list.
      */
@@ -22,8 +22,8 @@ export interface EcsTls {
     /**
      * Array of PEM-encoded certificates that make up the certificate chain offered by the client. This is usually mutually-exclusive of `client.certificate` since that value should be the first certificate in the chain.
      */
-    certificate_chain?: string;
-    hash: {
+    certificate_chain?: string[];
+    hash?: {
       /**
        * Certificate fingerprint using the MD5 digest of DER-encoded version of certificate offered by the client. For consistency with other hash values, this value should be formatted as an uppercase hash.
        */
@@ -65,21 +65,21 @@ export interface EcsTls {
     /**
      * Array of ciphers offered by the client during the client hello.
      */
-    supported_ciphers?: string;
-    x509: {
+    supported_ciphers?: string[];
+    x509?: {
       /**
        * List of subject alternative names (SAN). Name types vary by certificate authority and certificate type but commonly contain IP addresses, DNS names (and wildcards), and email addresses.
        */
-      alternative_names?: string;
-      issuer: {
+      alternative_names?: string[];
+      issuer?: {
         /**
          * List of common name (CN) of issuing certificate authority.
          */
-        common_name?: string;
+        common_name?: string[];
         /**
          * List of country \(C) codes
          */
-        country?: string;
+        country?: string[];
         /**
          * Distinguished name (DN) of issuing certificate authority.
          */
@@ -87,19 +87,19 @@ export interface EcsTls {
         /**
          * List of locality names (L)
          */
-        locality?: string;
+        locality?: string[];
         /**
          * List of organizations (O) of issuing certificate authority.
          */
-        organization?: string;
+        organization?: string[];
         /**
          * List of organizational units (OU) of issuing certificate authority.
          */
-        organizational_unit?: string;
+        organizational_unit?: string[];
         /**
          * List of state or province names (ST, S, or P)
          */
-        state_or_province?: string;
+        state_or_province?: string[];
       };
 
       /**
@@ -134,15 +134,15 @@ export interface EcsTls {
        * Identifier for certificate signature algorithm. We recommend using names found in Go Lang Crypto library. See https://github.com/golang/go/blob/go1.14/src/crypto/x509/x509.go#L337-L353.
        */
       signature_algorithm?: string;
-      subject: {
+      subject?: {
         /**
          * List of common names (CN) of subject.
          */
-        common_name?: string;
+        common_name?: string[];
         /**
          * List of country \(C) code
          */
-        country?: string;
+        country?: string[];
         /**
          * Distinguished name (DN) of the certificate subject entity.
          */
@@ -150,19 +150,19 @@ export interface EcsTls {
         /**
          * List of locality names (L)
          */
-        locality?: string;
+        locality?: string[];
         /**
          * List of organizations (O) of subject.
          */
-        organization?: string;
+        organization?: string[];
         /**
          * List of organizational units (OU) of subject.
          */
-        organizational_unit?: string;
+        organizational_unit?: string[];
         /**
          * List of state or province names (ST, S, or P)
          */
-        state_or_province?: string;
+        state_or_province?: string[];
       };
 
       /**
@@ -188,7 +188,7 @@ export interface EcsTls {
    * Boolean flag indicating if this TLS connection was resumed from an existing TLS negotiation.
    */
   resumed?: boolean;
-  server: {
+  server?: {
     /**
      * PEM-encoded stand-alone certificate offered by the server. This is usually mutually-exclusive of `server.certificate_chain` since this value also exists in that list.
      */
@@ -196,8 +196,8 @@ export interface EcsTls {
     /**
      * Array of PEM-encoded certificates that make up the certificate chain offered by the server. This is usually mutually-exclusive of `server.certificate` since that value should be the first certificate in the chain.
      */
-    certificate_chain?: string;
-    hash: {
+    certificate_chain?: string[];
+    hash?: {
       /**
        * Certificate fingerprint using the MD5 digest of DER-encoded version of certificate offered by the server. For consistency with other hash values, this value should be formatted as an uppercase hash.
        */
@@ -232,20 +232,20 @@ export interface EcsTls {
      * Subject of the x.509 certificate presented by the server.
      */
     subject?: string;
-    x509: {
+    x509?: {
       /**
        * List of subject alternative names (SAN). Name types vary by certificate authority and certificate type but commonly contain IP addresses, DNS names (and wildcards), and email addresses.
        */
-      alternative_names?: string;
-      issuer: {
+      alternative_names?: string[];
+      issuer?: {
         /**
          * List of common name (CN) of issuing certificate authority.
          */
-        common_name?: string;
+        common_name?: string[];
         /**
          * List of country \(C) codes
          */
-        country?: string;
+        country?: string[];
         /**
          * Distinguished name (DN) of issuing certificate authority.
          */
@@ -253,19 +253,19 @@ export interface EcsTls {
         /**
          * List of locality names (L)
          */
-        locality?: string;
+        locality?: string[];
         /**
          * List of organizations (O) of issuing certificate authority.
          */
-        organization?: string;
+        organization?: string[];
         /**
          * List of organizational units (OU) of issuing certificate authority.
          */
-        organizational_unit?: string;
+        organizational_unit?: string[];
         /**
          * List of state or province names (ST, S, or P)
          */
-        state_or_province?: string;
+        state_or_province?: string[];
       };
 
       /**
@@ -300,15 +300,15 @@ export interface EcsTls {
        * Identifier for certificate signature algorithm. We recommend using names found in Go Lang Crypto library. See https://github.com/golang/go/blob/go1.14/src/crypto/x509/x509.go#L337-L353.
        */
       signature_algorithm?: string;
-      subject: {
+      subject?: {
         /**
          * List of common names (CN) of subject.
          */
-        common_name?: string;
+        common_name?: string[];
         /**
          * List of country \(C) code
          */
-        country?: string;
+        country?: string[];
         /**
          * Distinguished name (DN) of the certificate subject entity.
          */
@@ -316,19 +316,19 @@ export interface EcsTls {
         /**
          * List of locality names (L)
          */
-        locality?: string;
+        locality?: string[];
         /**
          * List of organizations (O) of subject.
          */
-        organization?: string;
+        organization?: string[];
         /**
          * List of organizational units (OU) of subject.
          */
-        organizational_unit?: string;
+        organizational_unit?: string[];
         /**
          * List of state or province names (ST, S, or P)
          */
-        state_or_province?: string;
+        state_or_province?: string[];
       };
 
       /**

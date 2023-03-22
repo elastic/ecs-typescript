@@ -17,12 +17,12 @@ export interface EcsServer {
    * Then it should be duplicated to `.ip` or `.domain`, depending on which one it is.
    */
   address?: string;
-  as: {
+  as?: {
     /**
      * Unique number allocated to the autonomous system. The autonomous system number (ASN) uniquely identifies each network on the Internet.
      */
     number?: number;
-    organization: {
+    organization?: {
       /**
        * Organization name.
        */
@@ -39,7 +39,7 @@ export interface EcsServer {
    * This value may be a host name, a fully qualified domain name, or another host naming format. The value may derive from the original event or be added from enrichment.
    */
   domain?: string;
-  geo: {
+  geo?: {
     /**
      * City name.
      */
@@ -98,7 +98,7 @@ export interface EcsServer {
    * The notation format from RFC 7042 is suggested: Each octet (that is, 8-bit byte) is represented by two [uppercase] hexadecimal digits giving the value of the octet as an unsigned integer. Successive octets are separated by a hyphen.
    */
   mac?: string;
-  nat: {
+  nat?: {
     /**
      * Translated ip of destination based NAT sessions (e.g. internet to private DMZ)
      * Typically used with load balancers, firewalls, or routers.
@@ -135,7 +135,7 @@ export interface EcsServer {
    * This value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".
    */
   top_level_domain?: string;
-  user: {
+  user?: {
     /**
      * Name of the directory the user is a member of.
      * For example, an LDAP or Active Directory domain name.
@@ -149,7 +149,7 @@ export interface EcsServer {
      * User's full name, if available.
      */
     full_name?: string;
-    group: {
+    group?: {
       /**
        * Name of the directory the group is a member of.
        * For example, an LDAP or Active Directory domain name.
@@ -181,6 +181,6 @@ export interface EcsServer {
     /**
      * Array of user roles at the time of the event.
      */
-    roles?: string;
+    roles?: string[];
   };
 }

@@ -14,7 +14,7 @@ export interface EcsOrchestrator {
    * API version being used to carry out the action
    */
   api_version?: string;
-  cluster: {
+  cluster?: {
     /**
      * Unique ID of the cluster.
      */
@@ -41,7 +41,7 @@ export interface EcsOrchestrator {
    * Organization affected by the event (for multi-tenant orchestrator setups).
    */
   organization?: string;
-  resource: {
+  resource?: {
     /**
      * Unique ID of the resource being acted upon.
      */
@@ -49,12 +49,12 @@ export interface EcsOrchestrator {
     /**
      * IP address assigned to the resource associated with the event being observed. In the case of a Kubernetes Pod, this array would contain only one element: the IP of the Pod (as opposed to the Node on which the Pod is running).
      */
-    ip?: string;
+    ip?: string[];
     /**
      * Name of the resource being acted upon.
      */
     name?: string;
-    parent: {
+    parent?: {
       /**
        * Type or kind of the parent resource associated with the event being observed. In Kubernetes, this will be the name of a built-in workload resource (e.g., Deployment, StatefulSet, DaemonSet).
        */

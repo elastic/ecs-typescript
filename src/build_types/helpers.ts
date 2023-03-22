@@ -46,10 +46,10 @@ export class Helpers {
   }
 
   public buildFieldPropString(value: EcsFieldSpec) {
-    const { required, name, type } = value;
+    const { required, name, type, normalize } = value;
     const propName = name.split('.').pop();
     const opt = required === true ? `` : `?`;
     return `${this.buildDescription(value.description)}
-  ${Helpers.escape(propName)}${opt}: ${convertType(type)};\n`;
+  ${Helpers.escape(propName)}${opt}: ${convertType(type, normalize)};\n`;
   }
 }

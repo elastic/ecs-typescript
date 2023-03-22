@@ -15,7 +15,7 @@ export interface EcsObserver {
    * Observer.egress holds information like interface number and name, vlan, and zone information to classify egress traffic.  Single armed monitoring such as a network sensor on a span port should only use observer.ingress to categorize traffic.
    */
   egress?: Record<string, unknown>;
-  geo: {
+  geo?: {
     /**
      * City name.
      */
@@ -76,19 +76,19 @@ export interface EcsObserver {
   /**
    * IP addresses of the observer.
    */
-  ip?: string;
+  ip?: string[];
   /**
    * MAC addresses of the observer.
    * The notation format from RFC 7042 is suggested: Each octet (that is, 8-bit byte) is represented by two [uppercase] hexadecimal digits giving the value of the octet as an unsigned integer. Successive octets are separated by a hyphen.
    */
-  mac?: string;
+  mac?: string[];
   /**
    * Custom name of the observer.
    * This is a name that can be given to an observer. This can be helpful for example if multiple firewalls of the same model are used in an organization.
    * If no custom name is needed, the field can be left empty.
    */
   name?: string;
-  os: {
+  os?: {
     /**
      * OS family (such as redhat, debian, freebsd, windows).
      */

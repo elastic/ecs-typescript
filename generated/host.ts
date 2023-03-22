@@ -15,14 +15,14 @@ export interface EcsHost {
    * Operating system architecture.
    */
   architecture?: string;
-  boot: {
+  boot?: {
     /**
      * Linux boot uuid taken from /proc/sys/kernel/random/boot_id. Note the boot_id value from /proc may or may not be the same in containers as on the host. Some container runtimes will bind mount a new boot_id value onto the proc file in each container.
      */
     id?: string;
   };
 
-  cpu: {
+  cpu?: {
     /**
      * Percent CPU used which is normalized by the number of CPU cores and it ranges from 0 to 1.
      * Scaling factor: 1000.
@@ -31,15 +31,15 @@ export interface EcsHost {
     usage?: number;
   };
 
-  disk: {
-    read: {
+  disk?: {
+    read?: {
       /**
        * The total number of bytes (gauge) read successfully (aggregated from all disks) since the last metric collection.
        */
       bytes?: number;
     };
 
-    write: {
+    write?: {
       /**
        * The total number of bytes (gauge) written successfully (aggregated from all disks) since the last metric collection.
        */
@@ -52,7 +52,7 @@ export interface EcsHost {
    * For example, on Windows this could be the host's Active Directory domain or NetBIOS domain name. For Linux this could be the domain of the host's LDAP provider.
    */
   domain?: string;
-  geo: {
+  geo?: {
     /**
      * City name.
      */
@@ -116,19 +116,19 @@ export interface EcsHost {
   /**
    * Host ip addresses.
    */
-  ip?: string;
+  ip?: string[];
   /**
    * Host MAC addresses.
    * The notation format from RFC 7042 is suggested: Each octet (that is, 8-bit byte) is represented by two [uppercase] hexadecimal digits giving the value of the octet as an unsigned integer. Successive octets are separated by a hyphen.
    */
-  mac?: string;
+  mac?: string[];
   /**
    * Name of the host.
    * It can contain what `hostname` returns on Unix systems, the fully qualified domain name, or a name specified by the user. The sender decides which value to use.
    */
   name?: string;
-  network: {
-    egress: {
+  network?: {
+    egress?: {
       /**
        * The number of bytes (gauge) sent out on all network interfaces by the host since the last metric collection.
        */
@@ -139,7 +139,7 @@ export interface EcsHost {
       packets?: number;
     };
 
-    ingress: {
+    ingress?: {
       /**
        * The number of bytes received (gauge) on all network interfaces by the host since the last metric collection.
        */
@@ -151,7 +151,7 @@ export interface EcsHost {
     };
   };
 
-  os: {
+  os?: {
     /**
      * OS family (such as redhat, debian, freebsd, windows).
      */
@@ -187,7 +187,7 @@ export interface EcsHost {
    * This is the inode number of the namespace in the namespace file system (nsfs). Unsigned int inum in include/linux/ns_common.h.
    */
   pid_ns_ino?: string;
-  risk: {
+  risk?: {
     /**
      * A risk classification level calculated by an internal system as part of entity analytics and entity risk scoring.
      */

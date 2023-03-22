@@ -20,8 +20,8 @@ export interface EcsFile {
    * Array of file attributes.
    * Attributes names will vary by platform. Here's a non-exhaustive list of values that are expected in this field: archive, compressed, directory, encrypted, execute, hidden, read, readonly, system, write.
    */
-  attributes?: string;
-  code_signature: {
+  attributes?: string[];
+  code_signature?: {
     /**
      * The hashing algorithm used to sign the process.
      * This value can distinguish signatures when a file is signed multiple times by the same signer but with a different digest algorithm.
@@ -89,7 +89,7 @@ export interface EcsFile {
    * The value should be uppercase, and not include the colon.
    */
   drive_letter?: string;
-  elf: {
+  elf?: {
     /**
      * Machine architecture of the ELF file.
      */
@@ -109,8 +109,8 @@ export interface EcsFile {
     /**
      * List of exported element names and types.
      */
-    exports?: Record<string, unknown>;
-    header: {
+    exports?: Record<string, unknown>[];
+    header?: {
       /**
        * Version of the ELF Application Binary Interface (ABI).
        */
@@ -148,21 +148,21 @@ export interface EcsFile {
     /**
      * List of imported element names and types.
      */
-    imports?: Record<string, unknown>;
+    imports?: Record<string, unknown>[];
     /**
      * An array containing an object for each section of the ELF file.
      * The keys that should be present in these objects are defined by sub-fields underneath `elf.sections.*`.
      */
-    sections?: Record<string, unknown>;
+    sections?: Record<string, unknown>[];
     /**
      * An array containing an object for each segment of the ELF file.
      * The keys that should be present in these objects are defined by sub-fields underneath `elf.segments.*`.
      */
-    segments?: Record<string, unknown>;
+    segments?: Record<string, unknown>[];
     /**
      * List of shared libraries used by this ELF object.
      */
-    shared_libraries?: string;
+    shared_libraries?: string[];
     /**
      * telfhash symbol hash for ELF file.
      */
@@ -188,7 +188,7 @@ export interface EcsFile {
    * Primary group name of the file.
    */
   group?: string;
-  hash: {
+  hash?: {
     /**
      * MD5 hash.
      */
@@ -247,7 +247,7 @@ export interface EcsFile {
    * Full path to the file, including the file name. It should include the drive letter, when appropriate.
    */
   path?: string;
-  pe: {
+  pe?: {
     /**
      * CPU architecture target for the file.
      */
@@ -301,20 +301,20 @@ export interface EcsFile {
    * The user ID (UID) or security identifier (SID) of the file owner.
    */
   uid?: string;
-  x509: {
+  x509?: {
     /**
      * List of subject alternative names (SAN). Name types vary by certificate authority and certificate type but commonly contain IP addresses, DNS names (and wildcards), and email addresses.
      */
-    alternative_names?: string;
-    issuer: {
+    alternative_names?: string[];
+    issuer?: {
       /**
        * List of common name (CN) of issuing certificate authority.
        */
-      common_name?: string;
+      common_name?: string[];
       /**
        * List of country \(C) codes
        */
-      country?: string;
+      country?: string[];
       /**
        * Distinguished name (DN) of issuing certificate authority.
        */
@@ -322,19 +322,19 @@ export interface EcsFile {
       /**
        * List of locality names (L)
        */
-      locality?: string;
+      locality?: string[];
       /**
        * List of organizations (O) of issuing certificate authority.
        */
-      organization?: string;
+      organization?: string[];
       /**
        * List of organizational units (OU) of issuing certificate authority.
        */
-      organizational_unit?: string;
+      organizational_unit?: string[];
       /**
        * List of state or province names (ST, S, or P)
        */
-      state_or_province?: string;
+      state_or_province?: string[];
     };
 
     /**
@@ -369,15 +369,15 @@ export interface EcsFile {
      * Identifier for certificate signature algorithm. We recommend using names found in Go Lang Crypto library. See https://github.com/golang/go/blob/go1.14/src/crypto/x509/x509.go#L337-L353.
      */
     signature_algorithm?: string;
-    subject: {
+    subject?: {
       /**
        * List of common names (CN) of subject.
        */
-      common_name?: string;
+      common_name?: string[];
       /**
        * List of country \(C) code
        */
-      country?: string;
+      country?: string[];
       /**
        * Distinguished name (DN) of the certificate subject entity.
        */
@@ -385,19 +385,19 @@ export interface EcsFile {
       /**
        * List of locality names (L)
        */
-      locality?: string;
+      locality?: string[];
       /**
        * List of organizations (O) of subject.
        */
-      organization?: string;
+      organization?: string[];
       /**
        * List of organizational units (OU) of subject.
        */
-      organizational_unit?: string;
+      organizational_unit?: string[];
       /**
        * List of state or province names (ST, S, or P)
        */
-      state_or_province?: string;
+      state_or_province?: string[];
     };
 
     /**

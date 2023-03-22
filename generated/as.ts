@@ -14,7 +14,7 @@ export interface EcsAs {
    * Unique number allocated to the autonomous system. The autonomous system number (ASN) uniquely identifies each network on the Internet.
    */
   number?: number;
-  organization: {
+  organization?: {
     /**
      * Organization name.
      */
