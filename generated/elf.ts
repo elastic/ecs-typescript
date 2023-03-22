@@ -29,7 +29,7 @@ export interface EcsElf {
   /**
    * List of exported element names and types.
    */
-  exports?: Record<string, unknown> | Record<string, unknown>[];
+  exports?: Record<string, unknown>[];
   header?: {
     /**
      * Version of the ELF Application Binary Interface (ABI).
@@ -68,21 +68,21 @@ export interface EcsElf {
   /**
    * List of imported element names and types.
    */
-  imports?: Record<string, unknown> | Record<string, unknown>[];
+  imports?: Record<string, unknown>[];
   /**
    * An array containing an object for each section of the ELF file.
    * The keys that should be present in these objects are defined by sub-fields underneath `elf.sections.*`.
    */
-  sections?: Record<string, unknown> | Record<string, unknown>[];
+  sections?: Record<string, unknown>[];
   /**
    * An array containing an object for each segment of the ELF file.
    * The keys that should be present in these objects are defined by sub-fields underneath `elf.segments.*`.
    */
-  segments?: Record<string, unknown> | Record<string, unknown>[];
+  segments?: Record<string, unknown>[];
   /**
    * List of shared libraries used by this ELF object.
    */
-  shared_libraries?: string | string[];
+  shared_libraries?: string[];
   /**
    * telfhash symbol hash for ELF file.
    */

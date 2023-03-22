@@ -49,7 +49,7 @@ export interface EcsOrchestrator {
     /**
      * IP address assigned to the resource associated with the event being observed. In the case of a Kubernetes Pod, this array would contain only one element: the IP of the Pod (as opposed to the Node on which the Pod is running).
      */
-    ip?: string | string[];
+    ip?: string[];
     /**
      * Name of the resource being acted upon.
      */
