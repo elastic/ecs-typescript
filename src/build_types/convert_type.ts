@@ -26,5 +26,5 @@ export function convertType(ecsType: string, normalize: string[]): string {
 
   const isArray = normalize.includes('array');
 
-  return `${type}${isArray ? '[]' : ''}`;
+  return `${isArray ? `Array<${type}>` : type}`;
 }
