@@ -313,12 +313,22 @@ export interface EcsProcess {
          * The time the process started.
          */
         start?: string;
+        /**
+         * Virtual process id.
+         * The process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.
+         */
+        vpid?: number;
       };
 
       /**
        * The time the process started.
        */
       start?: string;
+      /**
+       * Virtual process id.
+       * The process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.
+       */
+      vpid?: number;
     };
 
     /**
@@ -407,6 +417,11 @@ export interface EcsProcess {
       name?: string;
     };
 
+    /**
+     * Virtual process id.
+     * The process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.
+     */
+    vpid?: number;
     /**
      * The working directory of the process.
      */
@@ -561,6 +576,11 @@ export interface EcsProcess {
       name?: string;
     };
 
+    /**
+     * Virtual process id.
+     * The process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.
+     */
+    vpid?: number;
     /**
      * The working directory of the process.
      */
@@ -885,6 +905,11 @@ export interface EcsProcess {
        * The time the process started.
        */
       start?: string;
+      /**
+       * Virtual process id.
+       * The process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.
+       */
+      vpid?: number;
     };
 
     hash?: {
@@ -1129,6 +1154,17 @@ export interface EcsProcess {
     };
 
     thread?: {
+      capabilities?: {
+        /**
+         * This is the set of capabilities used by the kernel to perform permission checks for the thread.
+         */
+        effective?: string | Array<string>;
+        /**
+         * This is a limiting superset for the effective capabilities that the thread may assume.
+         */
+        permitted?: string | Array<string>;
+      };
+
       /**
        * Thread ID.
        */
@@ -1163,6 +1199,11 @@ export interface EcsProcess {
       name?: string;
     };
 
+    /**
+     * Virtual process id.
+     * The process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.
+     */
+    vpid?: number;
     /**
      * The working directory of the process.
      */
@@ -1393,12 +1434,22 @@ export interface EcsProcess {
          * The time the process started.
          */
         start?: string;
+        /**
+         * Virtual process id.
+         * The process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.
+         */
+        vpid?: number;
       };
 
       /**
        * The time the process started.
        */
       start?: string;
+      /**
+       * Virtual process id.
+       * The process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.
+       */
+      vpid?: number;
     };
 
     /**
@@ -1488,6 +1539,11 @@ export interface EcsProcess {
     };
 
     /**
+     * Virtual process id.
+     * The process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.
+     */
+    vpid?: number;
+    /**
      * The working directory of the process.
      */
     working_directory?: string;
@@ -1509,6 +1565,17 @@ export interface EcsProcess {
   };
 
   thread?: {
+    capabilities?: {
+      /**
+       * This is the set of capabilities used by the kernel to perform permission checks for the thread.
+       */
+      effective?: string | Array<string>;
+      /**
+       * This is a limiting superset for the effective capabilities that the thread may assume.
+       */
+      permitted?: string | Array<string>;
+    };
+
     /**
      * Thread ID.
      */
@@ -1543,6 +1610,11 @@ export interface EcsProcess {
     name?: string;
   };
 
+  /**
+   * Virtual process id.
+   * The process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.
+   */
+  vpid?: number;
   /**
    * The working directory of the process.
    */

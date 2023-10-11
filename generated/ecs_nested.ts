@@ -1508,6 +1508,17 @@ export const EcsNested = {
         short: 'Runtime managing this container.',
         type: 'keyword',
       },
+      'container.security_context.privileged': {
+        dashed_name: 'container-security-context-privileged',
+        description:
+          'Indicates whether the container is running in privileged mode.',
+        flat_name: 'container.security_context.privileged',
+        level: 'extended',
+        name: 'security_context.privileged',
+        normalize: [],
+        short: 'Indicates whether the container is running in privileged mode.',
+        type: 'boolean',
+      },
     },
     group: 2,
     name: 'container',
@@ -2074,7 +2085,7 @@ export const EcsNested = {
       'device.id': {
         dashed_name: 'device-id',
         description:
-          'The unique identifier of a device. The identifier must not change across application sessions but stay fixex for an instance of a (mobile) device. \nOn iOS, this value must be equal to the vendor identifier (https://developer.apple.com/documentation/uikit/uidevice/1620059-identifierforvendor). On Android, this value must be equal to the Firebase Installation ID or a globally unique UUID which is persisted across sessions in your application.\nFor GDPR and data protection law reasons this identifier should not carry information that would allow to identify a user.',
+          'The unique identifier of a device. The identifier must not change across application sessions but stay fixed for an instance of a (mobile) device. \nOn iOS, this value must be equal to the vendor identifier (https://developer.apple.com/documentation/uikit/uidevice/1620059-identifierforvendor). On Android, this value must be equal to the Firebase Installation ID or a globally unique UUID which is persisted across sessions in your application.\nFor GDPR and data protection law reasons this identifier should not carry information that would allow to identify a user.',
         example: '00000000-54b3-e7c7-0000-000046bffd97',
         flat_name: 'device.id',
         ignore_above: 1024,
@@ -3925,7 +3936,13 @@ export const EcsNested = {
           {
             description:
               'Relating to a set of information that has been created on, or has existed on a filesystem. Use this category of events to visualize and analyze the creation, access, and deletions of files. Events in this category can come from both host-based and network-based sources. An example source of a network-based detection of a file transfer would be the Zeek file.log.',
-            expected_event_types: ['change', 'creation', 'deletion', 'info'],
+            expected_event_types: [
+              'access',
+              'change',
+              'creation',
+              'deletion',
+              'info',
+            ],
             name: 'file',
           },
           {
@@ -4060,7 +4077,7 @@ export const EcsNested = {
       'event.created': {
         dashed_name: 'event-created',
         description:
-          "event.created contains the date/time when the event was first read by an agent, or by your pipeline.\nThis field is distinct from @timestamp in that @timestamp typically contain the time extracted from the original event.\nIn most situations, these two timestamps will be slightly different. The difference can be used to calculate the delay between your source generating an event, and the time when your agent first processed it. This can be used to monitor your agent's or pipeline's ability to keep up with your event source.\nIn case the two timestamps are identical, @timestamp should be used.",
+          "`event.created` contains the date/time when the event was first read by an agent, or by your pipeline.\nThis field is distinct from `@timestamp` in that `@timestamp` typically contain the time extracted from the original event.\nIn most situations, these two timestamps will be slightly different. The difference can be used to calculate the delay between your source generating an event, and the time when your agent first processed it. This can be used to monitor your agent's or pipeline's ability to keep up with your event source.\nIn case the two timestamps are identical, `@timestamp` should be used.",
         example: '2016-05-23T08:05:34.857Z',
         flat_name: 'event.created',
         level: 'core',
@@ -4086,7 +4103,7 @@ export const EcsNested = {
       'event.duration': {
         dashed_name: 'event-duration',
         description:
-          'Duration of the event in nanoseconds.\nIf event.start and event.end are known this value should be the difference between the end and start time.',
+          'Duration of the event in nanoseconds.\nIf `event.start` and `event.end` are known this value should be the difference between the end and start time.',
         flat_name: 'event.duration',
         format: 'duration',
         input_format: 'nanoseconds',
@@ -4101,13 +4118,13 @@ export const EcsNested = {
       'event.end': {
         dashed_name: 'event-end',
         description:
-          'event.end contains the date when the event ended or when the activity was last observed.',
+          '`event.end` contains the date when the event ended or when the activity was last observed.',
         flat_name: 'event.end',
         level: 'extended',
         name: 'end',
         normalize: [],
         short:
-          'event.end contains the date when the event ended or when the activity was last observed.',
+          '`event.end` contains the date when the event ended or when the activity was last observed.',
         type: 'date',
       },
       'event.hash': {
@@ -4156,6 +4173,12 @@ export const EcsNested = {
             name: 'alert',
           },
           {
+            beta: 'This event categorization value is beta and subject to change.',
+            description:
+              'This value indicates events whose primary purpose is to store an inventory of assets/entities and their attributes. Assets/entities are objects (such as users and hosts) that are expected to be subjects of detailed analysis within the system.\nExamples include lists of user identities or accounts ingested from directory services such as Active Directory (AD), inventory of hosts pulled from configuration management databases (CMDB), and lists of cloud storage buckets pulled from cloud provider APIs.\nThis value is used by Elastic Security for asset management solutions. `event.kind: asset` is not used for normal system events or logs that are coming from an asset/entity, nor is it used for system events or logs coming from a directory or CMDB system.',
+            name: 'asset',
+          },
+          {
             description:
               'The `enrichment` value indicates an event collected to provide additional context, often to other events.\nAn example is collecting indicators of compromise (IOCs) from a threat intelligence provider with the intent to use those values to enrich other events. The IOC events from the intelligence provider should be categorized as `event.kind:enrichment`.',
             name: 'enrichment',
@@ -4188,7 +4211,7 @@ export const EcsNested = {
         ],
         dashed_name: 'event-kind',
         description:
-          'This is one of four ECS Categorization Fields, and indicates the highest level in the ECS category hierarchy.\n`event.kind` gives high-level information about what type of information the event contains, without being specific to the contents of the event. For example, values of this field distinguish alert events from metric events.\nThe value of this field can be used to inform how these kinds of events should be handled. They may warrant different retention, different access control, it may also help understand whether the data coming in at a regular interval or not.',
+          'This is one of four ECS Categorization Fields, and indicates the highest level in the ECS category hierarchy.\n`event.kind` gives high-level information about what type of information the event contains, without being specific to the contents of the event. For example, values of this field distinguish alert events from metric events.\nThe value of this field can be used to inform how these kinds of events should be handled. They may warrant different retention, different access control, it may also help understand whether the data is coming in at a regular interval or not.',
         example: 'alert',
         flat_name: 'event.kind',
         ignore_above: 1024,
@@ -4348,13 +4371,13 @@ export const EcsNested = {
       'event.start': {
         dashed_name: 'event-start',
         description:
-          'event.start contains the date when the event started or when the activity was first observed.',
+          '`event.start` contains the date when the event started or when the activity was first observed.',
         flat_name: 'event.start',
         level: 'extended',
         name: 'start',
         normalize: [],
         short:
-          'event.start contains the date when the event started or when the activity was first observed.',
+          '`event.start` contains the date when the event started or when the activity was first observed.',
         type: 'date',
       },
       'event.timezone': {
@@ -4541,16 +4564,6 @@ export const EcsNested = {
         normalize: [],
         short: 'The name of a serverless function.',
         type: 'keyword',
-      },
-      'faas.trigger': {
-        dashed_name: 'faas-trigger',
-        description: 'Details about the function trigger.',
-        flat_name: 'faas.trigger',
-        level: 'extended',
-        name: 'trigger',
-        normalize: [],
-        short: 'Details about the function trigger.',
-        type: 'nested',
       },
       'faas.trigger.request_id': {
         dashed_name: 'faas-trigger-request-id',
@@ -9027,6 +9040,18 @@ export const EcsNested = {
           'Organization affected by the event (for multi-tenant orchestrator setups).',
         type: 'keyword',
       },
+      'orchestrator.resource.annotation': {
+        dashed_name: 'orchestrator-resource-annotation',
+        description: 'The list of annotations added to the resource.',
+        example: "['key1:value1', 'key2:value2', 'key3:value3']",
+        flat_name: 'orchestrator.resource.annotation',
+        ignore_above: 1024,
+        level: 'extended',
+        name: 'resource.annotation',
+        normalize: ['array'],
+        short: 'The list of annotations added to the resource.',
+        type: 'keyword',
+      },
       'orchestrator.resource.id': {
         dashed_name: 'orchestrator-resource-id',
         description: 'Unique ID of the resource being acted upon.',
@@ -9049,6 +9074,18 @@ export const EcsNested = {
         short:
           'IP address assigned to the resource associated with the event being observed.',
         type: 'ip',
+      },
+      'orchestrator.resource.label': {
+        dashed_name: 'orchestrator-resource-label',
+        description: 'The list of labels added to the resource.',
+        example: "['key1:value1', 'key2:value2', 'key3:value3']",
+        flat_name: 'orchestrator.resource.label',
+        ignore_above: 1024,
+        level: 'extended',
+        name: 'resource.label',
+        normalize: ['array'],
+        short: 'The list of labels added to the resource.',
+        type: 'keyword',
       },
       'orchestrator.resource.name': {
         dashed_name: 'orchestrator-resource-name',
@@ -10678,6 +10715,20 @@ export const EcsNested = {
         short: 'The time the process started.',
         type: 'date',
       },
+      'process.entry_leader.parent.session_leader.vpid': {
+        dashed_name: 'process-entry-leader-parent-session-leader-vpid',
+        description:
+          'Virtual process id.\nThe process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.',
+        example: 4242,
+        flat_name: 'process.entry_leader.parent.session_leader.vpid',
+        format: 'string',
+        level: 'core',
+        name: 'vpid',
+        normalize: [],
+        original_fieldset: 'process',
+        short: 'Virtual process id.',
+        type: 'long',
+      },
       'process.entry_leader.parent.start': {
         dashed_name: 'process-entry-leader-parent-start',
         description: 'The time the process started.',
@@ -10689,6 +10740,20 @@ export const EcsNested = {
         original_fieldset: 'process',
         short: 'The time the process started.',
         type: 'date',
+      },
+      'process.entry_leader.parent.vpid': {
+        dashed_name: 'process-entry-leader-parent-vpid',
+        description:
+          'Virtual process id.\nThe process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.',
+        example: 4242,
+        flat_name: 'process.entry_leader.parent.vpid',
+        format: 'string',
+        level: 'core',
+        name: 'vpid',
+        normalize: [],
+        original_fieldset: 'process',
+        short: 'Virtual process id.',
+        type: 'long',
       },
       'process.entry_leader.pid': {
         dashed_name: 'process-entry-leader-pid',
@@ -10937,6 +11002,20 @@ export const EcsNested = {
         original_fieldset: 'user',
         short: 'Short name or login of the user.',
         type: 'keyword',
+      },
+      'process.entry_leader.vpid': {
+        dashed_name: 'process-entry-leader-vpid',
+        description:
+          'Virtual process id.\nThe process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.',
+        example: 4242,
+        flat_name: 'process.entry_leader.vpid',
+        format: 'string',
+        level: 'core',
+        name: 'vpid',
+        normalize: [],
+        original_fieldset: 'process',
+        short: 'Virtual process id.',
+        type: 'long',
       },
       'process.entry_leader.working_directory': {
         dashed_name: 'process-entry-leader-working-directory',
@@ -11388,6 +11467,20 @@ export const EcsNested = {
         original_fieldset: 'user',
         short: 'Short name or login of the user.',
         type: 'keyword',
+      },
+      'process.group_leader.vpid': {
+        dashed_name: 'process-group-leader-vpid',
+        description:
+          'Virtual process id.\nThe process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.',
+        example: 4242,
+        flat_name: 'process.group_leader.vpid',
+        format: 'string',
+        level: 'core',
+        name: 'vpid',
+        normalize: [],
+        original_fieldset: 'process',
+        short: 'Virtual process id.',
+        type: 'long',
       },
       'process.group_leader.working_directory': {
         dashed_name: 'process-group-leader-working-directory',
@@ -12598,6 +12691,20 @@ export const EcsNested = {
         short: 'The time the process started.',
         type: 'date',
       },
+      'process.parent.group_leader.vpid': {
+        dashed_name: 'process-parent-group-leader-vpid',
+        description:
+          'Virtual process id.\nThe process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.',
+        example: 4242,
+        flat_name: 'process.parent.group_leader.vpid',
+        format: 'string',
+        level: 'core',
+        name: 'vpid',
+        normalize: [],
+        original_fieldset: 'process',
+        short: 'Virtual process id.',
+        type: 'long',
+      },
       'process.parent.hash.md5': {
         dashed_name: 'process-parent-hash-md5',
         description: 'MD5 hash.',
@@ -13397,6 +13504,36 @@ export const EcsNested = {
         short: 'Name of the group.',
         type: 'keyword',
       },
+      'process.parent.thread.capabilities.effective': {
+        dashed_name: 'process-parent-thread-capabilities-effective',
+        description:
+          'This is the set of capabilities used by the kernel to perform permission checks for the thread.',
+        example: '["CAP_BPF", "CAP_SYS_ADMIN"]',
+        flat_name: 'process.parent.thread.capabilities.effective',
+        ignore_above: 1024,
+        level: 'extended',
+        name: 'thread.capabilities.effective',
+        normalize: ['array'],
+        original_fieldset: 'process',
+        pattern: '^(CAP_[A-Z_]+|\\d+)$',
+        short: 'Array of capabilities used for permission checks.',
+        type: 'keyword',
+      },
+      'process.parent.thread.capabilities.permitted': {
+        dashed_name: 'process-parent-thread-capabilities-permitted',
+        description:
+          'This is a limiting superset for the effective capabilities that the thread may assume.',
+        example: '["CAP_BPF", "CAP_SYS_ADMIN"]',
+        flat_name: 'process.parent.thread.capabilities.permitted',
+        ignore_above: 1024,
+        level: 'extended',
+        name: 'thread.capabilities.permitted',
+        normalize: ['array'],
+        original_fieldset: 'process',
+        pattern: '^(CAP_[A-Z_]+|\\d+)$',
+        short: 'Array of capabilities a thread could assume.',
+        type: 'keyword',
+      },
       'process.parent.thread.id': {
         dashed_name: 'process-parent-thread-id',
         description: 'Thread ID.',
@@ -13525,6 +13662,20 @@ export const EcsNested = {
         original_fieldset: 'user',
         short: 'Short name or login of the user.',
         type: 'keyword',
+      },
+      'process.parent.vpid': {
+        dashed_name: 'process-parent-vpid',
+        description:
+          'Virtual process id.\nThe process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.',
+        example: 4242,
+        flat_name: 'process.parent.vpid',
+        format: 'string',
+        level: 'core',
+        name: 'vpid',
+        normalize: [],
+        original_fieldset: 'process',
+        short: 'Virtual process id.',
+        type: 'long',
       },
       'process.parent.working_directory': {
         dashed_name: 'process-parent-working-directory',
@@ -14236,6 +14387,20 @@ export const EcsNested = {
         short: 'The time the process started.',
         type: 'date',
       },
+      'process.session_leader.parent.session_leader.vpid': {
+        dashed_name: 'process-session-leader-parent-session-leader-vpid',
+        description:
+          'Virtual process id.\nThe process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.',
+        example: 4242,
+        flat_name: 'process.session_leader.parent.session_leader.vpid',
+        format: 'string',
+        level: 'core',
+        name: 'vpid',
+        normalize: [],
+        original_fieldset: 'process',
+        short: 'Virtual process id.',
+        type: 'long',
+      },
       'process.session_leader.parent.start': {
         dashed_name: 'process-session-leader-parent-start',
         description: 'The time the process started.',
@@ -14247,6 +14412,20 @@ export const EcsNested = {
         original_fieldset: 'process',
         short: 'The time the process started.',
         type: 'date',
+      },
+      'process.session_leader.parent.vpid': {
+        dashed_name: 'process-session-leader-parent-vpid',
+        description:
+          'Virtual process id.\nThe process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.',
+        example: 4242,
+        flat_name: 'process.session_leader.parent.vpid',
+        format: 'string',
+        level: 'core',
+        name: 'vpid',
+        normalize: [],
+        original_fieldset: 'process',
+        short: 'Virtual process id.',
+        type: 'long',
       },
       'process.session_leader.pid': {
         dashed_name: 'process-session-leader-pid',
@@ -14496,6 +14675,20 @@ export const EcsNested = {
         short: 'Short name or login of the user.',
         type: 'keyword',
       },
+      'process.session_leader.vpid': {
+        dashed_name: 'process-session-leader-vpid',
+        description:
+          'Virtual process id.\nThe process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.',
+        example: 4242,
+        flat_name: 'process.session_leader.vpid',
+        format: 'string',
+        level: 'core',
+        name: 'vpid',
+        normalize: [],
+        original_fieldset: 'process',
+        short: 'Virtual process id.',
+        type: 'long',
+      },
       'process.session_leader.working_directory': {
         dashed_name: 'process-session-leader-working-directory',
         description: 'The working directory of the process.',
@@ -14549,6 +14742,34 @@ export const EcsNested = {
         normalize: [],
         original_fieldset: 'group',
         short: 'Name of the group.',
+        type: 'keyword',
+      },
+      'process.thread.capabilities.effective': {
+        dashed_name: 'process-thread-capabilities-effective',
+        description:
+          'This is the set of capabilities used by the kernel to perform permission checks for the thread.',
+        example: '["CAP_BPF", "CAP_SYS_ADMIN"]',
+        flat_name: 'process.thread.capabilities.effective',
+        ignore_above: 1024,
+        level: 'extended',
+        name: 'thread.capabilities.effective',
+        normalize: ['array'],
+        pattern: '^(CAP_[A-Z_]+|\\d+)$',
+        short: 'Array of capabilities used for permission checks.',
+        type: 'keyword',
+      },
+      'process.thread.capabilities.permitted': {
+        dashed_name: 'process-thread-capabilities-permitted',
+        description:
+          'This is a limiting superset for the effective capabilities that the thread may assume.',
+        example: '["CAP_BPF", "CAP_SYS_ADMIN"]',
+        flat_name: 'process.thread.capabilities.permitted',
+        ignore_above: 1024,
+        level: 'extended',
+        name: 'thread.capabilities.permitted',
+        normalize: ['array'],
+        pattern: '^(CAP_[A-Z_]+|\\d+)$',
+        short: 'Array of capabilities a thread could assume.',
         type: 'keyword',
       },
       'process.thread.id': {
@@ -14699,6 +14920,19 @@ export const EcsNested = {
         original_fieldset: 'user',
         short: 'Short name or login of the user.',
         type: 'keyword',
+      },
+      'process.vpid': {
+        dashed_name: 'process-vpid',
+        description:
+          'Virtual process id.\nThe process id within a pid namespace. This is not necessarily unique across all processes on the host but it is unique within the process namespace that the process exists within.',
+        example: 4242,
+        flat_name: 'process.vpid',
+        format: 'string',
+        level: 'core',
+        name: 'vpid',
+        normalize: [],
+        short: 'Virtual process id.',
+        type: 'long',
       },
       'process.working_directory': {
         dashed_name: 'process-working-directory',

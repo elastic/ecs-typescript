@@ -54,6 +54,10 @@ export interface EcsOrchestrator {
   organization?: string;
   resource?: {
     /**
+     * The list of annotations added to the resource.
+     */
+    annotation?: string | Array<string>;
+    /**
      * Unique ID of the resource being acted upon.
      */
     id?: string;
@@ -61,6 +65,10 @@ export interface EcsOrchestrator {
      * IP address assigned to the resource associated with the event being observed. In the case of a Kubernetes Pod, this array would contain only one element: the IP of the Pod (as opposed to the Node on which the Pod is running).
      */
     ip?: string | Array<string>;
+    /**
+     * The list of labels added to the resource.
+     */
+    label?: string | Array<string>;
     /**
      * Name of the resource being acted upon.
      */
