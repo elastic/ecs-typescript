@@ -102,4 +102,10 @@ export interface EcsContainer {
    * Runtime managing this container.
    */
   runtime?: string;
+  security_context?: {
+    /**
+     * Indicates whether the container is running in privileged mode.
+     */
+    privileged?: boolean;
+  };
 }
