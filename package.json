@@ -1,6 +1,6 @@
 {
   "name": "@elastic/ecs",
-  "version": "1.0.0-alpha.1",
+  "version": "8.10.0-alpha.1",
   "private": true,
   "main": "generated/index.ts",
   "bin": {
