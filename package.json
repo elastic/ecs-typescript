@@ -1,7 +1,6 @@
 {
   "name": "@elastic/ecs",
   "version": "8.10.0-alpha.1",
-  "private": true,
   "main": "generated/index.ts",
   "bin": {
     "generate-ecs-types": "./bin/generate-ecs-types.js"
