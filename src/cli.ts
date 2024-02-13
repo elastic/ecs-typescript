@@ -96,7 +96,7 @@ export async function run() {
     EcsVariant.Nested,
   ]);
 
-  const schemaFiles = outputSchemas(context, schemas);
+  const schemaFiles = outputSchemas(context, { flat: schemas.flat });
 
   const types = buildTypes(schemas[EcsVariant.Nested] as EcsNestedSpec);
 

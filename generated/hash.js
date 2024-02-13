@@ -1,3 +1,4 @@
+"use strict";
 /*
  * Licensed to Elasticsearch B.V. under one or more contributor
  * license agreements. See the NOTICE file distributed with
@@ -16,14 +17,5 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-/**
- * Meta-information specific to ECS.
- */
-export interface EcsEcs {
-  /**
-   * ECS version this event conforms to. `ecs.version` is a required field and must exist in all events.
-   * When querying across multiple indices -- which may conform to slightly different ECS versions -- this field lets integrations adjust to the schema version of the events.
-   */
-  version: '8.12.0-dev';
-}
+Object.defineProperty(exports, "__esModule", { value: true });
+//# sourceMappingURL=hash.js.map

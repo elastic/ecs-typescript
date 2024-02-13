@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "outDir": "./build/esm",
+    "declaration": true,
+    "strict": true,
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "target": "ESNext",
+    "module": "esnext",
+    "sourceMap": true,
+    "lib": [],
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+    "generated/**/*"
+  ],
+  "exclude": []
+}

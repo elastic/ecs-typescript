@@ -1,3 +1,4 @@
+"use strict";
 /*
  * Licensed to Elasticsearch B.V. under one or more contributor
  * license agreements. See the NOTICE file distributed with
@@ -16,14 +17,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EcsNested = exports.EcsFlat = exports.EcsVersion = void 0;
+exports.EcsVersion = '8.12.0-dev';
 /**
- * Meta-information specific to ECS.
+ * Exporting raw schema files for easy programmatic use
  */
-export interface EcsEcs {
-  /**
-   * ECS version this event conforms to. `ecs.version` is a required field and must exist in all events.
-   * When querying across multiple indices -- which may conform to slightly different ECS versions -- this field lets integrations adjust to the schema version of the events.
-   */
-  version: '8.12.0-dev';
-}
+var ecs_flat_1 = require("./ecs_flat");
+Object.defineProperty(exports, "EcsFlat", { enumerable: true, get: function () { return ecs_flat_1.EcsFlat; } });
+var ecs_nested_1 = require("./ecs_nested");
+Object.defineProperty(exports, "EcsNested", { enumerable: true, get: function () { return ecs_nested_1.EcsNested; } });
+//# sourceMappingURL=index.js.map

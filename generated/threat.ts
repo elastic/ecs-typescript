@@ -654,6 +654,7 @@ export interface EcsThreat {
     modified_at?: string;
     /**
      * The display name indicator in an UI friendly format
+     * URL, IP address, email address, registry key, port number, hash value, or other relevant name can serve as the display name.
      */
     name?: string;
     /**
