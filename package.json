@@ -4,7 +4,8 @@
   "main": "build/commonjs/index.js",
   "module": "build/esm/index.js",
   "scripts": {
-    "generate-ecs-types": "rm -rf generated/*.ts && ts-node src/bin.ts && sh -c \"tsc -p tsconfig.commonjs.json && tsc -p tsconfig.esm.json\"",
+    "generate-ecs-types": "rm -rf generated/*.ts && ts-node src/bin.ts",
+    "build": "tsc -p tsconfig.commonjs.json && tsc -p tsconfig.esm.json",
     "test:unit": "jest",
     "test:integration": "tsc src/integration_tests/root.ts --noEmit",
     "lint": "yarn run eslint ./src"

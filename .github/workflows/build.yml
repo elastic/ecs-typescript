@@ -24,4 +24,5 @@ jobs:
     - run: yarn lint
     - run: yarn test:unit
     - run: yarn generate-ecs-types
+    - run: yarn build
     - run: yarn test:integration

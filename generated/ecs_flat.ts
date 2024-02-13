@@ -8758,6 +8758,7 @@ export const EcsFlat = {
     type: 'keyword',
   },
   'process.env_vars': {
+    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-env-vars',
     description:
       'Array of environment variable bindings. Captured from a snapshot of the environment at the time of execution.\nMay be filtered to protect sensitive information.',
@@ -9318,6 +9319,7 @@ export const EcsFlat = {
     type: 'boolean',
   },
   'process.io': {
+    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io',
     description:
       'A chunk of input or output (IO) from a single process.\nThis field only appears on the top level process object, which is the process that wrote the output or read the input.',
@@ -9329,6 +9331,7 @@ export const EcsFlat = {
     type: 'object',
   },
   'process.io.bytes_skipped': {
+    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-bytes-skipped',
     description:
       'An array of byte offsets and lengths denoting where IO data has been skipped.',
@@ -9341,6 +9344,7 @@ export const EcsFlat = {
     type: 'object',
   },
   'process.io.bytes_skipped.length': {
+    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-bytes-skipped-length',
     description: 'The length of bytes skipped.',
     flat_name: 'process.io.bytes_skipped.length',
@@ -9351,6 +9355,7 @@ export const EcsFlat = {
     type: 'long',
   },
   'process.io.bytes_skipped.offset': {
+    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-bytes-skipped-offset',
     description:
       "The byte offset into this event's io.text (or io.bytes in the future) where length bytes were skipped.",
@@ -9363,6 +9368,7 @@ export const EcsFlat = {
     type: 'long',
   },
   'process.io.max_bytes_per_process_exceeded': {
+    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-max-bytes-per-process-exceeded',
     description:
       'If true, the process producing the output has exceeded the max_kilobytes_per_process configuration setting.',
@@ -9375,6 +9381,7 @@ export const EcsFlat = {
     type: 'boolean',
   },
   'process.io.text': {
+    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-text',
     description:
       'A chunk of output or input sanitized to UTF-8.\nBest efforts are made to ensure complete lines are captured in these events. Assumptions should NOT be made that multiple lines will appear in the same event. TTY output may contain terminal control codes such as for cursor movement, so some string queries may not match due to terminal codes inserted between characters of a word.',
@@ -9386,6 +9393,7 @@ export const EcsFlat = {
     type: 'wildcard',
   },
   'process.io.total_bytes_captured': {
+    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-total-bytes-captured',
     description: 'The total number of bytes captured in this event.',
     flat_name: 'process.io.total_bytes_captured',
@@ -9396,6 +9404,7 @@ export const EcsFlat = {
     type: 'long',
   },
   'process.io.total_bytes_skipped': {
+    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-total-bytes-skipped',
     description:
       'The total number of bytes that were not captured due to implementation restrictions such as buffer size limits. Implementors should strive to ensure this value is always zero',
@@ -9408,6 +9417,7 @@ export const EcsFlat = {
     type: 'long',
   },
   'process.io.type': {
+    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-type',
     description:
       "The type of object on which the IO action (read or write) was taken.\nCurrently only 'tty' is supported. Other types may be added in the future for 'file' and 'socket' support.",
@@ -12546,6 +12556,7 @@ export const EcsFlat = {
     type: 'long',
   },
   'process.tty.columns': {
+    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-tty-columns',
     description:
       "The number of character columns per line. e.g terminal width\nTerminal sizes can change, so this value reflects the maximum value for a given IO event. i.e. where event.action = 'text_output'",
@@ -12558,6 +12569,7 @@ export const EcsFlat = {
     type: 'long',
   },
   'process.tty.rows': {
+    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-tty-rows',
     description:
       "The number of character rows in the terminal. e.g terminal height\nTerminal sizes can change, so this value reflects the maximum value for a given IO event. i.e. where event.action = 'text_output'",
@@ -22011,197 +22023,6 @@ export const EcsFlat = {
     normalize: [],
     short: 'Version of the user agent.',
     type: 'keyword',
-  },
-  'volume.bus_type': {
-    dashed_name: 'volume-bus-type',
-    description:
-      'Bus type of the device, such as `Nvme`, `Usb`, or `FileBackedVirtual`.',
-    example: 'FileBackedVirtual',
-    flat_name: 'volume.bus_type',
-    ignore_above: 1024,
-    level: 'extended',
-    name: 'bus_type',
-    normalize: [],
-    short: 'Bus type of the device.',
-    type: 'keyword',
-  },
-  'volume.default_access': {
-    dashed_name: 'volume-default-access',
-    description: 'Describes the default access(es) of the volume.',
-    flat_name: 'volume.default_access',
-    ignore_above: 1024,
-    level: 'extended',
-    name: 'default_access',
-    normalize: [],
-    short: 'Bus type of the device.',
-    type: 'keyword',
-  },
-  'volume.device_name': {
-    dashed_name: 'volume-device-name',
-    description:
-      'Full path of the volume device.\nOnly populate this field for POSIX system volumes.',
-    flat_name: 'volume.device_name',
-    ignore_above: 1024,
-    level: 'extended',
-    name: 'device_name',
-    normalize: [],
-    short: 'Device name of the volume.',
-    type: 'keyword',
-  },
-  'volume.device_type': {
-    dashed_name: 'volume-device-type',
-    description:
-      'Volume device type.\nThe most frequently seen volume device types are `Disk File System` and `CD-ROM File System`.',
-    example: 'CD-ROM File System',
-    flat_name: 'volume.device_type',
-    ignore_above: 1024,
-    level: 'extended',
-    name: 'device_type',
-    normalize: [],
-    short: 'Volume device type.',
-    type: 'keyword',
-  },
-  'volume.dos_name': {
-    dashed_name: 'volume-dos-name',
-    description:
-      'The MS-DOS name of a device.\nDOS device name is in the format of driver letters, such as `C:`. The field is relevant to Windows systems only.',
-    example: 'E:',
-    flat_name: 'volume.dos_name',
-    ignore_above: 1024,
-    level: 'extended',
-    name: 'dos_name',
-    normalize: [],
-    short: 'DOS name of the device.',
-    type: 'keyword',
-  },
-  'volume.file_system_type': {
-    dashed_name: 'volume-file-system-type',
-    description:
-      'Volume device file system type.\nThe most common volume file system types are `NTFS` and `UDF`.',
-    flat_name: 'volume.file_system_type',
-    ignore_above: 1024,
-    level: 'extended',
-    name: 'file_system_type',
-    normalize: [],
-    short: 'Volume device file system type.',
-    type: 'keyword',
-  },
-  'volume.mount_name': {
-    dashed_name: 'volume-mount-name',
-    description:
-      'Mount name of the volume device.\nOnly populate this field for POSIX system volumes.',
-    flat_name: 'volume.mount_name',
-    ignore_above: 1024,
-    level: 'extended',
-    name: 'mount_name',
-    normalize: [],
-    short: 'Mount name of the volume.',
-    type: 'keyword',
-  },
-  'volume.nt_name': {
-    dashed_name: 'volume-nt-name',
-    description:
-      'The NT device name.\nNT device name uses a format of `\\Device\\HarddiskVolume2`. The field is relevant to Windows systems only.',
-    example: '\\Device\\Cdrom1',
-    flat_name: 'volume.nt_name',
-    ignore_above: 1024,
-    level: 'extended',
-    name: 'nt_name',
-    normalize: [],
-    short: 'NT name of the device.',
-    type: 'keyword',
-  },
-  'volume.product_id': {
-    dashed_name: 'volume-product-id',
-    description:
-      'ProductID of the device.\nThe vendor provides the ProductID for the volume, if any.',
-    flat_name: 'volume.product_id',
-    ignore_above: 1024,
-    level: 'extended',
-    name: 'product_id',
-    normalize: [],
-    short: 'ProductID of the device.',
-    type: 'keyword',
-  },
-  'volume.product_name': {
-    dashed_name: 'volume-product-name',
-    description:
-      'Product name of the volume.\nThe volume device vendor provides this value.',
-    example: 'Virtual DVD-ROM',
-    flat_name: 'volume.product_name',
-    ignore_above: 1024,
-    level: 'extended',
-    name: 'product_name',
-    normalize: [],
-    short: 'Produce name of the volume.',
-    type: 'keyword',
-  },
-  'volume.removable': {
-    dashed_name: 'volume-removable',
-    description: 'Indicates if the volume is removable.',
-    flat_name: 'volume.removable',
-    level: 'extended',
-    name: 'removable',
-    normalize: [],
-    short: 'Indicates if the volume is removable.',
-    type: 'boolean',
-  },
-  'volume.serial_number': {
-    dashed_name: 'volume-serial-number',
-    description:
-      'Serial number identifier for the volume device.\nThe serial number is provided by the vendor of the device, if any.',
-    flat_name: 'volume.serial_number',
-    ignore_above: 1024,
-    level: 'extended',
-    name: 'serial_number',
-    normalize: [],
-    short: 'Serial number of the device.',
-    type: 'keyword',
-  },
-  'volume.size': {
-    dashed_name: 'volume-size',
-    description: 'Size of the volume device in bytes.',
-    flat_name: 'volume.size',
-    level: 'extended',
-    name: 'size',
-    normalize: [],
-    short: 'Size of the volume device in bytes.',
-    type: 'long',
-  },
-  'volume.vendor_id': {
-    dashed_name: 'volume-vendor-id',
-    description:
-      'VendorID of the volume device.\nThe volume device vendor provides this value.',
-    flat_name: 'volume.vendor_id',
-    ignore_above: 1024,
-    level: 'extended',
-    name: 'vendor_id',
-    normalize: [],
-    short: 'VendorID of the device.',
-    type: 'keyword',
-  },
-  'volume.vendor_name': {
-    dashed_name: 'volume-vendor-name',
-    description:
-      'Vendor name of the volume device.\nThe value is provided by the vendor of the device.',
-    example: 'Msft',
-    flat_name: 'volume.vendor_name',
-    ignore_above: 1024,
-    level: 'extended',
-    name: 'vendor_name',
-    normalize: [],
-    short: 'Vendor name of the device.',
-    type: 'keyword',
-  },
-  'volume.writable': {
-    dashed_name: 'volume-writable',
-    description: 'Indicates if the volume is writable.',
-    flat_name: 'volume.writable',
-    level: 'extended',
-    name: 'writable',
-    normalize: [],
-    short: 'Indicates if the volume is writable.',
-    type: 'boolean',
   },
   'vulnerability.category': {
     dashed_name: 'vulnerability-category',
