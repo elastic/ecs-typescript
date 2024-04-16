@@ -70,4 +70,9 @@ export interface Context {
    * The actual version string stored in the ECS repository
    */
   ecsVersionString: string;
+  /**
+   * When set to true, output file will contain extra export fields, such as flat schema file etc - this will contribute to the bundle size though.
+   * Extended output will be registered as a separate entrypoint to the package, so that consumers can decide if they want this kind of info or not.
+   */
+  extended?: boolean;
 }

@@ -19,7 +19,7 @@
 
 import path from 'path';
 import { EcsInterface } from './build_types/interface';
-import { INDEX_FILE_NAME } from './constants';
+import { EXTENDED_ENTRYPOINT_FILE_NAME, INDEX_FILE_NAME } from './constants';
 import { generateIndex } from './generate_index';
 import { SchemaFileDescriptor } from './output_schemas';
 import { Context } from './types';
@@ -33,5 +33,11 @@ export const outputIndex = (
   writeFile(
     path.join(ctx.outPath, INDEX_FILE_NAME),
     generateIndex(ctx, ecsInterfaces, schemaFiles)
+  );
+
+  // Separate entrypoint for ECS-flat entrypoint with extended=true
+  writeFile(
+    path.join(ctx.outPath, EXTENDED_ENTRYPOINT_FILE_NAME),
+    generateIndex({ ...ctx, extended: true }, ecsInterfaces, schemaFiles)
   );
 };

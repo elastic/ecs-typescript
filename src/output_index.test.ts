@@ -37,10 +37,28 @@ describe('outputIndex()', () => {
       [{ filename: 'ecs_nested', type: 'nested' }]
     );
 
-    expect(writeFile).toHaveBeenCalledTimes(1);
+    expect(writeFile).toHaveBeenCalledTimes(2);
 
-    expect(jest.mocked(writeFile).mock.calls[1]).toMatchInlineSnapshot(
-      `undefined`
-    );
+    expect(jest.mocked(writeFile).mock.calls[1]).toMatchInlineSnapshot(`
+      Array [
+        "output/extended.ts",
+        "import {EcsBase} from './base';
+
+        export const EcsVersion = \\"main\\" as const;
+
+        
+        /**
+         * Exporting raw schema files for easy programmatic use
+         */
+        export { nested } from './ecs_nested';
+
+
+        export type { EcsBase };
+
+        export type Ecs =  {
+          
+        }",
+      ]
+    `);
   });
 });

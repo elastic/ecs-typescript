@@ -71,6 +71,11 @@ import { EcsX509 } from './x509';
 
 export const EcsVersion = '8.11.0' as const;
 
+/**
+ * Exporting raw schema files for easy programmatic use
+ */
+export { EcsFlat } from './ecs_flat';
+
 export type {
   EcsAgent,
   EcsAs,

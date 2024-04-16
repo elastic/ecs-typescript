@@ -37,11 +37,8 @@ describe('generateIndex()', () => {
       import {EcsAgent} from './agent';
 
         export const EcsVersion = \\"main\\" as const;
+
         
-        /**
-         * Exporting raw schema files for easy programmatic use
-         */
-        export { EcsNested } from './ecs_nested.ts';
 
         export type { EcsBase,
       EcsAgent };

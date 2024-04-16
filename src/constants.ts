@@ -25,4 +25,7 @@ export const REQUIRED_ROOT_FIELDS = ['ecs'];
 
 export const INDEX_FILE_NAME = `index${OUTPUT_EXTENSION}` as const;
 
+export const EXTENDED_ENTRYPOINT_FILE_NAME =
+  `extended${OUTPUT_EXTENSION}` as const;
+
 export const RAW_SCHEMA_FILENAME = 'ecs_nested';

@@ -65,10 +65,8 @@ export function generateIndex(
   interfaces: EcsInterface[],
   schemaFiles: SchemaFileDescriptor[]
 ) {
-  return `${buildImports(interfaces)}
-
-  export const ${TYPE_PREFIX}Version = "${ctx.ecsVersionString}" as const;
-  
+  const schemaFilesExports = ctx.extended
+    ? `
   /**
    * Exporting raw schema files for easy programmatic use
    */
@@ -78,6 +76,14 @@ export function generateIndex(
         `export { ${schemaFile.type} } from './${schemaFile.filename}';`
     )
     .join('')}
+`
+    : '';
+
+  return `${buildImports(interfaces)}
+
+  export const ${TYPE_PREFIX}Version = "${ctx.ecsVersionString}" as const;
+
+  ${schemaFilesExports}
 
   ${buildExports(interfaces)}
 
