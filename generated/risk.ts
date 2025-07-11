@@ -18,7 +18,7 @@
  */
 
 /**
- * Fields for describing risk score and risk level of entities such as hosts and users.  These fields are not allowed to be nested under `event.*`. Please continue to use  `event.risk_score` and `event.risk_score_norm` for event risk.
+ * Fields for describing risk score and risk level of entities such as hosts and users. These fields are not allowed to be nested under `event.*`. Please continue to use `event.risk_score` and `event.risk_score_norm` for event risk.
  */
 export interface EcsRisk {
   /**

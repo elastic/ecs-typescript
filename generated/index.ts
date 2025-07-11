@@ -36,6 +36,7 @@ import { EcsError } from './error';
 import { EcsEvent } from './event';
 import { EcsFaas } from './faas';
 import { EcsFile } from './file';
+import { EcsGenAi } from './gen_ai';
 import { EcsGeo } from './geo';
 import { EcsGroup } from './group';
 import { EcsHash } from './hash';
@@ -66,10 +67,11 @@ import { EcsUrl } from './url';
 import { EcsUser } from './user';
 import { EcsUserAgent } from './user_agent';
 import { EcsVlan } from './vlan';
+import { EcsVolume } from './volume';
 import { EcsVulnerability } from './vulnerability';
 import { EcsX509 } from './x509';
 
-export const EcsVersion = '8.11.0' as const;
+export const EcsVersion = '9.1.0-dev' as const;
 
 /**
  * Exporting raw schema files for easy programmatic use
@@ -96,6 +98,7 @@ export type {
   EcsEvent,
   EcsFaas,
   EcsFile,
+  EcsGenAi,
   EcsGeo,
   EcsGroup,
   EcsHash,
@@ -126,6 +129,7 @@ export type {
   EcsUser,
   EcsUserAgent,
   EcsVlan,
+  EcsVolume,
   EcsVulnerability,
   EcsX509,
 };
@@ -147,6 +151,7 @@ export type Ecs = EcsBase &
     event?: EcsEvent;
     faas?: EcsFaas;
     file?: EcsFile;
+    gen_ai?: EcsGenAi;
     group?: EcsGroup;
     host?: EcsHost;
     http?: EcsHttp;
@@ -168,5 +173,6 @@ export type Ecs = EcsBase &
     url?: EcsUrl;
     user?: EcsUser;
     user_agent?: EcsUserAgent;
+    volume?: EcsVolume;
     vulnerability?: EcsVulnerability;
   };

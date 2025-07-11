@@ -138,7 +138,7 @@ export interface EcsTls {
        */
       public_key_size?: number;
       /**
-       * Unique serial number issued by the certificate authority. For consistency, if this value is alphanumeric, it should be formatted without colons and uppercase characters.
+       * Unique serial number issued by the certificate authority. For consistency, this must be encoded in base 16 and formatted without colons and uppercase characters.
        */
       serial_number?: string;
       /**
@@ -304,7 +304,7 @@ export interface EcsTls {
        */
       public_key_size?: number;
       /**
-       * Unique serial number issued by the certificate authority. For consistency, if this value is alphanumeric, it should be formatted without colons and uppercase characters.
+       * Unique serial number issued by the certificate authority. For consistency, this must be encoded in base 16 and formatted without colons and uppercase characters.
        */
       serial_number?: string;
       /**

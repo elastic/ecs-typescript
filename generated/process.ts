@@ -43,6 +43,10 @@ export interface EcsProcess {
      */
     exists?: boolean;
     /**
+     * The flags used to sign the process.
+     */
+    flags?: string;
+    /**
      * The identifier used to sign the process.
      * This is used to identify the application manufactured by a software vendor. The field is relevant to Apple *OS only.
      */
@@ -61,6 +65,10 @@ export interface EcsProcess {
      * This is used to identify the team or vendor of a software product. The field is relevant to Apple *OS only.
      */
     team_id?: string;
+    /**
+     * Certificate SHA256 hash that uniquely identifies the code signer.
+     */
+    thumbprint_sha256?: string;
     /**
      * Date and time when the code signature was generated and signed.
      */
@@ -105,7 +113,7 @@ export interface EcsProcess {
     exports?: Record<string, unknown> | Array<Record<string, unknown>>;
     /**
      * A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.
-     * The algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).
+     * The algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma
      */
     go_import_hash?: string;
     /**
@@ -442,6 +450,17 @@ export interface EcsProcess {
    * The field should be absent if there is no exit code for the event (e.g. process start).
    */
   exit_code?: number;
+  group?: {
+    /**
+     * Unique identifier for the group on the system/platform.
+     */
+    id?: string;
+    /**
+     * Name of the group.
+     */
+    name?: string;
+  };
+
   group_leader?: {
     /**
      * Array of process arguments, starting with the absolute path to the executable.
@@ -589,6 +608,10 @@ export interface EcsProcess {
 
   hash?: {
     /**
+     * Code directory hash, utilized to uniquely identify and authenticate the integrity of the executable code.
+     */
+    cdhash?: string;
+    /**
      * MD5 hash.
      */
     md5?: string;
@@ -632,7 +655,7 @@ export interface EcsProcess {
   macho?: {
     /**
      * A hash of the Go language imports in a Mach-O file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.
-     * The algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).
+     * The algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma
      */
     go_import_hash?: string;
     /**
@@ -707,6 +730,10 @@ export interface EcsProcess {
        */
       exists?: boolean;
       /**
+       * The flags used to sign the process.
+       */
+      flags?: string;
+      /**
        * The identifier used to sign the process.
        * This is used to identify the application manufactured by a software vendor. The field is relevant to Apple *OS only.
        */
@@ -725,6 +752,10 @@ export interface EcsProcess {
        * This is used to identify the team or vendor of a software product. The field is relevant to Apple *OS only.
        */
       team_id?: string;
+      /**
+       * Certificate SHA256 hash that uniquely identifies the code signer.
+       */
+      thumbprint_sha256?: string;
       /**
        * Date and time when the code signature was generated and signed.
        */
@@ -769,7 +800,7 @@ export interface EcsProcess {
       exports?: Record<string, unknown> | Array<Record<string, unknown>>;
       /**
        * A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.
-       * The algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).
+       * The algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma
        */
       go_import_hash?: string;
       /**
@@ -914,6 +945,10 @@ export interface EcsProcess {
 
     hash?: {
       /**
+       * Code directory hash, utilized to uniquely identify and authenticate the integrity of the executable code.
+       */
+      cdhash?: string;
+      /**
        * MD5 hash.
        */
       md5?: string;
@@ -952,7 +987,7 @@ export interface EcsProcess {
     macho?: {
       /**
        * A hash of the Go language imports in a Mach-O file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.
-       * The algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).
+       * The algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma
        */
       go_import_hash?: string;
       /**
@@ -1024,7 +1059,7 @@ export interface EcsProcess {
       file_version?: string;
       /**
        * A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.
-       * The algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).
+       * The algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma
        */
       go_import_hash?: string;
       /**
@@ -1085,11 +1120,6 @@ export interface EcsProcess {
       sections?: Record<string, unknown> | Array<Record<string, unknown>>;
     };
 
-    /**
-     * Deprecated for removal in next major version release. This field is superseded by `process.group_leader.pid`.
-     * Identifier of the group of processes the process belongs to.
-     */
-    pgid?: number;
     /**
      * Process id.
      */
@@ -1229,7 +1259,7 @@ export interface EcsProcess {
     file_version?: string;
     /**
      * A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.
-     * The algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).
+     * The algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma
      */
     go_import_hash?: string;
     /**
@@ -1290,11 +1320,6 @@ export interface EcsProcess {
     sections?: Record<string, unknown> | Array<Record<string, unknown>>;
   };
 
-  /**
-   * Deprecated for removal in next major version release. This field is superseded by `process.group_leader.pid`.
-   * Identifier of the group of processes the process belongs to.
-   */
-  pgid?: number;
   /**
    * Process id.
    */

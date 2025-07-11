@@ -26,6 +26,8 @@ const typeMapping: Record<string, string> = {
   float: 'number',
   scaled_float: 'number',
   long: 'number',
+  integer: 'number',
+  double: 'number',
   boolean: 'boolean',
   geo_point: '{ lat: number; lon: number }',
   ip: 'string',

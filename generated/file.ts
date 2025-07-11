@@ -43,6 +43,10 @@ export interface EcsFile {
      */
     exists?: boolean;
     /**
+     * The flags used to sign the process.
+     */
+    flags?: string;
+    /**
      * The identifier used to sign the process.
      * This is used to identify the application manufactured by a software vendor. The field is relevant to Apple *OS only.
      */
@@ -61,6 +65,10 @@ export interface EcsFile {
      * This is used to identify the team or vendor of a software product. The field is relevant to Apple *OS only.
      */
     team_id?: string;
+    /**
+     * Certificate SHA256 hash that uniquely identifies the code signer.
+     */
+    thumbprint_sha256?: string;
     /**
      * Date and time when the code signature was generated and signed.
      */
@@ -123,7 +131,7 @@ export interface EcsFile {
     exports?: Record<string, unknown> | Array<Record<string, unknown>>;
     /**
      * A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.
-     * The algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).
+     * The algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma
      */
     go_import_hash?: string;
     /**
@@ -235,6 +243,10 @@ export interface EcsFile {
   group?: string;
   hash?: {
     /**
+     * Code directory hash, utilized to uniquely identify and authenticate the integrity of the executable code.
+     */
+    cdhash?: string;
+    /**
      * MD5 hash.
      */
     md5?: string;
@@ -271,7 +283,7 @@ export interface EcsFile {
   macho?: {
     /**
      * A hash of the Go language imports in a Mach-O file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.
-     * The algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).
+     * The algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma
      */
     go_import_hash?: string;
     /**
@@ -320,7 +332,7 @@ export interface EcsFile {
   };
 
   /**
-   * MIME type should identify the format of the file or stream of bytes using https://www.iana.org/assignments/media-types/media-types.xhtml[IANA official types], where possible. When more than one type is applicable, the most specific type should be used.
+   * MIME type should identify the format of the file or stream of bytes using IANA official types: https://www.iana.org/assignments/media-types/media-types.xhtml, where possible. When more than one type is applicable, the most specific type should be used.
    */
   mime_type?: string;
   /**
@@ -335,6 +347,14 @@ export interface EcsFile {
    * Name of the file including the extension, without the directory.
    */
   name?: string;
+  /**
+   * The URL of the webpage that linked to the file.
+   */
+  origin_referrer_url?: string;
+  /**
+   * The URL where the file is hosted.
+   */
+  origin_url?: string;
   /**
    * File owner's username.
    */
@@ -362,7 +382,7 @@ export interface EcsFile {
     file_version?: string;
     /**
      * A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.
-     * The algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).
+     * The algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma
      */
     go_import_hash?: string;
     /**
@@ -501,7 +521,7 @@ export interface EcsFile {
      */
     public_key_size?: number;
     /**
-     * Unique serial number issued by the certificate authority. For consistency, if this value is alphanumeric, it should be formatted without colons and uppercase characters.
+     * Unique serial number issued by the certificate authority. For consistency, this must be encoded in base 16 and formatted without colons and uppercase characters.
      */
     serial_number?: string;
     /**
