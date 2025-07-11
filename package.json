@@ -1,6 +1,6 @@
 {
   "name": "@elastic/ecs",
-  "version": "8.11.5",
+  "version": "9.0.0",
   "main": "build/commonjs/index.js",
   "module": "build/esm/index.js",
   "scripts": {
