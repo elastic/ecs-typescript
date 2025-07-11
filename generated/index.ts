@@ -36,7 +36,6 @@ import { EcsError } from './error';
 import { EcsEvent } from './event';
 import { EcsFaas } from './faas';
 import { EcsFile } from './file';
-import { EcsGenAi } from './gen_ai';
 import { EcsGeo } from './geo';
 import { EcsGroup } from './group';
 import { EcsHash } from './hash';
@@ -71,7 +70,7 @@ import { EcsVolume } from './volume';
 import { EcsVulnerability } from './vulnerability';
 import { EcsX509 } from './x509';
 
-export const EcsVersion = '9.1.0-dev' as const;
+export const EcsVersion = '9.0.0' as const;
 
 /**
  * Exporting raw schema files for easy programmatic use
@@ -98,7 +97,6 @@ export type {
   EcsEvent,
   EcsFaas,
   EcsFile,
-  EcsGenAi,
   EcsGeo,
   EcsGroup,
   EcsHash,
@@ -151,7 +149,6 @@ export type Ecs = EcsBase &
     event?: EcsEvent;
     faas?: EcsFaas;
     file?: EcsFile;
-    gen_ai?: EcsGenAi;
     group?: EcsGroup;
     host?: EcsHost;
     http?: EcsHttp;

@@ -54,10 +54,6 @@ export interface EcsCodeSignature {
    */
   team_id?: string;
   /**
-   * Certificate SHA256 hash that uniquely identifies the code signer.
-   */
-  thumbprint_sha256?: string;
-  /**
    * Date and time when the code signature was generated and signed.
    */
   timestamp?: string;
