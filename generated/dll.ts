@@ -37,6 +37,10 @@ export interface EcsDll {
      */
     exists?: boolean;
     /**
+     * The flags used to sign the process.
+     */
+    flags?: string;
+    /**
      * The identifier used to sign the process.
      * This is used to identify the application manufactured by a software vendor. The field is relevant to Apple *OS only.
      */
@@ -73,6 +77,10 @@ export interface EcsDll {
 
   hash?: {
     /**
+     * Code directory hash, utilized to uniquely identify and authenticate the integrity of the executable code.
+     */
+    cdhash?: string;
+    /**
      * MD5 hash.
      */
     md5?: string;
@@ -108,6 +116,14 @@ export interface EcsDll {
    */
   name?: string;
   /**
+   * The URL of the webpage that linked to the dll file.
+   */
+  origin_referrer_url?: string;
+  /**
+   * The URL where the dll file is hosted.
+   */
+  origin_url?: string;
+  /**
    * Full file path of the library.
    */
   path?: string;
@@ -130,7 +146,7 @@ export interface EcsDll {
     file_version?: string;
     /**
      * A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.
-     * The algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).
+     * The algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma
      */
     go_import_hash?: string;
     /**

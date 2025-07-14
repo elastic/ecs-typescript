@@ -31,6 +31,10 @@ export interface EcsCodeSignature {
    */
   exists?: boolean;
   /**
+   * The flags used to sign the process.
+   */
+  flags?: string;
+  /**
    * The identifier used to sign the process.
    * This is used to identify the application manufactured by a software vendor. The field is relevant to Apple *OS only.
    */

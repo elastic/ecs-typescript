@@ -18,7 +18,7 @@
  */
 
 /**
- * Fields that describe a device instance and its characteristics.  Data collected for applications and processes running on a (mobile) device can be enriched with these fields to describe the identity, type and other characteristics of the device.
+ * Fields that describe a device instance and its characteristics. Data collected for applications and processes running on a (mobile) device can be enriched with these fields to describe the identity, type and other characteristics of the device.
  * This field group definition is based on the Device namespace of the OpenTelemetry Semantic Conventions (https://opentelemetry.io/docs/reference/specification/resource/semantic_conventions/device/).
  */
 export interface EcsDevice {
@@ -42,4 +42,9 @@ export interface EcsDevice {
      */
     name?: string;
   };
+
+  /**
+   * The unique serial number serves as a distinct identifier for each device, aiding in inventory management and device authentication.
+   */
+  serial_number?: string;
 }

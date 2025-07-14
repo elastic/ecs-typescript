@@ -24,6 +24,10 @@
  */
 export interface EcsHash {
   /**
+   * Code directory hash, utilized to uniquely identify and authenticate the integrity of the executable code.
+   */
+  cdhash?: string;
+  /**
    * MD5 hash.
    */
   md5?: string;

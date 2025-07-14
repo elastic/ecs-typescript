@@ -27,6 +27,20 @@ export const EcsFlat = {
     level: 'core',
     name: '@timestamp',
     normalize: [],
+    otel: [
+      { otlp_field: 'time_unix_nano', relation: 'otlp', stability: 'stable' },
+      {
+        otlp_field: 'observed_time_unix_nano',
+        relation: 'otlp',
+        stability: 'stable',
+      },
+      {
+        note: 'On logs, events and metrics, `time_unix_nano` defines the time of the event. For logs, `observed_time_unix_nano` defines the time when the event was observed by the collection system. On spans, `start_time_unix_nano` represents the start time of the span.\n',
+        otlp_field: 'start_time_unix_nano',
+        relation: 'otlp',
+        stability: 'stable',
+      },
+    ],
     required: true,
     short: 'Date/time when the event originated.',
     type: 'date',
@@ -118,6 +132,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'address',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short: 'Client network address.',
     type: 'keyword',
   },
@@ -389,13 +404,14 @@ export const EcsFlat = {
     level: 'core',
     name: 'port',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short: 'Port of the client.',
     type: 'long',
   },
   'client.registered_domain': {
     dashed_name: 'client-registered-domain',
     description:
-      'The highest registered client domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
+      'The highest registered client domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
     example: 'example.com',
     flat_name: 'client.registered_domain',
     ignore_above: 1024,
@@ -421,7 +437,7 @@ export const EcsFlat = {
   'client.top_level_domain': {
     dashed_name: 'client-top-level-domain',
     description:
-      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
+      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
     example: 'co.uk',
     flat_name: 'client.top_level_domain',
     ignore_above: 1024,
@@ -571,6 +587,7 @@ export const EcsFlat = {
     normalize: ['array'],
     original_fieldset: 'user',
     short: 'Array of user roles at the time of the event.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'cloud.account.id': {
@@ -583,6 +600,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'account.id',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'The cloud account or organization id.',
     type: 'keyword',
   },
@@ -609,6 +627,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'availability_zone',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Availability zone in which this host, resource, or service is located.',
     type: 'keyword',
@@ -834,6 +853,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'provider',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Name of the cloud provider.',
     type: 'keyword',
   },
@@ -846,6 +866,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'region',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Region in which this host, resource, or service is located.',
     type: 'keyword',
   },
@@ -859,6 +880,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'service.name',
     normalize: [],
+    otel: [
+      {
+        attribute: 'cloud.platform',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'The cloud service name.',
     type: 'keyword',
   },
@@ -1020,6 +1048,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'cpu.usage',
     normalize: [],
+    otel: [
+      {
+        metric: 'container.cpu.usage',
+        relation: 'metric',
+        stability: 'experimental',
+      },
+    ],
     scaling_factor: 1000,
     short: 'Percent CPU used, between 0 and 1.',
     type: 'scaled_float',
@@ -1054,6 +1089,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'id',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Unique container id.',
     type: 'keyword',
   },
@@ -1068,6 +1104,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'image.hash.all',
     normalize: ['array'],
+    otel: [
+      {
+        attribute: 'container.image.repo_digests',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'An array of digests of the image the container was built on.',
     type: 'keyword',
   },
@@ -1079,6 +1122,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'image.name',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Name of the image the container was built on.',
     type: 'keyword',
   },
@@ -1090,7 +1134,15 @@ export const EcsFlat = {
     level: 'extended',
     name: 'image.tag',
     normalize: ['array'],
+    otel: [
+      {
+        attribute: 'container.image.tags',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Container image tags.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'container.labels': {
@@ -1101,6 +1153,13 @@ export const EcsFlat = {
     name: 'labels',
     normalize: [],
     object_type: 'keyword',
+    otel: [
+      {
+        attribute: 'container.label',
+        relation: 'related',
+        stability: 'experimental',
+      },
+    ],
     short: 'Image labels.',
     type: 'object',
   },
@@ -1112,6 +1171,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'memory.usage',
     normalize: [],
+    otel: [
+      {
+        metric: 'container.memory.usage',
+        relation: 'metric',
+        stability: 'experimental',
+      },
+    ],
     scaling_factor: 1000,
     short: 'Percent memory used, between 0 and 1.',
     type: 'scaled_float',
@@ -1124,6 +1190,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'name',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Container name.',
     type: 'keyword',
   },
@@ -1158,6 +1225,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'runtime',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Runtime managing this container.',
     type: 'keyword',
   },
@@ -1181,6 +1249,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'dataset',
     normalize: [],
+    otel: [{ relation: 'na' }],
     short:
       'The field can contain anything that makes sense to signify the source of the data.',
     type: 'constant_keyword',
@@ -1194,6 +1263,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'namespace',
     normalize: [],
+    otel: [{ relation: 'na' }],
     short:
       'A user defined namespace. Namespaces are useful to allow grouping of data.',
     type: 'constant_keyword',
@@ -1207,6 +1277,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'type',
     normalize: [],
+    otel: [{ relation: 'na' }],
     short: 'An overarching type for the data stream.',
     type: 'constant_keyword',
   },
@@ -1219,6 +1290,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'address',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Destination network address.',
     type: 'keyword',
   },
@@ -1490,13 +1562,14 @@ export const EcsFlat = {
     level: 'core',
     name: 'port',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Port of the destination.',
     type: 'long',
   },
   'destination.registered_domain': {
     dashed_name: 'destination-registered-domain',
     description:
-      'The highest registered destination domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
+      'The highest registered destination domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
     example: 'example.com',
     flat_name: 'destination.registered_domain',
     ignore_above: 1024,
@@ -1523,7 +1596,7 @@ export const EcsFlat = {
   'destination.top_level_domain': {
     dashed_name: 'destination-top-level-domain',
     description:
-      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
+      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
     example: 'co.uk',
     flat_name: 'destination.top_level_domain',
     ignore_above: 1024,
@@ -1673,18 +1746,20 @@ export const EcsFlat = {
     normalize: ['array'],
     original_fieldset: 'user',
     short: 'Array of user roles at the time of the event.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'device.id': {
     dashed_name: 'device-id',
     description:
-      'The unique identifier of a device. The identifier must not change across application sessions but stay fixed for an instance of a (mobile) device. \nOn iOS, this value must be equal to the vendor identifier (https://developer.apple.com/documentation/uikit/uidevice/1620059-identifierforvendor). On Android, this value must be equal to the Firebase Installation ID or a globally unique UUID which is persisted across sessions in your application.\nFor GDPR and data protection law reasons this identifier should not carry information that would allow to identify a user.',
+      'The unique identifier of a device. The identifier must not change across application sessions but stay fixed for an instance of a (mobile) device.\nOn iOS, this value must be equal to the vendor identifier (https://developer.apple.com/documentation/uikit/uidevice/1620059-identifierforvendor). On Android, this value must be equal to the Firebase Installation ID or a globally unique UUID which is persisted across sessions in your application.\nFor GDPR and data protection law reasons this identifier should not carry information that would allow to identify a user.',
     example: '00000000-54b3-e7c7-0000-000046bffd97',
     flat_name: 'device.id',
     ignore_above: 1024,
     level: 'extended',
     name: 'id',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'The unique identifier of a device.',
     type: 'keyword',
   },
@@ -1697,6 +1772,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'manufacturer',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'The vendor name of the device manufacturer.',
     type: 'keyword',
   },
@@ -1709,6 +1785,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'model.identifier',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'The machine readable identifier of the device model.',
     type: 'keyword',
   },
@@ -1721,7 +1798,22 @@ export const EcsFlat = {
     level: 'extended',
     name: 'model.name',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'The human readable marketing name of the device model.',
+    type: 'keyword',
+  },
+  'device.serial_number': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'device-serial-number',
+    description:
+      'The unique serial number serves as a distinct identifier for each device, aiding in inventory management and device authentication.',
+    example: 'DJGAQS4CW5',
+    flat_name: 'device.serial_number',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'serial_number',
+    normalize: [],
+    short: 'Serial Number of the device',
     type: 'keyword',
   },
   'dll.code_signature.digest_algorithm': {
@@ -1749,6 +1841,20 @@ export const EcsFlat = {
     original_fieldset: 'code_signature',
     short: 'Boolean to capture if a signature is present.',
     type: 'boolean',
+  },
+  'dll.code_signature.flags': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'dll-code-signature-flags',
+    description: 'The flags used to sign the process.',
+    example: 570522385,
+    flat_name: 'dll.code_signature.flags',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'flags',
+    normalize: [],
+    original_fieldset: 'code_signature',
+    short: 'Code signing flags of the process',
+    type: 'keyword',
   },
   'dll.code_signature.signing_id': {
     dashed_name: 'dll-code-signature-signing-id',
@@ -1844,6 +1950,21 @@ export const EcsFlat = {
     short:
       'Boolean to capture if the digital signature is verified against the binary content.',
     type: 'boolean',
+  },
+  'dll.hash.cdhash': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'dll-hash-cdhash',
+    description:
+      'Code directory hash, utilized to uniquely identify and authenticate the integrity of the executable code.',
+    example: '3783b4052fd474dbe30676b45c329e7a6d44acd9',
+    flat_name: 'dll.hash.cdhash',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'cdhash',
+    normalize: [],
+    original_fieldset: 'hash',
+    short: 'The Code Directory (CD) hash of an executable.',
+    type: 'keyword',
   },
   'dll.hash.md5': {
     dashed_name: 'dll-hash-md5',
@@ -1942,6 +2063,32 @@ export const EcsFlat = {
     short: 'Name of the library.',
     type: 'keyword',
   },
+  'dll.origin_referrer_url': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'dll-origin-referrer-url',
+    description: 'The URL of the webpage that linked to the dll file.',
+    example: 'http://example.com/article1.html',
+    flat_name: 'dll.origin_referrer_url',
+    ignore_above: 8192,
+    level: 'extended',
+    name: 'origin_referrer_url',
+    normalize: [],
+    short: 'The URL of the webpage that linked to the dll file.',
+    type: 'keyword',
+  },
+  'dll.origin_url': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'dll-origin-url',
+    description: 'The URL where the dll file is hosted.',
+    example: 'http://example.com/files/example.dll',
+    flat_name: 'dll.origin_url',
+    ignore_above: 8192,
+    level: 'extended',
+    name: 'origin_url',
+    normalize: [],
+    short: 'The URL where the dll file is hosted.',
+    type: 'keyword',
+  },
   'dll.path': {
     dashed_name: 'dll-path',
     description: 'Full file path of the library.',
@@ -2009,7 +2156,7 @@ export const EcsFlat = {
   'dll.pe.go_import_hash': {
     dashed_name: 'dll-pe-go-import-hash',
     description:
-      'A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).',
+      'A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma',
     example: '10bddcb4cee42080f76c88d9ff964491',
     flat_name: 'dll.pe.go_import_hash',
     ignore_above: 1024,
@@ -2335,6 +2482,7 @@ export const EcsFlat = {
     name: 'header_flags',
     normalize: ['array'],
     short: 'Array of DNS header flags.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'dns.id': {
@@ -2387,13 +2535,14 @@ export const EcsFlat = {
     level: 'extended',
     name: 'question.name',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'The name being queried.',
     type: 'keyword',
   },
   'dns.question.registered_domain': {
     dashed_name: 'dns-question-registered-domain',
     description:
-      'The highest registered domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
+      'The highest registered domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
     example: 'example.com',
     flat_name: 'dns.question.registered_domain',
     ignore_above: 1024,
@@ -2419,7 +2568,7 @@ export const EcsFlat = {
   'dns.question.top_level_domain': {
     dashed_name: 'dns-question-top-level-domain',
     description:
-      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
+      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
     example: 'co.uk',
     flat_name: 'dns.question.top_level_domain',
     ignore_above: 1024,
@@ -2488,6 +2637,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'version',
     normalize: [],
+    otel: [{ relation: 'na' }],
     required: true,
     short: 'ECS version this event conforms to.',
     type: 'keyword',
@@ -2513,6 +2663,21 @@ export const EcsFlat = {
     name: 'attachments.file.extension',
     normalize: [],
     short: 'Attachment file extension.',
+    type: 'keyword',
+  },
+  'email.attachments.file.hash.cdhash': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'email-attachments-file-hash-cdhash',
+    description:
+      'Code directory hash, utilized to uniquely identify and authenticate the integrity of the executable code.',
+    example: '3783b4052fd474dbe30676b45c329e7a6d44acd9',
+    flat_name: 'email.attachments.file.hash.cdhash',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'cdhash',
+    normalize: [],
+    original_fieldset: 'hash',
+    short: 'The Code Directory (CD) hash of an executable.',
     type: 'keyword',
   },
   'email.attachments.file.hash.md5': {
@@ -2645,6 +2810,7 @@ export const EcsFlat = {
     name: 'bcc.address',
     normalize: ['array'],
     short: 'Email address of BCC recipient',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'email.cc.address': {
@@ -2657,6 +2823,7 @@ export const EcsFlat = {
     name: 'cc.address',
     normalize: ['array'],
     short: 'Email address of CC recipient',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'email.content_type': {
@@ -2708,6 +2875,7 @@ export const EcsFlat = {
     name: 'from.address',
     normalize: ['array'],
     short: "The sender's email address.",
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'email.local_id': {
@@ -2758,6 +2926,7 @@ export const EcsFlat = {
     name: 'reply_to.address',
     normalize: ['array'],
     short: 'Address replies should be delivered to.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'email.sender.address': {
@@ -2770,6 +2939,7 @@ export const EcsFlat = {
     name: 'sender.address',
     normalize: [],
     short: 'Address of the message sender.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'email.subject': {
@@ -2801,6 +2971,7 @@ export const EcsFlat = {
     name: 'to.address',
     normalize: ['array'],
     short: 'Email address of recipient',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'email.x_mailer': {
@@ -2845,6 +3016,13 @@ export const EcsFlat = {
     level: 'core',
     name: 'message',
     normalize: [],
+    otel: [
+      {
+        attribute: 'exception.message',
+        relation: 'equivalent',
+        stability: 'stable',
+      },
+    ],
     short: 'Error message.',
     type: 'match_only_text',
   },
@@ -2862,6 +3040,13 @@ export const EcsFlat = {
     ],
     name: 'stack_trace',
     normalize: [],
+    otel: [
+      {
+        attribute: 'exception.stacktrace',
+        relation: 'equivalent',
+        stability: 'stable',
+      },
+    ],
     short: 'The stack trace of this error in plain text.',
     type: 'wildcard',
   },
@@ -2875,6 +3060,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'type',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short:
       'The type of the error, for example the class name of the exception.',
     type: 'keyword',
@@ -3086,6 +3272,7 @@ export const EcsFlat = {
     name: 'category',
     normalize: ['array'],
     short: 'Event category. The second categorization field in the hierarchy.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'event.code': {
@@ -3200,7 +3387,6 @@ export const EcsFlat = {
         name: 'alert',
       },
       {
-        beta: 'This event categorization value is beta and subject to change.',
         description:
           'This value indicates events whose primary purpose is to store an inventory of assets/entities and their attributes. Assets/entities are objects (such as users and hosts) that are expected to be subjects of detailed analysis within the system.\nExamples include lists of user identities or accounts ingested from directory services such as Active Directory (AD), inventory of hosts pulled from configuration management databases (CMDB), and lists of cloud storage buckets pulled from cloud provider APIs.\nThis value is used by Elastic Security for asset management solutions. `event.kind: asset` is not used for normal system events or logs that are coming from an asset/entity, nor is it used for system events or logs coming from a directory or CMDB system.',
         name: 'asset',
@@ -3516,6 +3702,7 @@ export const EcsFlat = {
     name: 'type',
     normalize: ['array'],
     short: 'Event type. The third categorization field in the hierarchy.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'event.url': {
@@ -3525,7 +3712,7 @@ export const EcsFlat = {
     example:
       'https://mysystem.example.com/alert/5271dedb-f5b0-4218-87f0-4ac4870a38fe',
     flat_name: 'event.url',
-    ignore_above: 1024,
+    ignore_above: 2083,
     level: 'extended',
     name: 'url',
     normalize: [],
@@ -3539,6 +3726,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'coldstart',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Boolean value indicating a cold start of a function.',
     type: 'boolean',
   },
@@ -3551,6 +3739,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'execution',
     normalize: [],
+    otel: [
+      {
+        attribute: 'faas.invocation_id',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'The execution ID of the current function execution.',
     type: 'keyword',
   },
@@ -3576,6 +3771,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'name',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'The name of a serverless function.',
     type: 'keyword',
   },
@@ -3601,6 +3797,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'trigger.type',
     normalize: [],
+    otel: [
+      {
+        attribute: 'faas.trigger',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'The trigger for the function execution.',
     type: 'keyword',
   },
@@ -3613,6 +3816,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'version',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'The version of a serverless function.',
     type: 'keyword',
   },
@@ -3624,6 +3828,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'accessed',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Last time the file was accessed.',
     type: 'date',
   },
@@ -3637,7 +3842,9 @@ export const EcsFlat = {
     level: 'extended',
     name: 'attributes',
     normalize: ['array'],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Array of file attributes.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'file.code_signature.digest_algorithm': {
@@ -3665,6 +3872,20 @@ export const EcsFlat = {
     original_fieldset: 'code_signature',
     short: 'Boolean to capture if a signature is present.',
     type: 'boolean',
+  },
+  'file.code_signature.flags': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'file-code-signature-flags',
+    description: 'The flags used to sign the process.',
+    example: 570522385,
+    flat_name: 'file.code_signature.flags',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'flags',
+    normalize: [],
+    original_fieldset: 'code_signature',
+    short: 'Code signing flags of the process',
+    type: 'keyword',
   },
   'file.code_signature.signing_id': {
     dashed_name: 'file-code-signature-signing-id',
@@ -3769,6 +3990,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'created',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'File creation time.',
     type: 'date',
   },
@@ -3780,6 +4002,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'ctime',
     normalize: [],
+    otel: [
+      {
+        attribute: 'file.changed',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Last time the file attributes or metadata changed.',
     type: 'date',
   },
@@ -3805,6 +4034,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'directory',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Directory where the file is located.',
     type: 'keyword',
   },
@@ -3886,7 +4116,7 @@ export const EcsFlat = {
   'file.elf.go_import_hash': {
     dashed_name: 'file-elf-go-import-hash',
     description:
-      'A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).',
+      'A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma',
     example: '10bddcb4cee42080f76c88d9ff964491',
     flat_name: 'file.elf.go_import_hash',
     ignore_above: 1024,
@@ -4297,6 +4527,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'extension',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'File extension, excluding the leading dot.',
     type: 'keyword',
   },
@@ -4310,6 +4541,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'fork_name',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'A fork is additional data associated with a filesystem object.',
     type: 'keyword',
   },
@@ -4322,6 +4554,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'gid',
     normalize: [],
+    otel: [
+      {
+        attribute: 'file.group.id',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Primary group ID (GID) of the file.',
     type: 'keyword',
   },
@@ -4334,7 +4573,29 @@ export const EcsFlat = {
     level: 'extended',
     name: 'group',
     normalize: [],
+    otel: [
+      {
+        attribute: 'file.group.name',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Primary group name of the file.',
+    type: 'keyword',
+  },
+  'file.hash.cdhash': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'file-hash-cdhash',
+    description:
+      'Code directory hash, utilized to uniquely identify and authenticate the integrity of the executable code.',
+    example: '3783b4052fd474dbe30676b45c329e7a6d44acd9',
+    flat_name: 'file.hash.cdhash',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'cdhash',
+    normalize: [],
+    original_fieldset: 'hash',
+    short: 'The Code Directory (CD) hash of an executable.',
     type: 'keyword',
   },
   'file.hash.md5': {
@@ -4430,13 +4691,14 @@ export const EcsFlat = {
     level: 'extended',
     name: 'inode',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Inode representing the file in the filesystem.',
     type: 'keyword',
   },
   'file.macho.go_import_hash': {
     dashed_name: 'file-macho-go-import-hash',
     description:
-      'A hash of the Go language imports in a Mach-O file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).',
+      'A hash of the Go language imports in a Mach-O file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma',
     example: '10bddcb4cee42080f76c88d9ff964491',
     flat_name: 'file.macho.go_import_hash',
     ignore_above: 1024,
@@ -4640,7 +4902,7 @@ export const EcsFlat = {
   'file.mime_type': {
     dashed_name: 'file-mime-type',
     description:
-      'MIME type should identify the format of the file or stream of bytes using https://www.iana.org/assignments/media-types/media-types.xhtml[IANA official types], where possible. When more than one type is applicable, the most specific type should be used.',
+      'MIME type should identify the format of the file or stream of bytes using IANA official types: https://www.iana.org/assignments/media-types/media-types.xhtml, where possible. When more than one type is applicable, the most specific type should be used.',
     flat_name: 'file.mime_type',
     ignore_above: 1024,
     level: 'extended',
@@ -4658,6 +4920,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'mode',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Mode of the file in octal representation.',
     type: 'keyword',
   },
@@ -4668,6 +4931,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'mtime',
     normalize: [],
+    otel: [
+      {
+        attribute: 'file.modified',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Last time the file content was modified.',
     type: 'date',
   },
@@ -4681,7 +4951,34 @@ export const EcsFlat = {
     level: 'extended',
     name: 'name',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Name of the file including the extension, without the directory.',
+    type: 'keyword',
+  },
+  'file.origin_referrer_url': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'file-origin-referrer-url',
+    description: 'The URL of the webpage that linked to the file.',
+    example: 'http://example.com/article1.html',
+    flat_name: 'file.origin_referrer_url',
+    ignore_above: 8192,
+    level: 'extended',
+    name: 'origin_referrer_url',
+    normalize: [],
+    short: 'The URL of the webpage that linked to the file.',
+    type: 'keyword',
+  },
+  'file.origin_url': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'file-origin-url',
+    description: 'The URL where the file is hosted.',
+    example: 'http://example.com/imgs/article1_img1.jpg',
+    flat_name: 'file.origin_url',
+    ignore_above: 8192,
+    level: 'extended',
+    name: 'origin_url',
+    normalize: [],
+    short: 'The URL where the file is hosted.',
     type: 'keyword',
   },
   'file.owner': {
@@ -4693,6 +4990,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'owner',
     normalize: [],
+    otel: [
+      {
+        attribute: 'file.owner.name',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: "File owner's username.",
     type: 'keyword',
   },
@@ -4709,6 +5013,7 @@ export const EcsFlat = {
     ],
     name: 'path',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Full path to the file, including the file name.',
     type: 'keyword',
   },
@@ -4767,7 +5072,7 @@ export const EcsFlat = {
   'file.pe.go_import_hash': {
     dashed_name: 'file-pe-go-import-hash',
     description:
-      'A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).',
+      'A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma',
     example: '10bddcb4cee42080f76c88d9ff964491',
     flat_name: 'file.pe.go_import_hash',
     ignore_above: 1024,
@@ -5017,6 +5322,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'size',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'File size in bytes.',
     type: 'long',
   },
@@ -5035,6 +5341,13 @@ export const EcsFlat = {
     ],
     name: 'target_path',
     normalize: [],
+    otel: [
+      {
+        attribute: 'file.symbolic_link.target_path',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Target path for symlinks.',
     type: 'keyword',
   },
@@ -5060,6 +5373,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'uid',
     normalize: [],
+    otel: [
+      {
+        attribute: 'file.owner.id',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'The user ID (UID) or security identifier (SID) of the file owner.',
     type: 'keyword',
   },
@@ -5254,7 +5574,7 @@ export const EcsFlat = {
   'file.x509.serial_number': {
     dashed_name: 'file-x509-serial-number',
     description:
-      'Unique serial number issued by the certificate authority. For consistency, if this value is alphanumeric, it should be formatted without colons and uppercase characters.',
+      'Unique serial number issued by the certificate authority. For consistency, this must be encoded in base 16 and formatted without colons and uppercase characters.',
     example: '55FBB9C7DEBF09809D12CCAA',
     flat_name: 'file.x509.serial_number',
     ignore_above: 1024,
@@ -5426,11 +5746,17 @@ export const EcsFlat = {
     level: 'core',
     name: 'architecture',
     normalize: [],
+    otel: [
+      {
+        attribute: 'host.arch',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Operating system architecture.',
     type: 'keyword',
   },
   'host.boot.id': {
-    beta: 'This field is beta and subject to change.',
     dashed_name: 'host-boot-id',
     description:
       'Linux boot uuid taken from /proc/sys/kernel/random/boot_id. Note the boot_id value from /proc may or may not be the same in containers as on the host. Some container runtimes will bind mount a new boot_id value onto the proc file in each container.',
@@ -5451,6 +5777,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'cpu.usage',
     normalize: [],
+    otel: [
+      {
+        metric: 'system.cpu.utilization',
+        relation: 'metric',
+        stability: 'experimental',
+      },
+    ],
     scaling_factor: 1000,
     short: 'Percent CPU used, between 0 and 1.',
     type: 'scaled_float',
@@ -5463,6 +5796,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'disk.read.bytes',
     normalize: [],
+    otel: [
+      {
+        metric: 'system.disk.io',
+        relation: 'metric',
+        stability: 'experimental',
+      },
+    ],
     short: 'The number of bytes read by all disks.',
     type: 'long',
   },
@@ -5474,6 +5814,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'disk.write.bytes',
     normalize: [],
+    otel: [
+      {
+        metric: 'system.disk.io',
+        relation: 'metric',
+        stability: 'experimental',
+      },
+    ],
     short: 'The number of bytes written on all disks.',
     type: 'long',
   },
@@ -5655,6 +6002,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'id',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Unique host id.',
     type: 'keyword',
   },
@@ -5665,7 +6013,9 @@ export const EcsFlat = {
     level: 'core',
     name: 'ip',
     normalize: ['array'],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Host ip addresses.',
+    synthetic_source_keep: 'none',
     type: 'ip',
   },
   'host.mac': {
@@ -5678,8 +6028,10 @@ export const EcsFlat = {
     level: 'core',
     name: 'mac',
     normalize: ['array'],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     pattern: '^[A-F0-9]{2}(-[A-F0-9]{2}){5,}$',
     short: 'Host MAC addresses.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'host.name': {
@@ -5691,6 +6043,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'name',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Name of the host.',
     type: 'keyword',
   },
@@ -5702,6 +6055,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'network.egress.bytes',
     normalize: [],
+    otel: [
+      {
+        metric: 'system.network.io',
+        relation: 'metric',
+        stability: 'experimental',
+      },
+    ],
     short: 'The number of bytes sent on all network interfaces.',
     type: 'long',
   },
@@ -5713,6 +6073,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'network.egress.packets',
     normalize: [],
+    otel: [
+      {
+        metric: 'system.network.packets',
+        relation: 'metric',
+        stability: 'experimental',
+      },
+    ],
     short: 'The number of packets sent on all network interfaces.',
     type: 'long',
   },
@@ -5724,6 +6091,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'network.ingress.bytes',
     normalize: [],
+    otel: [
+      {
+        metric: 'system.network.io',
+        relation: 'metric',
+        stability: 'experimental',
+      },
+    ],
     short: 'The number of bytes received on all network interfaces.',
     type: 'long',
   },
@@ -5735,6 +6109,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'network.ingress.packets',
     normalize: [],
+    otel: [
+      {
+        metric: 'system.network.packets',
+        relation: 'metric',
+        stability: 'experimental',
+      },
+    ],
     short: 'The number of packets received on all network interfaces.',
     type: 'long',
   },
@@ -5839,7 +6220,6 @@ export const EcsFlat = {
     type: 'keyword',
   },
   'host.pid_ns_ino': {
-    beta: 'This field is beta and subject to change.',
     dashed_name: 'host-pid-ns-ino',
     description:
       'This is the inode number of the namespace in the namespace file system (nsfs). Unsigned int inum in include/linux/ns_common.h.',
@@ -5945,6 +6325,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'type',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Type of host.',
     type: 'keyword',
   },
@@ -5956,6 +6337,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'uptime',
     normalize: [],
+    otel: [
+      {
+        metric: 'system.uptime',
+        relation: 'metric',
+        stability: 'experimental',
+      },
+    ],
     short: 'Seconds the host has been up.',
     type: 'long',
   },
@@ -5968,6 +6356,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'request.body.bytes',
     normalize: [],
+    otel: [
+      {
+        attribute: 'http.request.body.size',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Size in bytes of the request body.',
     type: 'long',
   },
@@ -5998,6 +6393,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'request.bytes',
     normalize: [],
+    otel: [
+      {
+        attribute: 'http.request.size',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Total size in bytes of the request (body and headers).',
     type: 'long',
   },
@@ -6024,6 +6426,19 @@ export const EcsFlat = {
     level: 'extended',
     name: 'request.method',
     normalize: [],
+    otel: [
+      {
+        attribute: 'http.request.method_original',
+        relation: 'equivalent',
+        stability: 'stable',
+      },
+      {
+        attribute: 'http.request.method',
+        note: "`http.request.method` in SemConv is the known, normalized, upper case value of the request method, other than the ECS' `http.request.method` that retains casing from the original event.\n",
+        relation: 'conflict',
+        stability: 'stable',
+      },
+    ],
     short: 'HTTP request method.',
     type: 'keyword',
   },
@@ -6061,6 +6476,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'response.body.bytes',
     normalize: [],
+    otel: [
+      {
+        attribute: 'http.response.body.size',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Size in bytes of the response body.',
     type: 'long',
   },
@@ -6091,6 +6513,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'response.bytes',
     normalize: [],
+    otel: [
+      {
+        attribute: 'http.response.size',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Total size in bytes of the response (body and headers).',
     type: 'long',
   },
@@ -6116,6 +6545,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'response.status_code',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short: 'HTTP response status code.',
     type: 'long',
   },
@@ -6128,6 +6558,19 @@ export const EcsFlat = {
     level: 'extended',
     name: 'version',
     normalize: [],
+    otel: [
+      {
+        attribute: 'network.protocol.name',
+        relation: 'related',
+        stability: 'stable',
+      },
+      {
+        attribute: 'network.protocol.version',
+        note: 'In OTel SemConv, `network.protocol.version` specifies the HTTP version if the value of `network.protocol.name` is `http`.\n',
+        relation: 'related',
+        stability: 'stable',
+      },
+    ],
     short: 'HTTP version.',
     type: 'keyword',
   },
@@ -6141,6 +6584,18 @@ export const EcsFlat = {
     name: 'labels',
     normalize: [],
     object_type: 'keyword',
+    otel: [
+      {
+        attribute: 'k8s.pod.label',
+        relation: 'related',
+        stability: 'experimental',
+      },
+      {
+        attribute: 'container.label',
+        relation: 'related',
+        stability: 'experimental',
+      },
+    ],
     short: 'Custom key/value pairs.',
     type: 'object',
   },
@@ -6154,6 +6609,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'file.path',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Full path to the log file this event came from.',
     type: 'keyword',
   },
@@ -6167,6 +6623,9 @@ export const EcsFlat = {
     level: 'core',
     name: 'level',
     normalize: [],
+    otel: [
+      { otlp_field: 'severity_text', relation: 'otlp', stability: 'stable' },
+    ],
     short: 'Log level of the log event.',
     type: 'keyword',
   },
@@ -6381,6 +6840,14 @@ export const EcsFlat = {
     level: 'core',
     name: 'message',
     normalize: [],
+    otel: [
+      {
+        note: 'The `body` in OTLP is of type `Any` and can be either an unstructured log message or a structured event.',
+        otlp_field: 'body',
+        relation: 'otlp',
+        stability: 'stable',
+      },
+    ],
     short: 'Log message optimized for viewing in a log viewer.',
     type: 'match_only_text',
   },
@@ -6540,6 +7007,13 @@ export const EcsFlat = {
     level: 'core',
     name: 'protocol',
     normalize: [],
+    otel: [
+      {
+        attribute: 'network.protocol.name',
+        relation: 'equivalent',
+        stability: 'stable',
+      },
+    ],
     short: 'Application protocol name.',
     type: 'keyword',
   },
@@ -6553,6 +7027,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'transport',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short: 'Protocol Name corresponding to the field `iana_number`.',
     type: 'keyword',
   },
@@ -6566,6 +7041,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'type',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short:
       'In the OSI Model this would be the Network Layer. ipv4, ipv6, ipsec, pim, etc',
     type: 'keyword',
@@ -6941,6 +7417,7 @@ export const EcsFlat = {
     name: 'ip',
     normalize: ['array'],
     short: 'IP addresses of the observer.',
+    synthetic_source_keep: 'none',
     type: 'ip',
   },
   'observer.mac': {
@@ -6955,6 +7432,7 @@ export const EcsFlat = {
     normalize: ['array'],
     pattern: '^[A-F0-9]{2}(-[A-F0-9]{2}){5,}$',
     short: 'MAC addresses of the observer.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'observer.name': {
@@ -7229,6 +7707,7 @@ export const EcsFlat = {
     name: 'resource.annotation',
     normalize: ['array'],
     short: 'The list of annotations added to the resource.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'orchestrator.resource.id': {
@@ -7252,6 +7731,7 @@ export const EcsFlat = {
     normalize: ['array'],
     short:
       'IP address assigned to the resource associated with the event being observed.',
+    synthetic_source_keep: 'none',
     type: 'ip',
   },
   'orchestrator.resource.label': {
@@ -7264,6 +7744,7 @@ export const EcsFlat = {
     name: 'resource.label',
     normalize: ['array'],
     short: 'The list of labels added to the resource.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'orchestrator.resource.name': {
@@ -7517,6 +7998,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'args',
     normalize: ['array'],
+    otel: [
+      {
+        attribute: 'process.command_args',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Array of process arguments.',
     type: 'keyword',
   },
@@ -7529,6 +8017,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'args_count',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Length of the process.args array.',
     type: 'long',
   },
@@ -7557,6 +8046,20 @@ export const EcsFlat = {
     original_fieldset: 'code_signature',
     short: 'Boolean to capture if a signature is present.',
     type: 'boolean',
+  },
+  'process.code_signature.flags': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'process-code-signature-flags',
+    description: 'The flags used to sign the process.',
+    example: 570522385,
+    flat_name: 'process.code_signature.flags',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'flags',
+    normalize: [],
+    original_fieldset: 'code_signature',
+    short: 'Code signing flags of the process',
+    type: 'keyword',
   },
   'process.code_signature.signing_id': {
     dashed_name: 'process-code-signature-signing-id',
@@ -7669,6 +8172,7 @@ export const EcsFlat = {
     ],
     name: 'command_line',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Full command line that started the process.',
     type: 'wildcard',
   },
@@ -7737,7 +8241,7 @@ export const EcsFlat = {
   'process.elf.go_import_hash': {
     dashed_name: 'process-elf-go-import-hash',
     description:
-      'A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).',
+      'A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma',
     example: '10bddcb4cee42080f76c88d9ff964491',
     flat_name: 'process.elf.go_import_hash',
     ignore_above: 1024,
@@ -8758,7 +9262,6 @@ export const EcsFlat = {
     type: 'keyword',
   },
   'process.env_vars': {
-    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-env-vars',
     description:
       'Array of environment variable bindings. Captured from a snapshot of the environment at the time of execution.\nMay be filtered to protect sensitive information.',
@@ -8769,6 +9272,7 @@ export const EcsFlat = {
     name: 'env_vars',
     normalize: ['array'],
     short: 'Array of environment variable bindings.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'process.executable': {
@@ -8787,6 +9291,13 @@ export const EcsFlat = {
     ],
     name: 'executable',
     normalize: [],
+    otel: [
+      {
+        attribute: 'process.executable.path',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Absolute path to the process executable.',
     type: 'keyword',
   },
@@ -8801,6 +9312,30 @@ export const EcsFlat = {
     normalize: [],
     short: 'The exit code of the process.',
     type: 'long',
+  },
+  'process.group.id': {
+    dashed_name: 'process-group-id',
+    description: 'Unique identifier for the group on the system/platform.',
+    flat_name: 'process.group.id',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'id',
+    normalize: [],
+    original_fieldset: 'group',
+    short: 'Unique identifier for the group on the system/platform.',
+    type: 'keyword',
+  },
+  'process.group.name': {
+    dashed_name: 'process-group-name',
+    description: 'Name of the group.',
+    flat_name: 'process.group.name',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'name',
+    normalize: [],
+    original_fieldset: 'group',
+    short: 'Name of the group.',
+    type: 'keyword',
   },
   'process.group_leader.args': {
     dashed_name: 'process-group-leader-args',
@@ -8950,6 +9485,7 @@ export const EcsFlat = {
     name: 'pid',
     normalize: [],
     original_fieldset: 'process',
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Process id.',
     type: 'long',
   },
@@ -9222,6 +9758,21 @@ export const EcsFlat = {
     short: 'The working directory of the process.',
     type: 'keyword',
   },
+  'process.hash.cdhash': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'process-hash-cdhash',
+    description:
+      'Code directory hash, utilized to uniquely identify and authenticate the integrity of the executable code.',
+    example: '3783b4052fd474dbe30676b45c329e7a6d44acd9',
+    flat_name: 'process.hash.cdhash',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'cdhash',
+    normalize: [],
+    original_fieldset: 'hash',
+    short: 'The Code Directory (CD) hash of an executable.',
+    type: 'keyword',
+  },
   'process.hash.md5': {
     dashed_name: 'process-hash-md5',
     description: 'MD5 hash.',
@@ -9315,11 +9866,11 @@ export const EcsFlat = {
     level: 'extended',
     name: 'interactive',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Whether the process is connected to an interactive shell.',
     type: 'boolean',
   },
   'process.io': {
-    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io',
     description:
       'A chunk of input or output (IO) from a single process.\nThis field only appears on the top level process object, which is the process that wrote the output or read the input.',
@@ -9331,7 +9882,6 @@ export const EcsFlat = {
     type: 'object',
   },
   'process.io.bytes_skipped': {
-    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-bytes-skipped',
     description:
       'An array of byte offsets and lengths denoting where IO data has been skipped.',
@@ -9344,7 +9894,6 @@ export const EcsFlat = {
     type: 'object',
   },
   'process.io.bytes_skipped.length': {
-    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-bytes-skipped-length',
     description: 'The length of bytes skipped.',
     flat_name: 'process.io.bytes_skipped.length',
@@ -9355,7 +9904,6 @@ export const EcsFlat = {
     type: 'long',
   },
   'process.io.bytes_skipped.offset': {
-    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-bytes-skipped-offset',
     description:
       "The byte offset into this event's io.text (or io.bytes in the future) where length bytes were skipped.",
@@ -9368,7 +9916,6 @@ export const EcsFlat = {
     type: 'long',
   },
   'process.io.max_bytes_per_process_exceeded': {
-    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-max-bytes-per-process-exceeded',
     description:
       'If true, the process producing the output has exceeded the max_kilobytes_per_process configuration setting.',
@@ -9381,7 +9928,6 @@ export const EcsFlat = {
     type: 'boolean',
   },
   'process.io.text': {
-    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-text',
     description:
       'A chunk of output or input sanitized to UTF-8.\nBest efforts are made to ensure complete lines are captured in these events. Assumptions should NOT be made that multiple lines will appear in the same event. TTY output may contain terminal control codes such as for cursor movement, so some string queries may not match due to terminal codes inserted between characters of a word.',
@@ -9393,7 +9939,6 @@ export const EcsFlat = {
     type: 'wildcard',
   },
   'process.io.total_bytes_captured': {
-    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-total-bytes-captured',
     description: 'The total number of bytes captured in this event.',
     flat_name: 'process.io.total_bytes_captured',
@@ -9404,7 +9949,6 @@ export const EcsFlat = {
     type: 'long',
   },
   'process.io.total_bytes_skipped': {
-    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-total-bytes-skipped',
     description:
       'The total number of bytes that were not captured due to implementation restrictions such as buffer size limits. Implementors should strive to ensure this value is always zero',
@@ -9417,7 +9961,6 @@ export const EcsFlat = {
     type: 'long',
   },
   'process.io.type': {
-    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-io-type',
     description:
       "The type of object on which the IO action (read or write) was taken.\nCurrently only 'tty' is supported. Other types may be added in the future for 'file' and 'socket' support.",
@@ -9433,7 +9976,7 @@ export const EcsFlat = {
   'process.macho.go_import_hash': {
     dashed_name: 'process-macho-go-import-hash',
     description:
-      'A hash of the Go language imports in a Mach-O file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).',
+      'A hash of the Go language imports in a Mach-O file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma',
     example: '10bddcb4cee42080f76c88d9ff964491',
     flat_name: 'process.macho.go_import_hash',
     ignore_above: 1024,
@@ -9702,6 +10245,20 @@ export const EcsFlat = {
     short: 'Boolean to capture if a signature is present.',
     type: 'boolean',
   },
+  'process.parent.code_signature.flags': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'process-parent-code-signature-flags',
+    description: 'The flags used to sign the process.',
+    example: 570522385,
+    flat_name: 'process.parent.code_signature.flags',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'flags',
+    normalize: [],
+    original_fieldset: 'code_signature',
+    short: 'Code signing flags of the process',
+    type: 'keyword',
+  },
   'process.parent.code_signature.signing_id': {
     dashed_name: 'process-parent-code-signature-signing-id',
     description:
@@ -9882,7 +10439,7 @@ export const EcsFlat = {
   'process.parent.elf.go_import_hash': {
     dashed_name: 'process-parent-elf-go-import-hash',
     description:
-      'A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).',
+      'A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma',
     example: '10bddcb4cee42080f76c88d9ff964491',
     flat_name: 'process.parent.elf.go_import_hash',
     ignore_above: 1024,
@@ -10419,6 +10976,21 @@ export const EcsFlat = {
     short: 'Virtual process id.',
     type: 'long',
   },
+  'process.parent.hash.cdhash': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'process-parent-hash-cdhash',
+    description:
+      'Code directory hash, utilized to uniquely identify and authenticate the integrity of the executable code.',
+    example: '3783b4052fd474dbe30676b45c329e7a6d44acd9',
+    flat_name: 'process.parent.hash.cdhash',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'cdhash',
+    normalize: [],
+    original_fieldset: 'hash',
+    short: 'The Code Directory (CD) hash of an executable.',
+    type: 'keyword',
+  },
   'process.parent.hash.md5': {
     dashed_name: 'process-parent-hash-md5',
     description: 'MD5 hash.',
@@ -10519,7 +11091,7 @@ export const EcsFlat = {
   'process.parent.macho.go_import_hash': {
     dashed_name: 'process-parent-macho-go-import-hash',
     description:
-      'A hash of the Go language imports in a Mach-O file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).',
+      'A hash of the Go language imports in a Mach-O file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma',
     example: '10bddcb4cee42080f76c88d9ff964491',
     flat_name: 'process.parent.macho.go_import_hash',
     ignore_above: 1024,
@@ -10795,7 +11367,7 @@ export const EcsFlat = {
   'process.parent.pe.go_import_hash': {
     dashed_name: 'process-parent-pe-go-import-hash',
     description:
-      'A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).',
+      'A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma',
     example: '10bddcb4cee42080f76c88d9ff964491',
     flat_name: 'process.parent.pe.go_import_hash',
     ignore_above: 1024,
@@ -11036,20 +11608,6 @@ export const EcsFlat = {
       'PE Section List virtual size. This is always the same as `physical_size`.',
     type: 'long',
   },
-  'process.parent.pgid': {
-    dashed_name: 'process-parent-pgid',
-    description:
-      'Deprecated for removal in next major version release. This field is superseded by `process.group_leader.pid`.\nIdentifier of the group of processes the process belongs to.',
-    flat_name: 'process.parent.pgid',
-    format: 'string',
-    level: 'extended',
-    name: 'pgid',
-    normalize: [],
-    original_fieldset: 'process',
-    short:
-      'Deprecated identifier of the group of processes the process belongs to.',
-    type: 'long',
-  },
   'process.parent.pid': {
     dashed_name: 'process-parent-pid',
     description: 'Process id.',
@@ -11226,6 +11784,7 @@ export const EcsFlat = {
     original_fieldset: 'process',
     pattern: '^(CAP_[A-Z_]+|\\d+)$',
     short: 'Array of capabilities used for permission checks.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'process.parent.thread.capabilities.permitted': {
@@ -11241,6 +11800,7 @@ export const EcsFlat = {
     original_fieldset: 'process',
     pattern: '^(CAP_[A-Z_]+|\\d+)$',
     short: 'Array of capabilities a thread could assume.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'process.parent.thread.id': {
@@ -11461,7 +12021,7 @@ export const EcsFlat = {
   'process.pe.go_import_hash': {
     dashed_name: 'process-pe-go-import-hash',
     description:
-      'A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).',
+      'A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma',
     example: '10bddcb4cee42080f76c88d9ff964491',
     flat_name: 'process.pe.go_import_hash',
     ignore_above: 1024,
@@ -11702,19 +12262,6 @@ export const EcsFlat = {
       'PE Section List virtual size. This is always the same as `physical_size`.',
     type: 'long',
   },
-  'process.pgid': {
-    dashed_name: 'process-pgid',
-    description:
-      'Deprecated for removal in next major version release. This field is superseded by `process.group_leader.pid`.\nIdentifier of the group of processes the process belongs to.',
-    flat_name: 'process.pgid',
-    format: 'string',
-    level: 'extended',
-    name: 'pgid',
-    normalize: [],
-    short:
-      'Deprecated identifier of the group of processes the process belongs to.',
-    type: 'long',
-  },
   'process.pid': {
     dashed_name: 'process-pid',
     description: 'Process id.',
@@ -11724,6 +12271,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'pid',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Process id.',
     type: 'long',
   },
@@ -11808,6 +12356,7 @@ export const EcsFlat = {
     name: 'id',
     normalize: [],
     original_fieldset: 'user',
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Unique identifier of the user.',
     type: 'keyword',
   },
@@ -11828,6 +12377,7 @@ export const EcsFlat = {
     name: 'name',
     normalize: [],
     original_fieldset: 'user',
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Short name or login of the user.',
     type: 'keyword',
   },
@@ -11865,6 +12415,7 @@ export const EcsFlat = {
     name: 'id',
     normalize: [],
     original_fieldset: 'user',
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Unique identifier of the user.',
     type: 'keyword',
   },
@@ -11885,6 +12436,7 @@ export const EcsFlat = {
     name: 'name',
     normalize: [],
     original_fieldset: 'user',
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Short name or login of the user.',
     type: 'keyword',
   },
@@ -12142,6 +12694,7 @@ export const EcsFlat = {
     name: 'pid',
     normalize: [],
     original_fieldset: 'process',
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Process id.',
     type: 'long',
   },
@@ -12461,6 +13014,7 @@ export const EcsFlat = {
     normalize: ['array'],
     pattern: '^(CAP_[A-Z_]+|\\d+)$',
     short: 'Array of capabilities used for permission checks.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'process.thread.capabilities.permitted': {
@@ -12475,6 +13029,7 @@ export const EcsFlat = {
     normalize: ['array'],
     pattern: '^(CAP_[A-Z_]+|\\d+)$',
     short: 'Array of capabilities a thread could assume.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'process.thread.id': {
@@ -12517,6 +13072,7 @@ export const EcsFlat = {
     ],
     name: 'title',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Process title.',
     type: 'keyword',
   },
@@ -12556,7 +13112,6 @@ export const EcsFlat = {
     type: 'long',
   },
   'process.tty.columns': {
-    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-tty-columns',
     description:
       "The number of character columns per line. e.g terminal width\nTerminal sizes can change, so this value reflects the maximum value for a given IO event. i.e. where event.action = 'text_output'",
@@ -12569,7 +13124,6 @@ export const EcsFlat = {
     type: 'long',
   },
   'process.tty.rows': {
-    beta: 'This field is beta and subject to change.',
     dashed_name: 'process-tty-rows',
     description:
       "The number of character rows in the terminal. e.g terminal height\nTerminal sizes can change, so this value reflects the maximum value for a given IO event. i.e. where event.action = 'text_output'",
@@ -12589,6 +13143,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'uptime',
     normalize: [],
+    otel: [
+      {
+        metric: 'process.uptime',
+        relation: 'metric',
+        stability: 'experimental',
+      },
+    ],
     short: 'Seconds the process has been up.',
     type: 'long',
   },
@@ -12602,6 +13163,7 @@ export const EcsFlat = {
     name: 'id',
     normalize: [],
     original_fieldset: 'user',
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Unique identifier of the user.',
     type: 'keyword',
   },
@@ -12622,6 +13184,7 @@ export const EcsFlat = {
     name: 'name',
     normalize: [],
     original_fieldset: 'user',
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Short name or login of the user.',
     type: 'keyword',
   },
@@ -12635,6 +13198,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'vpid',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Virtual process id.',
     type: 'long',
   },
@@ -12654,6 +13218,7 @@ export const EcsFlat = {
     ],
     name: 'working_directory',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'The working directory of the process.',
     type: 'keyword',
   },
@@ -12753,7 +13318,9 @@ export const EcsFlat = {
     level: 'extended',
     name: 'hash',
     normalize: ['array'],
+    otel: [{ relation: 'na' }],
     short: 'All the hashes seen on your event.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'related.hosts': {
@@ -12765,7 +13332,9 @@ export const EcsFlat = {
     level: 'extended',
     name: 'hosts',
     normalize: ['array'],
+    otel: [{ relation: 'na' }],
     short: 'All the host identifiers seen on your event.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'related.ip': {
@@ -12775,7 +13344,9 @@ export const EcsFlat = {
     level: 'extended',
     name: 'ip',
     normalize: ['array'],
+    otel: [{ relation: 'na' }],
     short: 'All of the IPs seen on your event.',
+    synthetic_source_keep: 'none',
     type: 'ip',
   },
   'related.user': {
@@ -12787,7 +13358,9 @@ export const EcsFlat = {
     level: 'extended',
     name: 'user',
     normalize: ['array'],
+    otel: [{ relation: 'na' }],
     short: 'All the user names or other user identifiers seen on the event.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'rule.author': {
@@ -12801,6 +13374,7 @@ export const EcsFlat = {
     name: 'author',
     normalize: ['array'],
     short: 'Rule author',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'rule.category': {
@@ -12926,6 +13500,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'address',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short: 'Server network address.',
     type: 'keyword',
   },
@@ -13197,13 +13772,14 @@ export const EcsFlat = {
     level: 'core',
     name: 'port',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short: 'Port of the server.',
     type: 'long',
   },
   'server.registered_domain': {
     dashed_name: 'server-registered-domain',
     description:
-      'The highest registered server domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
+      'The highest registered server domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
     example: 'example.com',
     flat_name: 'server.registered_domain',
     ignore_above: 1024,
@@ -13229,7 +13805,7 @@ export const EcsFlat = {
   'server.top_level_domain': {
     dashed_name: 'server-top-level-domain',
     description:
-      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
+      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
     example: 'co.uk',
     flat_name: 'server.top_level_domain',
     ignore_above: 1024,
@@ -13379,6 +13955,7 @@ export const EcsFlat = {
     normalize: ['array'],
     original_fieldset: 'user',
     short: 'Array of user roles at the time of the event.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'service.address': {
@@ -13405,6 +13982,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'environment',
     normalize: [],
+    otel: [
+      {
+        attribute: 'deployment.environment.name',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Environment of the service.',
     type: 'keyword',
   },
@@ -13444,6 +14028,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'name',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short: 'Name of the service.',
     type: 'keyword',
   },
@@ -13457,6 +14042,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'node.name',
     normalize: [],
+    otel: [
+      {
+        attribute: 'service.instance.id',
+        relation: 'equivalent',
+        stability: 'experimental',
+      },
+    ],
     short: 'Name of the service node.',
     type: 'keyword',
   },
@@ -13484,6 +14076,7 @@ export const EcsFlat = {
     name: 'node.roles',
     normalize: ['array'],
     short: 'Roles of the service node.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'service.origin.address': {
@@ -13597,6 +14190,7 @@ export const EcsFlat = {
     normalize: ['array'],
     original_fieldset: 'service',
     short: 'Roles of the service node.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'service.origin.state': {
@@ -13761,6 +14355,7 @@ export const EcsFlat = {
     normalize: ['array'],
     original_fieldset: 'service',
     short: 'Roles of the service node.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'service.target.state': {
@@ -13826,6 +14421,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'version',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short: 'Version of the service.',
     type: 'keyword',
   },
@@ -13838,6 +14434,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'address',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Source network address.',
     type: 'keyword',
   },
@@ -14109,13 +14706,14 @@ export const EcsFlat = {
     level: 'core',
     name: 'port',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Port of the source.',
     type: 'long',
   },
   'source.registered_domain': {
     dashed_name: 'source-registered-domain',
     description:
-      'The highest registered source domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
+      'The highest registered source domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
     example: 'example.com',
     flat_name: 'source.registered_domain',
     ignore_above: 1024,
@@ -14141,7 +14739,7 @@ export const EcsFlat = {
   'source.top_level_domain': {
     dashed_name: 'source-top-level-domain',
     description:
-      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
+      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
     example: 'co.uk',
     flat_name: 'source.top_level_domain',
     ignore_above: 1024,
@@ -14291,6 +14889,7 @@ export const EcsFlat = {
     normalize: ['array'],
     original_fieldset: 'user',
     short: 'Array of user roles at the time of the event.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'span.id': {
@@ -14303,6 +14902,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'span.id',
     normalize: [],
+    otel: [{ otlp_field: 'span_id', relation: 'otlp', stability: 'stable' }],
     short: 'Unique identifier of the span within the scope of its trace.',
     type: 'keyword',
   },
@@ -14316,6 +14916,7 @@ export const EcsFlat = {
     name: 'tags',
     normalize: ['array'],
     short: 'List of keywords used to tag each event.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'threat.enrichments': {
@@ -14327,6 +14928,7 @@ export const EcsFlat = {
     name: 'enrichments',
     normalize: ['array'],
     short: 'List of objects containing indicators enriching the event.',
+    synthetic_source_keep: 'none',
     type: 'nested',
   },
   'threat.enrichments.indicator': {
@@ -14435,6 +15037,7 @@ export const EcsFlat = {
     normalize: ['array'],
     original_fieldset: 'file',
     short: 'Array of file attributes.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'threat.enrichments.indicator.file.code_signature.digest_algorithm': {
@@ -14464,6 +15067,20 @@ export const EcsFlat = {
     original_fieldset: 'code_signature',
     short: 'Boolean to capture if a signature is present.',
     type: 'boolean',
+  },
+  'threat.enrichments.indicator.file.code_signature.flags': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'threat-enrichments-indicator-file-code-signature-flags',
+    description: 'The flags used to sign the process.',
+    example: 570522385,
+    flat_name: 'threat.enrichments.indicator.file.code_signature.flags',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'flags',
+    normalize: [],
+    original_fieldset: 'code_signature',
+    short: 'Code signing flags of the process',
+    type: 'keyword',
   },
   'threat.enrichments.indicator.file.code_signature.signing_id': {
     dashed_name: 'threat-enrichments-indicator-file-code-signature-signing-id',
@@ -14691,7 +15308,7 @@ export const EcsFlat = {
   'threat.enrichments.indicator.file.elf.go_import_hash': {
     dashed_name: 'threat-enrichments-indicator-file-elf-go-import-hash',
     description:
-      'A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).',
+      'A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma',
     example: '10bddcb4cee42080f76c88d9ff964491',
     flat_name: 'threat.enrichments.indicator.file.elf.go_import_hash',
     ignore_above: 1024,
@@ -15153,6 +15770,21 @@ export const EcsFlat = {
     short: 'Primary group name of the file.',
     type: 'keyword',
   },
+  'threat.enrichments.indicator.file.hash.cdhash': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'threat-enrichments-indicator-file-hash-cdhash',
+    description:
+      'Code directory hash, utilized to uniquely identify and authenticate the integrity of the executable code.',
+    example: '3783b4052fd474dbe30676b45c329e7a6d44acd9',
+    flat_name: 'threat.enrichments.indicator.file.hash.cdhash',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'cdhash',
+    normalize: [],
+    original_fieldset: 'hash',
+    short: 'The Code Directory (CD) hash of an executable.',
+    type: 'keyword',
+  },
   'threat.enrichments.indicator.file.hash.md5': {
     dashed_name: 'threat-enrichments-indicator-file-hash-md5',
     description: 'MD5 hash.',
@@ -15253,7 +15885,7 @@ export const EcsFlat = {
   'threat.enrichments.indicator.file.mime_type': {
     dashed_name: 'threat-enrichments-indicator-file-mime-type',
     description:
-      'MIME type should identify the format of the file or stream of bytes using https://www.iana.org/assignments/media-types/media-types.xhtml[IANA official types], where possible. When more than one type is applicable, the most specific type should be used.',
+      'MIME type should identify the format of the file or stream of bytes using IANA official types: https://www.iana.org/assignments/media-types/media-types.xhtml, where possible. When more than one type is applicable, the most specific type should be used.',
     flat_name: 'threat.enrichments.indicator.file.mime_type',
     ignore_above: 1024,
     level: 'extended',
@@ -15299,6 +15931,34 @@ export const EcsFlat = {
     normalize: [],
     original_fieldset: 'file',
     short: 'Name of the file including the extension, without the directory.',
+    type: 'keyword',
+  },
+  'threat.enrichments.indicator.file.origin_referrer_url': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'threat-enrichments-indicator-file-origin-referrer-url',
+    description: 'The URL of the webpage that linked to the file.',
+    example: 'http://example.com/article1.html',
+    flat_name: 'threat.enrichments.indicator.file.origin_referrer_url',
+    ignore_above: 8192,
+    level: 'extended',
+    name: 'origin_referrer_url',
+    normalize: [],
+    original_fieldset: 'file',
+    short: 'The URL of the webpage that linked to the file.',
+    type: 'keyword',
+  },
+  'threat.enrichments.indicator.file.origin_url': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'threat-enrichments-indicator-file-origin-url',
+    description: 'The URL where the file is hosted.',
+    example: 'http://example.com/imgs/article1_img1.jpg',
+    flat_name: 'threat.enrichments.indicator.file.origin_url',
+    ignore_above: 8192,
+    level: 'extended',
+    name: 'origin_url',
+    normalize: [],
+    original_fieldset: 'file',
+    short: 'The URL where the file is hosted.',
     type: 'keyword',
   },
   'threat.enrichments.indicator.file.owner': {
@@ -15390,7 +16050,7 @@ export const EcsFlat = {
   'threat.enrichments.indicator.file.pe.go_import_hash': {
     dashed_name: 'threat-enrichments-indicator-file-pe-go-import-hash',
     description:
-      'A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).',
+      'A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma',
     example: '10bddcb4cee42080f76c88d9ff964491',
     flat_name: 'threat.enrichments.indicator.file.pe.go_import_hash',
     ignore_above: 1024,
@@ -15891,7 +16551,7 @@ export const EcsFlat = {
   'threat.enrichments.indicator.file.x509.serial_number': {
     dashed_name: 'threat-enrichments-indicator-file-x509-serial-number',
     description:
-      'Unique serial number issued by the certificate authority. For consistency, if this value is alphanumeric, it should be formatted without colons and uppercase characters.',
+      'Unique serial number issued by the certificate authority. For consistency, this must be encoded in base 16 and formatted without colons and uppercase characters.',
     example: '55FBB9C7DEBF09809D12CCAA',
     flat_name: 'threat.enrichments.indicator.file.x509.serial_number',
     ignore_above: 1024,
@@ -16573,7 +17233,7 @@ export const EcsFlat = {
     description:
       'The query field describes the query string of the request, such as "q=elasticsearch".\nThe `?` is excluded from the query string. If a URL contains no `?`, there is no query field. If there is a `?` but no query, the query field exists with an empty string. The `exists` query can be used to differentiate between the two cases.',
     flat_name: 'threat.enrichments.indicator.url.query',
-    ignore_above: 1024,
+    ignore_above: 2083,
     level: 'extended',
     name: 'query',
     normalize: [],
@@ -16584,7 +17244,7 @@ export const EcsFlat = {
   'threat.enrichments.indicator.url.registered_domain': {
     dashed_name: 'threat-enrichments-indicator-url-registered-domain',
     description:
-      'The highest registered url domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
+      'The highest registered url domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
     example: 'example.com',
     flat_name: 'threat.enrichments.indicator.url.registered_domain',
     ignore_above: 1024,
@@ -16626,7 +17286,7 @@ export const EcsFlat = {
   'threat.enrichments.indicator.url.top_level_domain': {
     dashed_name: 'threat-enrichments-indicator-url-top-level-domain',
     description:
-      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
+      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
     example: 'co.uk',
     flat_name: 'threat.enrichments.indicator.url.top_level_domain',
     ignore_above: 1024,
@@ -16840,7 +17500,7 @@ export const EcsFlat = {
   'threat.enrichments.indicator.x509.serial_number': {
     dashed_name: 'threat-enrichments-indicator-x509-serial-number',
     description:
-      'Unique serial number issued by the certificate authority. For consistency, if this value is alphanumeric, it should be formatted without colons and uppercase characters.',
+      'Unique serial number issued by the certificate authority. For consistency, this must be encoded in base 16 and formatted without colons and uppercase characters.',
     example: '55FBB9C7DEBF09809D12CCAA',
     flat_name: 'threat.enrichments.indicator.x509.serial_number',
     ignore_above: 1024,
@@ -17120,6 +17780,7 @@ export const EcsFlat = {
     name: 'group.alias',
     normalize: ['array'],
     short: 'Alias of the group.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'threat.group.id': {
@@ -17257,6 +17918,7 @@ export const EcsFlat = {
     normalize: ['array'],
     original_fieldset: 'file',
     short: 'Array of file attributes.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'threat.indicator.file.code_signature.digest_algorithm': {
@@ -17284,6 +17946,20 @@ export const EcsFlat = {
     original_fieldset: 'code_signature',
     short: 'Boolean to capture if a signature is present.',
     type: 'boolean',
+  },
+  'threat.indicator.file.code_signature.flags': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'threat-indicator-file-code-signature-flags',
+    description: 'The flags used to sign the process.',
+    example: 570522385,
+    flat_name: 'threat.indicator.file.code_signature.flags',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'flags',
+    normalize: [],
+    original_fieldset: 'code_signature',
+    short: 'Code signing flags of the process',
+    type: 'keyword',
   },
   'threat.indicator.file.code_signature.signing_id': {
     dashed_name: 'threat-indicator-file-code-signature-signing-id',
@@ -17510,7 +18186,7 @@ export const EcsFlat = {
   'threat.indicator.file.elf.go_import_hash': {
     dashed_name: 'threat-indicator-file-elf-go-import-hash',
     description:
-      'A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).',
+      'A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma',
     example: '10bddcb4cee42080f76c88d9ff964491',
     flat_name: 'threat.indicator.file.elf.go_import_hash',
     ignore_above: 1024,
@@ -17965,6 +18641,21 @@ export const EcsFlat = {
     short: 'Primary group name of the file.',
     type: 'keyword',
   },
+  'threat.indicator.file.hash.cdhash': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'threat-indicator-file-hash-cdhash',
+    description:
+      'Code directory hash, utilized to uniquely identify and authenticate the integrity of the executable code.',
+    example: '3783b4052fd474dbe30676b45c329e7a6d44acd9',
+    flat_name: 'threat.indicator.file.hash.cdhash',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'cdhash',
+    normalize: [],
+    original_fieldset: 'hash',
+    short: 'The Code Directory (CD) hash of an executable.',
+    type: 'keyword',
+  },
   'threat.indicator.file.hash.md5': {
     dashed_name: 'threat-indicator-file-hash-md5',
     description: 'MD5 hash.',
@@ -18065,7 +18756,7 @@ export const EcsFlat = {
   'threat.indicator.file.mime_type': {
     dashed_name: 'threat-indicator-file-mime-type',
     description:
-      'MIME type should identify the format of the file or stream of bytes using https://www.iana.org/assignments/media-types/media-types.xhtml[IANA official types], where possible. When more than one type is applicable, the most specific type should be used.',
+      'MIME type should identify the format of the file or stream of bytes using IANA official types: https://www.iana.org/assignments/media-types/media-types.xhtml, where possible. When more than one type is applicable, the most specific type should be used.',
     flat_name: 'threat.indicator.file.mime_type',
     ignore_above: 1024,
     level: 'extended',
@@ -18111,6 +18802,34 @@ export const EcsFlat = {
     normalize: [],
     original_fieldset: 'file',
     short: 'Name of the file including the extension, without the directory.',
+    type: 'keyword',
+  },
+  'threat.indicator.file.origin_referrer_url': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'threat-indicator-file-origin-referrer-url',
+    description: 'The URL of the webpage that linked to the file.',
+    example: 'http://example.com/article1.html',
+    flat_name: 'threat.indicator.file.origin_referrer_url',
+    ignore_above: 8192,
+    level: 'extended',
+    name: 'origin_referrer_url',
+    normalize: [],
+    original_fieldset: 'file',
+    short: 'The URL of the webpage that linked to the file.',
+    type: 'keyword',
+  },
+  'threat.indicator.file.origin_url': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'threat-indicator-file-origin-url',
+    description: 'The URL where the file is hosted.',
+    example: 'http://example.com/imgs/article1_img1.jpg',
+    flat_name: 'threat.indicator.file.origin_url',
+    ignore_above: 8192,
+    level: 'extended',
+    name: 'origin_url',
+    normalize: [],
+    original_fieldset: 'file',
+    short: 'The URL where the file is hosted.',
     type: 'keyword',
   },
   'threat.indicator.file.owner': {
@@ -18202,7 +18921,7 @@ export const EcsFlat = {
   'threat.indicator.file.pe.go_import_hash': {
     dashed_name: 'threat-indicator-file-pe-go-import-hash',
     description:
-      'A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).',
+      'A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.\nThe algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma',
     example: '10bddcb4cee42080f76c88d9ff964491',
     flat_name: 'threat.indicator.file.pe.go_import_hash',
     ignore_above: 1024,
@@ -18693,7 +19412,7 @@ export const EcsFlat = {
   'threat.indicator.file.x509.serial_number': {
     dashed_name: 'threat-indicator-file-x509-serial-number',
     description:
-      'Unique serial number issued by the certificate authority. For consistency, if this value is alphanumeric, it should be formatted without colons and uppercase characters.',
+      'Unique serial number issued by the certificate authority. For consistency, this must be encoded in base 16 and formatted without colons and uppercase characters.',
     example: '55FBB9C7DEBF09809D12CCAA',
     flat_name: 'threat.indicator.file.x509.serial_number',
     ignore_above: 1024,
@@ -18976,6 +19695,20 @@ export const EcsFlat = {
     normalize: [],
     original_fieldset: 'geo',
     short: 'Time zone.',
+    type: 'keyword',
+  },
+  'threat.indicator.id': {
+    dashed_name: 'threat-indicator-id',
+    description:
+      'The ID of the indicator used by this threat to conduct behavior commonly modeled using MITRE ATT&CK®. This field can have multiple values to allow for the identification of the same indicator across systems that use different ID formats.\nWhile not required, a common approach is to use a STIX 2.x indicator ID.',
+    example: '[indicator--d7008e06-ab86-415a-9803-3c81ce2d3c37]',
+    flat_name: 'threat.indicator.id',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'indicator.id',
+    normalize: ['array'],
+    short: 'ID of the indicator',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'threat.indicator.ip': {
@@ -19369,7 +20102,7 @@ export const EcsFlat = {
     description:
       'The query field describes the query string of the request, such as "q=elasticsearch".\nThe `?` is excluded from the query string. If a URL contains no `?`, there is no query field. If there is a `?` but no query, the query field exists with an empty string. The `exists` query can be used to differentiate between the two cases.',
     flat_name: 'threat.indicator.url.query',
-    ignore_above: 1024,
+    ignore_above: 2083,
     level: 'extended',
     name: 'query',
     normalize: [],
@@ -19380,7 +20113,7 @@ export const EcsFlat = {
   'threat.indicator.url.registered_domain': {
     dashed_name: 'threat-indicator-url-registered-domain',
     description:
-      'The highest registered url domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
+      'The highest registered url domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
     example: 'example.com',
     flat_name: 'threat.indicator.url.registered_domain',
     ignore_above: 1024,
@@ -19422,7 +20155,7 @@ export const EcsFlat = {
   'threat.indicator.url.top_level_domain': {
     dashed_name: 'threat-indicator-url-top-level-domain',
     description:
-      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
+      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
     example: 'co.uk',
     flat_name: 'threat.indicator.url.top_level_domain',
     ignore_above: 1024,
@@ -19636,7 +20369,7 @@ export const EcsFlat = {
   'threat.indicator.x509.serial_number': {
     dashed_name: 'threat-indicator-x509-serial-number',
     description:
-      'Unique serial number issued by the certificate authority. For consistency, if this value is alphanumeric, it should be formatted without colons and uppercase characters.',
+      'Unique serial number issued by the certificate authority. For consistency, this must be encoded in base 16 and formatted without colons and uppercase characters.',
     example: '55FBB9C7DEBF09809D12CCAA',
     flat_name: 'threat.indicator.x509.serial_number',
     ignore_above: 1024,
@@ -19776,6 +20509,7 @@ export const EcsFlat = {
     name: 'software.alias',
     normalize: ['array'],
     short: 'Alias of the software',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'threat.software.id': {
@@ -19827,6 +20561,7 @@ export const EcsFlat = {
     name: 'software.platforms',
     normalize: ['array'],
     short: 'Platforms of the software.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'threat.software.reference': {
@@ -19997,6 +20732,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'cipher',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'String indicating the cipher used during the current connection.',
     type: 'keyword',
   },
@@ -20010,6 +20746,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.certificate',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'PEM-encoded stand-alone certificate offered by the client.',
     type: 'keyword',
   },
@@ -20023,6 +20760,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.certificate_chain',
     normalize: ['array'],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Array of PEM-encoded certificates that make up the certificate chain offered by the client.',
     type: 'keyword',
@@ -20037,6 +20775,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.hash.md5',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Certificate fingerprint using the MD5 digest of DER-encoded version of certificate offered by the client.',
     type: 'keyword',
@@ -20051,6 +20790,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.hash.sha1',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Certificate fingerprint using the SHA1 digest of DER-encoded version of certificate offered by the client.',
     type: 'keyword',
@@ -20065,6 +20805,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.hash.sha256',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Certificate fingerprint using the SHA256 digest of DER-encoded version of certificate offered by the client.',
     type: 'keyword',
@@ -20079,6 +20820,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.issuer',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Distinguished name of subject of the issuer of the x.509 certificate presented by the client.',
     type: 'keyword',
@@ -20093,6 +20835,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.ja3',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'A hash that identifies clients based on how they perform an SSL/TLS handshake.',
     type: 'keyword',
@@ -20106,6 +20849,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.not_after',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Date/Time indicating when client certificate is no longer considered valid.',
     type: 'date',
@@ -20119,6 +20863,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.not_before',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Date/Time indicating when client certificate is first considered valid.',
     type: 'date',
@@ -20146,6 +20891,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.subject',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Distinguished name of subject of the x.509 certificate presented by the client.',
     type: 'keyword',
@@ -20161,6 +20907,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.supported_ciphers',
     normalize: ['array'],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Array of ciphers offered by the client during the client hello.',
     type: 'keyword',
   },
@@ -20355,7 +21102,7 @@ export const EcsFlat = {
   'tls.client.x509.serial_number': {
     dashed_name: 'tls-client-x509-serial-number',
     description:
-      'Unique serial number issued by the certificate authority. For consistency, if this value is alphanumeric, it should be formatted without colons and uppercase characters.',
+      'Unique serial number issued by the certificate authority. For consistency, this must be encoded in base 16 and formatted without colons and uppercase characters.',
     example: '55FBB9C7DEBF09809D12CCAA',
     flat_name: 'tls.client.x509.serial_number',
     ignore_above: 1024,
@@ -20494,6 +21241,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'curve',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'String indicating the curve used for the given cipher, when applicable.',
     type: 'keyword',
@@ -20506,6 +21254,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'established',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Boolean flag indicating if the TLS negotiation was successful and transitioned to an encrypted tunnel.',
     type: 'boolean',
@@ -20520,6 +21269,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'next_protocol',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'String indicating the protocol being tunneled.',
     type: 'keyword',
   },
@@ -20531,6 +21281,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'resumed',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Boolean flag indicating if this TLS connection was resumed from an existing TLS negotiation.',
     type: 'boolean',
@@ -20545,6 +21296,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.certificate',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'PEM-encoded stand-alone certificate offered by the server.',
     type: 'keyword',
   },
@@ -20558,6 +21310,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.certificate_chain',
     normalize: ['array'],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Array of PEM-encoded certificates that make up the certificate chain offered by the server.',
     type: 'keyword',
@@ -20572,6 +21325,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.hash.md5',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Certificate fingerprint using the MD5 digest of DER-encoded version of certificate offered by the server.',
     type: 'keyword',
@@ -20586,6 +21340,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.hash.sha1',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Certificate fingerprint using the SHA1 digest of DER-encoded version of certificate offered by the server.',
     type: 'keyword',
@@ -20600,6 +21355,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.hash.sha256',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Certificate fingerprint using the SHA256 digest of DER-encoded version of certificate offered by the server.',
     type: 'keyword',
@@ -20614,6 +21370,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.issuer',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Subject of the issuer of the x.509 certificate presented by the server.',
     type: 'keyword',
@@ -20628,6 +21385,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.ja3s',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'A hash that identifies servers based on how they perform an SSL/TLS handshake.',
     type: 'keyword',
@@ -20641,6 +21399,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.not_after',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Timestamp indicating when server certificate is no longer considered valid.',
     type: 'date',
@@ -20654,6 +21413,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.not_before',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Timestamp indicating when server certificate is first considered valid.',
     type: 'date',
@@ -20667,6 +21427,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.subject',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Subject of the x.509 certificate presented by the server.',
     type: 'keyword',
   },
@@ -20861,7 +21622,7 @@ export const EcsFlat = {
   'tls.server.x509.serial_number': {
     dashed_name: 'tls-server-x509-serial-number',
     description:
-      'Unique serial number issued by the certificate authority. For consistency, if this value is alphanumeric, it should be formatted without colons and uppercase characters.',
+      'Unique serial number issued by the certificate authority. For consistency, this must be encoded in base 16 and formatted without colons and uppercase characters.',
     example: '55FBB9C7DEBF09809D12CCAA',
     flat_name: 'tls.server.x509.serial_number',
     ignore_above: 1024,
@@ -21025,6 +21786,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'trace.id',
     normalize: [],
+    otel: [{ otlp_field: 'trace_id', relation: 'otlp', stability: 'stable' }],
     short: 'Unique identifier of the trace.',
     type: 'keyword',
   },
@@ -21038,6 +21800,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'transaction.id',
     normalize: [],
+    otel: [{ relation: 'na' }],
     short:
       'Unique identifier of the transaction within the scope of its trace.',
     type: 'keyword',
@@ -21052,6 +21815,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'domain',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Domain of the url.',
     type: 'keyword',
   },
@@ -21065,6 +21829,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'extension',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'File extension from the request url, excluding the leading dot.',
     type: 'keyword',
   },
@@ -21077,6 +21842,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'fragment',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short: 'Portion of the url after the `#`.',
     type: 'keyword',
   },
@@ -21092,6 +21858,7 @@ export const EcsFlat = {
     ],
     name: 'full',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short: 'Full unparsed URL.',
     type: 'wildcard',
   },
@@ -21108,6 +21875,7 @@ export const EcsFlat = {
     ],
     name: 'original',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Unmodified original url as seen in the event source.',
     type: 'wildcard',
   },
@@ -21129,6 +21897,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'path',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short: 'Path of the request, such as "/search".',
     type: 'wildcard',
   },
@@ -21141,6 +21910,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'port',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Port of the request, such as 443.',
     type: 'long',
   },
@@ -21149,23 +21919,25 @@ export const EcsFlat = {
     description:
       'The query field describes the query string of the request, such as "q=elasticsearch".\nThe `?` is excluded from the query string. If a URL contains no `?`, there is no query field. If there is a `?` but no query, the query field exists with an empty string. The `exists` query can be used to differentiate between the two cases.',
     flat_name: 'url.query',
-    ignore_above: 1024,
+    ignore_above: 2083,
     level: 'extended',
     name: 'query',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short: 'Query string of the request.',
     type: 'keyword',
   },
   'url.registered_domain': {
     dashed_name: 'url-registered-domain',
     description:
-      'The highest registered url domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
+      'The highest registered url domain, stripped of the subdomain.\nFor example, the registered domain for "foo.example.com" is "example.com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".',
     example: 'example.com',
     flat_name: 'url.registered_domain',
     ignore_above: 1024,
     level: 'extended',
     name: 'registered_domain',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'The highest registered url domain, stripped of the subdomain.',
     type: 'keyword',
   },
@@ -21179,6 +21951,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'scheme',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short: 'Scheme of the url.',
     type: 'keyword',
   },
@@ -21192,19 +21965,21 @@ export const EcsFlat = {
     level: 'extended',
     name: 'subdomain',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'The subdomain of the domain.',
     type: 'keyword',
   },
   'url.top_level_domain': {
     dashed_name: 'url-top-level-domain',
     description:
-      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
+      'The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".\nThis value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".',
     example: 'co.uk',
     flat_name: 'url.top_level_domain',
     ignore_above: 1024,
     level: 'extended',
     name: 'top_level_domain',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'The effective top level domain (com, org, net, co.uk).',
     type: 'keyword',
   },
@@ -21359,6 +22134,7 @@ export const EcsFlat = {
     normalize: ['array'],
     original_fieldset: 'user',
     short: 'Array of user roles at the time of the event.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'user.domain': {
@@ -21513,6 +22289,7 @@ export const EcsFlat = {
     normalize: ['array'],
     original_fieldset: 'user',
     short: 'Array of user roles at the time of the event.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'user.email': {
@@ -21523,6 +22300,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'email',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'User email address.',
     type: 'keyword',
   },
@@ -21542,6 +22320,7 @@ export const EcsFlat = {
     ],
     name: 'full_name',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: "User's full name, if available.",
     type: 'keyword',
   },
@@ -21591,6 +22370,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'hash',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short:
       'Unique user hash to correlate information for a user in anonymized form.',
     type: 'keyword',
@@ -21604,6 +22384,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'id',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Unique identifier of the user.',
     type: 'keyword',
   },
@@ -21619,6 +22400,7 @@ export const EcsFlat = {
     ],
     name: 'name',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Short name or login of the user.',
     type: 'keyword',
   },
@@ -21715,7 +22497,9 @@ export const EcsFlat = {
     level: 'extended',
     name: 'roles',
     normalize: ['array'],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Array of user roles at the time of the event.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'user.target.domain': {
@@ -21858,6 +22642,7 @@ export const EcsFlat = {
     normalize: ['array'],
     original_fieldset: 'user',
     short: 'Array of user roles at the time of the event.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'user_agent.device.name': {
@@ -21881,6 +22666,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'name',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Name of the user agent.',
     type: 'keyword',
   },
@@ -21901,6 +22687,7 @@ export const EcsFlat = {
     ],
     name: 'original',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'stable' }],
     short: 'Unparsed user_agent string.',
     type: 'keyword',
   },
@@ -22021,13 +22808,205 @@ export const EcsFlat = {
     level: 'extended',
     name: 'version',
     normalize: [],
+    otel: [{ relation: 'match', stability: 'experimental' }],
     short: 'Version of the user agent.',
     type: 'keyword',
+  },
+  'volume.bus_type': {
+    dashed_name: 'volume-bus-type',
+    description:
+      'Bus type of the device, such as `Nvme`, `Usb`, or `FileBackedVirtual`.',
+    example: 'FileBackedVirtual',
+    flat_name: 'volume.bus_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'bus_type',
+    normalize: [],
+    short: 'Bus type of the device.',
+    type: 'keyword',
+  },
+  'volume.default_access': {
+    dashed_name: 'volume-default-access',
+    description: 'Describes the default access(es) of the volume.',
+    flat_name: 'volume.default_access',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'default_access',
+    normalize: [],
+    short: 'Bus type of the device.',
+    type: 'keyword',
+  },
+  'volume.device_name': {
+    dashed_name: 'volume-device-name',
+    description:
+      'Full path of the volume device.\nOnly populate this field for POSIX system volumes.',
+    flat_name: 'volume.device_name',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'device_name',
+    normalize: [],
+    short: 'Device name of the volume.',
+    type: 'keyword',
+  },
+  'volume.device_type': {
+    dashed_name: 'volume-device-type',
+    description:
+      'Volume device type.\nThe most frequently seen volume device types are `Disk File System` and `CD-ROM File System`.',
+    example: 'CD-ROM File System',
+    flat_name: 'volume.device_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'device_type',
+    normalize: [],
+    short: 'Volume device type.',
+    type: 'keyword',
+  },
+  'volume.dos_name': {
+    dashed_name: 'volume-dos-name',
+    description:
+      'The MS-DOS name of a device.\nDOS device name is in the format of driver letters, such as `C:`. The field is relevant to Windows systems only.',
+    example: 'E:',
+    flat_name: 'volume.dos_name',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'dos_name',
+    normalize: [],
+    short: 'DOS name of the device.',
+    type: 'keyword',
+  },
+  'volume.file_system_type': {
+    dashed_name: 'volume-file-system-type',
+    description:
+      'Volume device file system type.\nThe most common volume file system types are `NTFS` and `UDF`.',
+    flat_name: 'volume.file_system_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'file_system_type',
+    normalize: [],
+    short: 'Volume device file system type.',
+    type: 'keyword',
+  },
+  'volume.mount_name': {
+    dashed_name: 'volume-mount-name',
+    description:
+      'Mount name of the volume device.\nOnly populate this field for POSIX system volumes.',
+    flat_name: 'volume.mount_name',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'mount_name',
+    normalize: [],
+    short: 'Mount name of the volume.',
+    type: 'keyword',
+  },
+  'volume.nt_name': {
+    dashed_name: 'volume-nt-name',
+    description:
+      'The NT device name.\nNT device name uses a format of `\\Device\\HarddiskVolume2`. The field is relevant to Windows systems only.',
+    example: '\\Device\\Cdrom1',
+    flat_name: 'volume.nt_name',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'nt_name',
+    normalize: [],
+    short: 'NT name of the device.',
+    type: 'keyword',
+  },
+  'volume.product_id': {
+    dashed_name: 'volume-product-id',
+    description:
+      'ProductID of the device.\nThe vendor provides the ProductID for the volume, if any.',
+    flat_name: 'volume.product_id',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'product_id',
+    normalize: [],
+    short: 'ProductID of the device.',
+    type: 'keyword',
+  },
+  'volume.product_name': {
+    dashed_name: 'volume-product-name',
+    description:
+      'Product name of the volume.\nThe volume device vendor provides this value.',
+    example: 'Virtual DVD-ROM',
+    flat_name: 'volume.product_name',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'product_name',
+    normalize: [],
+    short: 'Produce name of the volume.',
+    type: 'keyword',
+  },
+  'volume.removable': {
+    dashed_name: 'volume-removable',
+    description: 'Indicates if the volume is removable.',
+    flat_name: 'volume.removable',
+    level: 'extended',
+    name: 'removable',
+    normalize: [],
+    short: 'Indicates if the volume is removable.',
+    type: 'boolean',
+  },
+  'volume.serial_number': {
+    dashed_name: 'volume-serial-number',
+    description:
+      'Serial number identifier for the volume device.\nThe serial number is provided by the vendor of the device, if any.',
+    flat_name: 'volume.serial_number',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'serial_number',
+    normalize: [],
+    short: 'Serial number of the device.',
+    type: 'keyword',
+  },
+  'volume.size': {
+    dashed_name: 'volume-size',
+    description: 'Size of the volume device in bytes.',
+    flat_name: 'volume.size',
+    level: 'extended',
+    name: 'size',
+    normalize: [],
+    short: 'Size of the volume device in bytes.',
+    type: 'long',
+  },
+  'volume.vendor_id': {
+    dashed_name: 'volume-vendor-id',
+    description:
+      'VendorID of the volume device.\nThe volume device vendor provides this value.',
+    flat_name: 'volume.vendor_id',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'vendor_id',
+    normalize: [],
+    short: 'VendorID of the device.',
+    type: 'keyword',
+  },
+  'volume.vendor_name': {
+    dashed_name: 'volume-vendor-name',
+    description:
+      'Vendor name of the volume device.\nThe value is provided by the vendor of the device.',
+    example: 'Msft',
+    flat_name: 'volume.vendor_name',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'vendor_name',
+    normalize: [],
+    short: 'Vendor name of the device.',
+    type: 'keyword',
+  },
+  'volume.writable': {
+    dashed_name: 'volume-writable',
+    description: 'Indicates if the volume is writable.',
+    flat_name: 'volume.writable',
+    level: 'extended',
+    name: 'writable',
+    normalize: [],
+    short: 'Indicates if the volume is writable.',
+    type: 'boolean',
   },
   'vulnerability.category': {
     dashed_name: 'vulnerability-category',
     description:
-      'The type of system or architecture that the vulnerability affects. These may be platform-specific (for example, Debian or SUSE) or general (for example, Database or Firewall). For example (https://qualysguard.qualys.com/qwebhelp/fo_portal/knowledgebase/vulnerability_categories.htm[Qualys vulnerability categories])\nThis field must be an array.',
+      'The type of system or architecture that the vulnerability affects. These may be platform-specific (for example, Debian or SUSE) or general (for example, Database or Firewall). For example (https://qualysguard.qualys.com/qwebhelp/fo_portal/knowledgebase/vulnerability_categories.htm)\nThis field must be an array.',
     example: '["Firewall"]',
     flat_name: 'vulnerability.category',
     ignore_above: 1024,
@@ -22035,6 +23014,7 @@ export const EcsFlat = {
     name: 'category',
     normalize: ['array'],
     short: 'Category of a vulnerability.',
+    synthetic_source_keep: 'none',
     type: 'keyword',
   },
   'vulnerability.classification': {
@@ -22053,7 +23033,7 @@ export const EcsFlat = {
   'vulnerability.description': {
     dashed_name: 'vulnerability-description',
     description:
-      'The description of the vulnerability that provides additional context of the vulnerability. For example (https://cve.mitre.org/about/faqs.html#cve_entry_descriptions_created[Common Vulnerabilities and Exposure CVE description])',
+      'The description of the vulnerability that provides additional context of the vulnerability. For example (https://cve.mitre.org/about/faqs.html#cve_entry_descriptions_created)',
     example: 'In macOS before 2.12.6, there is a vulnerability in the RPC...',
     flat_name: 'vulnerability.description',
     ignore_above: 1024,
@@ -22086,7 +23066,7 @@ export const EcsFlat = {
   'vulnerability.id': {
     dashed_name: 'vulnerability-id',
     description:
-      'The identification (ID) is the number portion of a vulnerability entry. It includes a unique identification number for the vulnerability. For example (https://cve.mitre.org/about/faqs.html#what_is_cve_id)[Common Vulnerabilities and Exposure CVE ID]',
+      'The identification (ID) is the number portion of a vulnerability entry. It includes a unique identification number for the vulnerability. For example (https://cve.mitre.org/about/faqs.html#what_is_cve_id)',
     example: 'CVE-2019-00001',
     flat_name: 'vulnerability.id',
     ignore_above: 1024,

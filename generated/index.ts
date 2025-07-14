@@ -66,10 +66,11 @@ import { EcsUrl } from './url';
 import { EcsUser } from './user';
 import { EcsUserAgent } from './user_agent';
 import { EcsVlan } from './vlan';
+import { EcsVolume } from './volume';
 import { EcsVulnerability } from './vulnerability';
 import { EcsX509 } from './x509';
 
-export const EcsVersion = '8.11.0' as const;
+export const EcsVersion = '9.0.0' as const;
 
 /**
  * Exporting raw schema files for easy programmatic use
@@ -126,6 +127,7 @@ export type {
   EcsUser,
   EcsUserAgent,
   EcsVlan,
+  EcsVolume,
   EcsVulnerability,
   EcsX509,
 };
@@ -168,5 +170,6 @@ export type Ecs = EcsBase &
     url?: EcsUrl;
     user?: EcsUser;
     user_agent?: EcsUserAgent;
+    volume?: EcsVolume;
     vulnerability?: EcsVulnerability;
   };

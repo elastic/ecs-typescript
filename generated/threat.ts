@@ -123,6 +123,10 @@ export interface EcsThreat {
          */
         exists?: boolean;
         /**
+         * The flags used to sign the process.
+         */
+        flags?: string;
+        /**
          * The identifier used to sign the process.
          * This is used to identify the application manufactured by a software vendor. The field is relevant to Apple *OS only.
          */
@@ -203,7 +207,7 @@ export interface EcsThreat {
         exports?: Record<string, unknown> | Array<Record<string, unknown>>;
         /**
          * A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.
-         * The algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).
+         * The algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma
          */
         go_import_hash?: string;
         /**
@@ -315,6 +319,10 @@ export interface EcsThreat {
       group?: string;
       hash?: {
         /**
+         * Code directory hash, utilized to uniquely identify and authenticate the integrity of the executable code.
+         */
+        cdhash?: string;
+        /**
          * MD5 hash.
          */
         md5?: string;
@@ -349,7 +357,7 @@ export interface EcsThreat {
        */
       inode?: string;
       /**
-       * MIME type should identify the format of the file or stream of bytes using https://www.iana.org/assignments/media-types/media-types.xhtml[IANA official types], where possible. When more than one type is applicable, the most specific type should be used.
+       * MIME type should identify the format of the file or stream of bytes using IANA official types: https://www.iana.org/assignments/media-types/media-types.xhtml, where possible. When more than one type is applicable, the most specific type should be used.
        */
       mime_type?: string;
       /**
@@ -364,6 +372,14 @@ export interface EcsThreat {
        * Name of the file including the extension, without the directory.
        */
       name?: string;
+      /**
+       * The URL of the webpage that linked to the file.
+       */
+      origin_referrer_url?: string;
+      /**
+       * The URL where the file is hosted.
+       */
+      origin_url?: string;
       /**
        * File owner's username.
        */
@@ -391,7 +407,7 @@ export interface EcsThreat {
         file_version?: string;
         /**
          * A hash of the Go language imports in a PE file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.
-         * The algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).
+         * The algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma
          */
         go_import_hash?: string;
         /**
@@ -530,7 +546,7 @@ export interface EcsThreat {
          */
         public_key_size?: number;
         /**
-         * Unique serial number issued by the certificate authority. For consistency, if this value is alphanumeric, it should be formatted without colons and uppercase characters.
+         * Unique serial number issued by the certificate authority. For consistency, this must be encoded in base 16 and formatted without colons and uppercase characters.
          */
         serial_number?: string;
         /**
@@ -629,6 +645,11 @@ export interface EcsThreat {
       timezone?: string;
     };
 
+    /**
+     * The ID of the indicator used by this threat to conduct behavior commonly modeled using MITRE ATT&CK®. This field can have multiple values to allow for the identification of the same indicator across systems that use different ID formats.
+     * While not required, a common approach is to use a STIX 2.x indicator ID.
+     */
+    id?: string | Array<string>;
     /**
      * Identifies a threat indicator as an IP address (irrespective of direction).
      */
@@ -766,7 +787,7 @@ export interface EcsThreat {
       /**
        * The highest registered url domain, stripped of the subdomain.
        * For example, the registered domain for "foo.example.com" is "example.com".
-       * This value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".
+       * This value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last two labels will not work well for TLDs such as "co.uk".
        */
       registered_domain?: string;
       /**
@@ -781,7 +802,7 @@ export interface EcsThreat {
       subdomain?: string;
       /**
        * The effective top level domain (eTLD), also known as the domain suffix, is the last part of the domain name. For example, the top level domain for example.com is "com".
-       * This value can be determined precisely with a list like the public suffix list (http://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".
+       * This value can be determined precisely with a list like the public suffix list (https://publicsuffix.org). Trying to approximate this by simply taking the last label will not work well for effective TLDs such as "co.uk".
        */
       top_level_domain?: string;
       /**
@@ -851,7 +872,7 @@ export interface EcsThreat {
        */
       public_key_size?: number;
       /**
-       * Unique serial number issued by the certificate authority. For consistency, if this value is alphanumeric, it should be formatted without colons and uppercase characters.
+       * Unique serial number issued by the certificate authority. For consistency, this must be encoded in base 16 and formatted without colons and uppercase characters.
        */
       serial_number?: string;
       /**

@@ -43,7 +43,7 @@ export interface EcsElf {
   exports?: Record<string, unknown> | Array<Record<string, unknown>>;
   /**
    * A hash of the Go language imports in an ELF file excluding standard library imports. An import hash can be used to fingerprint binaries even after recompilation or other code-level transformations have occurred, which would change more traditional hash values.
-   * The algorithm used to calculate the Go symbol hash and a reference implementation are available [here](https://github.com/elastic/toutoumomoma).
+   * The algorithm used to calculate the Go symbol hash and a reference implementation are available here: https://github.com/elastic/toutoumomoma
    */
   go_import_hash?: string;
   /**
