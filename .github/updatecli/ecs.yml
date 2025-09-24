@@ -1,0 +1,70 @@
+---
+name: update ecs
+pipelineid: 'updatecli-ecs'
+
+actions:
+  default:
+    title: 'New definitions generated from elastic/ecs release {{ source "elastic-ecs" }}'
+    kind: github/pullrequest
+    scmid: default
+    spec:
+      labels:
+      description: |-
+        ### What
+        New definitions generated from `elastic/ecs@{{ source "elastic-ecs" }}` release
+
+        *Changelog*
+        * https://github.com/elastic/ecs/releases/tag/{{ source "elastic-ecs" }}
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: '{{ requiredEnv "GITHUB_ACTOR" }}'
+      username: '{{ requiredEnv "GITHUB_ACTOR" }}'
+      owner: '{{ .scm.owner }}'
+      repository: '{{ .scm.repository }}'
+      token: '{{ requiredEnv "GITHUB_TOKEN" }}'
+      branch: '{{ .scm.branch }}'
+      commitusingapi: true
+      force: false
+
+sources:
+  elastic-ecs:
+    kind: githubRelease
+    spec:
+      owner: "elastic"
+      repository: "ecs"
+      token: '{{ requiredEnv "GITHUB_TOKEN" }}'
+      username: '{{ requiredEnv "GITHUB_ACTOR" }}'
+      versionFilter:
+        kind: semver
+
+conditions:
+  version-is-not-up-to-date:
+    name: 'compare current version with {{ source "elastic-ecs" }}'
+    kind: json
+    sourceid: elastic-ecs
+    scmid: default
+    # NOTE: by setting failwhen to true,
+    # we want this condition to fail when the versions are equal
+    # then the target will run only when the versions are different
+    failwhen: true
+    spec:
+      file: package.json
+      key: version
+      value: '{{ source "elastic-ecs" }}'
+
+targets:
+  ecs-typescript:
+    dependson:
+      - 'condition#version-is-not-up-to-date'
+    name: 'Update to elastic/ecs@{{ source "elastic-ecs" }}'
+    disablesourceinput: true
+    scmid: default
+    kind: shell
+    spec:
+      command: yarn install --frozen-lockfile && yarn generate-ecs-types -r '{{ source "elastic-ecs" }}'
+      environments:
+      - name: PATH
+      - name: HOME
