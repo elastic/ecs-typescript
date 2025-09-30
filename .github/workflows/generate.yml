@@ -15,6 +15,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     strategy:
       matrix:
@@ -30,6 +33,14 @@ jobs:
     - run: yarn install --frozen-lockfile
     - run: yarn generate-ecs-types -r ${{ inputs.ecsRef }} && yarn test:integration && yarn build
     - name: Create Pull Request
+      id: cpr
       uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
       with:
         title: New definitions generated from elastic/ecs release ${{ inputs.ecsRef }}
+    - name: Request reviewers
+      if: steps.cpr.outputs.pull-request-number
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh pr edit ${{ steps.cpr.outputs.pull-request-number }} \
+          --add-reviewer elastic/obs-ux-logs-team
