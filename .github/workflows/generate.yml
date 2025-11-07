@@ -43,4 +43,4 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         gh pr edit ${{ steps.cpr.outputs.pull-request-number }} \
-          --add-reviewer elastic/obs-ux-logs-team
+          --add-reviewer elastic/obs-onboarding-team
