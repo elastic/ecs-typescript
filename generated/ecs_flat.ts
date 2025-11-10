@@ -600,7 +600,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'account.id',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'The cloud account or organization id.',
     type: 'keyword',
   },
@@ -627,9 +627,256 @@ export const EcsFlat = {
     level: 'extended',
     name: 'availability_zone',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Availability zone in which this host, resource, or service is located.',
+    type: 'keyword',
+  },
+  'cloud.entity.attributes': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-entity-attributes',
+    description:
+      'A set of static or semi-static attributes of the entity. Usually boolean or keyword field data types. Use this field set when you need to track static or semi-static characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'cloud.entity.attributes',
+    level: 'extended',
+    name: 'attributes',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of static or semi-static attributes of the entity.',
+    type: 'object',
+  },
+  'cloud.entity.behavior': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-entity-behavior',
+    description:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period. Usually boolean field data type. Use this field set when you need to capture and track ephemeral characteristics of an entity for advanced searching, correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'cloud.entity.behavior',
+    level: 'extended',
+    name: 'behavior',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period.',
+    type: 'object',
+  },
+  'cloud.entity.display_name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-entity-display-name',
+    description:
+      'An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (e.g., `host`).',
+    flat_name: 'cloud.entity.display_name',
+    ignore_above: 1024,
+    level: 'extended',
+    multi_fields: [
+      {
+        flat_name: 'cloud.entity.display_name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'display_name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'An optional field used when a pretty name is desired for entity-centric operations.',
+    type: 'keyword',
+  },
+  'cloud.entity.id': {
+    dashed_name: 'cloud-entity-id',
+    description:
+      "A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (e.g., host, user), this value should match the corresponding *.id field. Alternative identifiers (e.g., ARNs values in AWS, URLs) can be preserved in the raw field.",
+    flat_name: 'cloud.entity.id',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'id',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Unique identifier for the entity.',
+    type: 'keyword',
+  },
+  'cloud.entity.last_seen_timestamp': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-entity-last-seen-timestamp',
+    description:
+      'Indicates the date/time when this entity was last "seen," usually based upon the last event/log that is initiated by this entity.',
+    flat_name: 'cloud.entity.last_seen_timestamp',
+    level: 'extended',
+    name: 'last_seen_timestamp',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Indicates the date/time when this entity was last "seen."',
+    type: 'date',
+  },
+  'cloud.entity.lifecycle': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-entity-lifecycle',
+    description:
+      'A set of temporal characteristics of the entity. Usually date field data type. Use this field set when you need to track temporal characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'cloud.entity.lifecycle',
+    level: 'extended',
+    name: 'lifecycle',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of temporal characteristics of the entity.',
+    type: 'object',
+  },
+  'cloud.entity.metrics': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-entity-metrics',
+    description:
+      'Field set for any fields containing numeric entity metrics. These use dynamic field data type mapping.',
+    flat_name: 'cloud.entity.metrics',
+    level: 'extended',
+    name: 'metrics',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Field set for any fields containing numeric entity metrics.',
+    type: 'object',
+  },
+  'cloud.entity.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-entity-name',
+    description:
+      'The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (e.g., `host`), this field should mirrors the corresponding *.name value.',
+    flat_name: 'cloud.entity.name',
+    ignore_above: 1024,
+    level: 'core',
+    multi_fields: [
+      {
+        flat_name: 'cloud.entity.name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'The name of the entity.',
+    type: 'keyword',
+  },
+  'cloud.entity.raw': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-entity-raw',
+    description:
+      'Original, unmodified fields from the source system. Usually flattened field data type. While the attributes field should be used for normalized fields requiring advanced queries, this field preserves all source metadata with basic search capabilities.',
+    flat_name: 'cloud.entity.raw',
+    level: 'extended',
+    name: 'raw',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Original, unmodified fields from the source system.',
+    type: 'object',
+  },
+  'cloud.entity.reference': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-entity-reference',
+    description:
+      'A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format may vary by entity type and source system.',
+    flat_name: 'cloud.entity.reference',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'reference',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A URI, URL, or other direct reference to access or locate the entity.',
+    type: 'keyword',
+  },
+  'cloud.entity.source': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-entity-source',
+    description:
+      'The module or integration that provided this entity data (similar to event.module).',
+    flat_name: 'cloud.entity.source',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'source',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Source module or integration that provided the entity data.',
+    type: 'keyword',
+  },
+  'cloud.entity.sub_type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-entity-sub-type',
+    description:
+      'The specific type designation for the entity as defined by its provider or system. This field provides more granular classification than the type field. Examples: `aws_s3_bucket`, `gcp_cloud_storage_bucket`, `azure_blob_container` would all map to entity type `bucket`.  `hardware` , `virtual` , `container` , `node` , `cloud_instance` would all map to entity type `host`.',
+    example: 'aws_s3_bucket',
+    flat_name: 'cloud.entity.sub_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'sub_type',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'The specific type designation for the entity as defined by its provider or system.',
+    type: 'keyword',
+  },
+  'cloud.entity.type': {
+    allowed_values: [
+      {
+        description:
+          'Represents a storage container or bucket, typically used for object storage. Common examples include AWS S3 buckets, Google Cloud Storage buckets, Azure Blob containers, and other cloud storage services. Buckets are used to organize and store files, objects, or data in cloud environments.',
+        name: 'bucket',
+      },
+      {
+        description:
+          'Represents a database system or database instance. This includes relational databases (MySQL, PostgreSQL, Oracle), NoSQL databases (MongoDB, Cassandra, DynamoDB), time-series databases, and other data storage systems. The entity may represent the entire database system or a specific database instance.',
+        name: 'database',
+      },
+      {
+        description:
+          'Represents a containerized application or process. This includes Docker containers, Kubernetes pods, and other containerization technologies. Containers encapsulate applications and their dependencies, providing isolation and portability across different environments.',
+        name: 'container',
+      },
+      {
+        description:
+          'Represents a serverless function or Function-as-a-Service (FaaS) component. This includes AWS Lambda functions, Azure Functions, Google Cloud Functions, and other serverless computing resources. Functions are typically event-driven and execute code without managing the underlying infrastructure.',
+        name: 'function',
+      },
+      {
+        description:
+          'Represents a message queue or messaging system. This includes message brokers, event queues, and other messaging infrastructure components such as Amazon SQS, RabbitMQ, Apache Kafka, and Azure Service Bus. Queues facilitate asynchronous communication between applications and services.',
+        name: 'queue',
+      },
+      {
+        description:
+          'Represents a computing host or machine. This includes physical servers, virtual machines, cloud instances, and other computing resources that can run applications or services. Hosts provide the fundamental computing infrastructure for other entity types.',
+        name: 'host',
+      },
+      {
+        description:
+          'Represents a user account or identity. This includes human users, service accounts, system accounts, and other identity entities that can interact with systems, applications, or services. Users may have various roles, permissions, and attributes associated with their identity.',
+        name: 'user',
+      },
+      {
+        description:
+          'Represents a software application or service. This includes web applications, mobile applications, desktop applications, and other software components that provide functionality to users or other systems. Applications may run on various infrastructure components and can span multiple hosts or containers.',
+        name: 'application',
+      },
+      {
+        description:
+          'Represents a service or microservice component. This includes web services, APIs, background services, and other service-oriented architecture components. Services provide specific functionality and may communicate with other services to fulfill business requirements.',
+        name: 'service',
+      },
+      {
+        description:
+          'Represents a user session or connection session. This includes user login sessions, database connections, network sessions, and other temporary interactive or persistent connections between users, applications, or systems.',
+        name: 'session',
+      },
+    ],
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-entity-type',
+    description:
+      'A standardized high-level classification of the entity. This provides a normalized way to group similar entities across different providers or systems. Example values: `bucket`, `database`, `container`, `function`, `queue`, `host`, `user`, `application`, `session`, etc.',
+    example: 'host',
+    flat_name: 'cloud.entity.type',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'type',
+    normalize: ['array'],
+    original_fieldset: 'entity',
+    short: 'Standardized high-level classification of the entity.',
     type: 'keyword',
   },
   'cloud.instance.id': {
@@ -708,6 +955,253 @@ export const EcsFlat = {
     original_fieldset: 'cloud',
     short:
       'Availability zone in which this host, resource, or service is located.',
+    type: 'keyword',
+  },
+  'cloud.origin.entity.attributes': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-origin-entity-attributes',
+    description:
+      'A set of static or semi-static attributes of the entity. Usually boolean or keyword field data types. Use this field set when you need to track static or semi-static characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'cloud.origin.entity.attributes',
+    level: 'extended',
+    name: 'attributes',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of static or semi-static attributes of the entity.',
+    type: 'object',
+  },
+  'cloud.origin.entity.behavior': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-origin-entity-behavior',
+    description:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period. Usually boolean field data type. Use this field set when you need to capture and track ephemeral characteristics of an entity for advanced searching, correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'cloud.origin.entity.behavior',
+    level: 'extended',
+    name: 'behavior',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period.',
+    type: 'object',
+  },
+  'cloud.origin.entity.display_name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-origin-entity-display-name',
+    description:
+      'An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (e.g., `host`).',
+    flat_name: 'cloud.origin.entity.display_name',
+    ignore_above: 1024,
+    level: 'extended',
+    multi_fields: [
+      {
+        flat_name: 'cloud.origin.entity.display_name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'display_name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'An optional field used when a pretty name is desired for entity-centric operations.',
+    type: 'keyword',
+  },
+  'cloud.origin.entity.id': {
+    dashed_name: 'cloud-origin-entity-id',
+    description:
+      "A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (e.g., host, user), this value should match the corresponding *.id field. Alternative identifiers (e.g., ARNs values in AWS, URLs) can be preserved in the raw field.",
+    flat_name: 'cloud.origin.entity.id',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'id',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Unique identifier for the entity.',
+    type: 'keyword',
+  },
+  'cloud.origin.entity.last_seen_timestamp': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-origin-entity-last-seen-timestamp',
+    description:
+      'Indicates the date/time when this entity was last "seen," usually based upon the last event/log that is initiated by this entity.',
+    flat_name: 'cloud.origin.entity.last_seen_timestamp',
+    level: 'extended',
+    name: 'last_seen_timestamp',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Indicates the date/time when this entity was last "seen."',
+    type: 'date',
+  },
+  'cloud.origin.entity.lifecycle': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-origin-entity-lifecycle',
+    description:
+      'A set of temporal characteristics of the entity. Usually date field data type. Use this field set when you need to track temporal characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'cloud.origin.entity.lifecycle',
+    level: 'extended',
+    name: 'lifecycle',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of temporal characteristics of the entity.',
+    type: 'object',
+  },
+  'cloud.origin.entity.metrics': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-origin-entity-metrics',
+    description:
+      'Field set for any fields containing numeric entity metrics. These use dynamic field data type mapping.',
+    flat_name: 'cloud.origin.entity.metrics',
+    level: 'extended',
+    name: 'metrics',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Field set for any fields containing numeric entity metrics.',
+    type: 'object',
+  },
+  'cloud.origin.entity.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-origin-entity-name',
+    description:
+      'The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (e.g., `host`), this field should mirrors the corresponding *.name value.',
+    flat_name: 'cloud.origin.entity.name',
+    ignore_above: 1024,
+    level: 'core',
+    multi_fields: [
+      {
+        flat_name: 'cloud.origin.entity.name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'The name of the entity.',
+    type: 'keyword',
+  },
+  'cloud.origin.entity.raw': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-origin-entity-raw',
+    description:
+      'Original, unmodified fields from the source system. Usually flattened field data type. While the attributes field should be used for normalized fields requiring advanced queries, this field preserves all source metadata with basic search capabilities.',
+    flat_name: 'cloud.origin.entity.raw',
+    level: 'extended',
+    name: 'raw',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Original, unmodified fields from the source system.',
+    type: 'object',
+  },
+  'cloud.origin.entity.reference': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-origin-entity-reference',
+    description:
+      'A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format may vary by entity type and source system.',
+    flat_name: 'cloud.origin.entity.reference',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'reference',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A URI, URL, or other direct reference to access or locate the entity.',
+    type: 'keyword',
+  },
+  'cloud.origin.entity.source': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-origin-entity-source',
+    description:
+      'The module or integration that provided this entity data (similar to event.module).',
+    flat_name: 'cloud.origin.entity.source',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'source',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Source module or integration that provided the entity data.',
+    type: 'keyword',
+  },
+  'cloud.origin.entity.sub_type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-origin-entity-sub-type',
+    description:
+      'The specific type designation for the entity as defined by its provider or system. This field provides more granular classification than the type field. Examples: `aws_s3_bucket`, `gcp_cloud_storage_bucket`, `azure_blob_container` would all map to entity type `bucket`.  `hardware` , `virtual` , `container` , `node` , `cloud_instance` would all map to entity type `host`.',
+    example: 'aws_s3_bucket',
+    flat_name: 'cloud.origin.entity.sub_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'sub_type',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'The specific type designation for the entity as defined by its provider or system.',
+    type: 'keyword',
+  },
+  'cloud.origin.entity.type': {
+    allowed_values: [
+      {
+        description:
+          'Represents a storage container or bucket, typically used for object storage. Common examples include AWS S3 buckets, Google Cloud Storage buckets, Azure Blob containers, and other cloud storage services. Buckets are used to organize and store files, objects, or data in cloud environments.',
+        name: 'bucket',
+      },
+      {
+        description:
+          'Represents a database system or database instance. This includes relational databases (MySQL, PostgreSQL, Oracle), NoSQL databases (MongoDB, Cassandra, DynamoDB), time-series databases, and other data storage systems. The entity may represent the entire database system or a specific database instance.',
+        name: 'database',
+      },
+      {
+        description:
+          'Represents a containerized application or process. This includes Docker containers, Kubernetes pods, and other containerization technologies. Containers encapsulate applications and their dependencies, providing isolation and portability across different environments.',
+        name: 'container',
+      },
+      {
+        description:
+          'Represents a serverless function or Function-as-a-Service (FaaS) component. This includes AWS Lambda functions, Azure Functions, Google Cloud Functions, and other serverless computing resources. Functions are typically event-driven and execute code without managing the underlying infrastructure.',
+        name: 'function',
+      },
+      {
+        description:
+          'Represents a message queue or messaging system. This includes message brokers, event queues, and other messaging infrastructure components such as Amazon SQS, RabbitMQ, Apache Kafka, and Azure Service Bus. Queues facilitate asynchronous communication between applications and services.',
+        name: 'queue',
+      },
+      {
+        description:
+          'Represents a computing host or machine. This includes physical servers, virtual machines, cloud instances, and other computing resources that can run applications or services. Hosts provide the fundamental computing infrastructure for other entity types.',
+        name: 'host',
+      },
+      {
+        description:
+          'Represents a user account or identity. This includes human users, service accounts, system accounts, and other identity entities that can interact with systems, applications, or services. Users may have various roles, permissions, and attributes associated with their identity.',
+        name: 'user',
+      },
+      {
+        description:
+          'Represents a software application or service. This includes web applications, mobile applications, desktop applications, and other software components that provide functionality to users or other systems. Applications may run on various infrastructure components and can span multiple hosts or containers.',
+        name: 'application',
+      },
+      {
+        description:
+          'Represents a service or microservice component. This includes web services, APIs, background services, and other service-oriented architecture components. Services provide specific functionality and may communicate with other services to fulfill business requirements.',
+        name: 'service',
+      },
+      {
+        description:
+          'Represents a user session or connection session. This includes user login sessions, database connections, network sessions, and other temporary interactive or persistent connections between users, applications, or systems.',
+        name: 'session',
+      },
+    ],
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-origin-entity-type',
+    description:
+      'A standardized high-level classification of the entity. This provides a normalized way to group similar entities across different providers or systems. Example values: `bucket`, `database`, `container`, `function`, `queue`, `host`, `user`, `application`, `session`, etc.',
+    example: 'host',
+    flat_name: 'cloud.origin.entity.type',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'type',
+    normalize: ['array'],
+    original_fieldset: 'entity',
+    short: 'Standardized high-level classification of the entity.',
     type: 'keyword',
   },
   'cloud.origin.instance.id': {
@@ -853,7 +1347,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'provider',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Name of the cloud provider.',
     type: 'keyword',
   },
@@ -866,7 +1360,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'region',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Region in which this host, resource, or service is located.',
     type: 'keyword',
   },
@@ -884,7 +1378,7 @@ export const EcsFlat = {
       {
         attribute: 'cloud.platform',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'The cloud service name.',
@@ -931,6 +1425,253 @@ export const EcsFlat = {
     original_fieldset: 'cloud',
     short:
       'Availability zone in which this host, resource, or service is located.',
+    type: 'keyword',
+  },
+  'cloud.target.entity.attributes': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-target-entity-attributes',
+    description:
+      'A set of static or semi-static attributes of the entity. Usually boolean or keyword field data types. Use this field set when you need to track static or semi-static characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'cloud.target.entity.attributes',
+    level: 'extended',
+    name: 'attributes',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of static or semi-static attributes of the entity.',
+    type: 'object',
+  },
+  'cloud.target.entity.behavior': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-target-entity-behavior',
+    description:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period. Usually boolean field data type. Use this field set when you need to capture and track ephemeral characteristics of an entity for advanced searching, correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'cloud.target.entity.behavior',
+    level: 'extended',
+    name: 'behavior',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period.',
+    type: 'object',
+  },
+  'cloud.target.entity.display_name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-target-entity-display-name',
+    description:
+      'An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (e.g., `host`).',
+    flat_name: 'cloud.target.entity.display_name',
+    ignore_above: 1024,
+    level: 'extended',
+    multi_fields: [
+      {
+        flat_name: 'cloud.target.entity.display_name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'display_name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'An optional field used when a pretty name is desired for entity-centric operations.',
+    type: 'keyword',
+  },
+  'cloud.target.entity.id': {
+    dashed_name: 'cloud-target-entity-id',
+    description:
+      "A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (e.g., host, user), this value should match the corresponding *.id field. Alternative identifiers (e.g., ARNs values in AWS, URLs) can be preserved in the raw field.",
+    flat_name: 'cloud.target.entity.id',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'id',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Unique identifier for the entity.',
+    type: 'keyword',
+  },
+  'cloud.target.entity.last_seen_timestamp': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-target-entity-last-seen-timestamp',
+    description:
+      'Indicates the date/time when this entity was last "seen," usually based upon the last event/log that is initiated by this entity.',
+    flat_name: 'cloud.target.entity.last_seen_timestamp',
+    level: 'extended',
+    name: 'last_seen_timestamp',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Indicates the date/time when this entity was last "seen."',
+    type: 'date',
+  },
+  'cloud.target.entity.lifecycle': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-target-entity-lifecycle',
+    description:
+      'A set of temporal characteristics of the entity. Usually date field data type. Use this field set when you need to track temporal characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'cloud.target.entity.lifecycle',
+    level: 'extended',
+    name: 'lifecycle',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of temporal characteristics of the entity.',
+    type: 'object',
+  },
+  'cloud.target.entity.metrics': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-target-entity-metrics',
+    description:
+      'Field set for any fields containing numeric entity metrics. These use dynamic field data type mapping.',
+    flat_name: 'cloud.target.entity.metrics',
+    level: 'extended',
+    name: 'metrics',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Field set for any fields containing numeric entity metrics.',
+    type: 'object',
+  },
+  'cloud.target.entity.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-target-entity-name',
+    description:
+      'The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (e.g., `host`), this field should mirrors the corresponding *.name value.',
+    flat_name: 'cloud.target.entity.name',
+    ignore_above: 1024,
+    level: 'core',
+    multi_fields: [
+      {
+        flat_name: 'cloud.target.entity.name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'The name of the entity.',
+    type: 'keyword',
+  },
+  'cloud.target.entity.raw': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-target-entity-raw',
+    description:
+      'Original, unmodified fields from the source system. Usually flattened field data type. While the attributes field should be used for normalized fields requiring advanced queries, this field preserves all source metadata with basic search capabilities.',
+    flat_name: 'cloud.target.entity.raw',
+    level: 'extended',
+    name: 'raw',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Original, unmodified fields from the source system.',
+    type: 'object',
+  },
+  'cloud.target.entity.reference': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-target-entity-reference',
+    description:
+      'A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format may vary by entity type and source system.',
+    flat_name: 'cloud.target.entity.reference',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'reference',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A URI, URL, or other direct reference to access or locate the entity.',
+    type: 'keyword',
+  },
+  'cloud.target.entity.source': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-target-entity-source',
+    description:
+      'The module or integration that provided this entity data (similar to event.module).',
+    flat_name: 'cloud.target.entity.source',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'source',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Source module or integration that provided the entity data.',
+    type: 'keyword',
+  },
+  'cloud.target.entity.sub_type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-target-entity-sub-type',
+    description:
+      'The specific type designation for the entity as defined by its provider or system. This field provides more granular classification than the type field. Examples: `aws_s3_bucket`, `gcp_cloud_storage_bucket`, `azure_blob_container` would all map to entity type `bucket`.  `hardware` , `virtual` , `container` , `node` , `cloud_instance` would all map to entity type `host`.',
+    example: 'aws_s3_bucket',
+    flat_name: 'cloud.target.entity.sub_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'sub_type',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'The specific type designation for the entity as defined by its provider or system.',
+    type: 'keyword',
+  },
+  'cloud.target.entity.type': {
+    allowed_values: [
+      {
+        description:
+          'Represents a storage container or bucket, typically used for object storage. Common examples include AWS S3 buckets, Google Cloud Storage buckets, Azure Blob containers, and other cloud storage services. Buckets are used to organize and store files, objects, or data in cloud environments.',
+        name: 'bucket',
+      },
+      {
+        description:
+          'Represents a database system or database instance. This includes relational databases (MySQL, PostgreSQL, Oracle), NoSQL databases (MongoDB, Cassandra, DynamoDB), time-series databases, and other data storage systems. The entity may represent the entire database system or a specific database instance.',
+        name: 'database',
+      },
+      {
+        description:
+          'Represents a containerized application or process. This includes Docker containers, Kubernetes pods, and other containerization technologies. Containers encapsulate applications and their dependencies, providing isolation and portability across different environments.',
+        name: 'container',
+      },
+      {
+        description:
+          'Represents a serverless function or Function-as-a-Service (FaaS) component. This includes AWS Lambda functions, Azure Functions, Google Cloud Functions, and other serverless computing resources. Functions are typically event-driven and execute code without managing the underlying infrastructure.',
+        name: 'function',
+      },
+      {
+        description:
+          'Represents a message queue or messaging system. This includes message brokers, event queues, and other messaging infrastructure components such as Amazon SQS, RabbitMQ, Apache Kafka, and Azure Service Bus. Queues facilitate asynchronous communication between applications and services.',
+        name: 'queue',
+      },
+      {
+        description:
+          'Represents a computing host or machine. This includes physical servers, virtual machines, cloud instances, and other computing resources that can run applications or services. Hosts provide the fundamental computing infrastructure for other entity types.',
+        name: 'host',
+      },
+      {
+        description:
+          'Represents a user account or identity. This includes human users, service accounts, system accounts, and other identity entities that can interact with systems, applications, or services. Users may have various roles, permissions, and attributes associated with their identity.',
+        name: 'user',
+      },
+      {
+        description:
+          'Represents a software application or service. This includes web applications, mobile applications, desktop applications, and other software components that provide functionality to users or other systems. Applications may run on various infrastructure components and can span multiple hosts or containers.',
+        name: 'application',
+      },
+      {
+        description:
+          'Represents a service or microservice component. This includes web services, APIs, background services, and other service-oriented architecture components. Services provide specific functionality and may communicate with other services to fulfill business requirements.',
+        name: 'service',
+      },
+      {
+        description:
+          'Represents a user session or connection session. This includes user login sessions, database connections, network sessions, and other temporary interactive or persistent connections between users, applications, or systems.',
+        name: 'session',
+      },
+    ],
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'cloud-target-entity-type',
+    description:
+      'A standardized high-level classification of the entity. This provides a normalized way to group similar entities across different providers or systems. Example values: `bucket`, `database`, `container`, `function`, `queue`, `host`, `user`, `application`, `session`, etc.',
+    example: 'host',
+    flat_name: 'cloud.target.entity.type',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'type',
+    normalize: ['array'],
+    original_fieldset: 'entity',
+    short: 'Standardized high-level classification of the entity.',
     type: 'keyword',
   },
   'cloud.target.instance.id': {
@@ -1052,7 +1793,7 @@ export const EcsFlat = {
       {
         metric: 'container.cpu.usage',
         relation: 'metric',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     scaling_factor: 1000,
@@ -1089,7 +1830,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'id',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Unique container id.',
     type: 'keyword',
   },
@@ -1108,7 +1849,7 @@ export const EcsFlat = {
       {
         attribute: 'container.image.repo_digests',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'An array of digests of the image the container was built on.',
@@ -1122,7 +1863,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'image.name',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Name of the image the container was built on.',
     type: 'keyword',
   },
@@ -1138,7 +1879,7 @@ export const EcsFlat = {
       {
         attribute: 'container.image.tags',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Container image tags.',
@@ -1157,7 +1898,7 @@ export const EcsFlat = {
       {
         attribute: 'container.label',
         relation: 'related',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Image labels.',
@@ -1175,7 +1916,7 @@ export const EcsFlat = {
       {
         metric: 'container.memory.usage',
         relation: 'metric',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     scaling_factor: 1000,
@@ -1190,7 +1931,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'name',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Container name.',
     type: 'keyword',
   },
@@ -1225,7 +1966,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'runtime',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [
+      {
+        attribute: 'container.runtime.name',
+        relation: 'equivalent',
+        stability: 'development',
+      },
+    ],
     short: 'Runtime managing this container.',
     type: 'keyword',
   },
@@ -1290,7 +2037,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'address',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Destination network address.',
     type: 'keyword',
   },
@@ -1562,7 +2309,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'port',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Port of the destination.',
     type: 'long',
   },
@@ -1759,7 +2506,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'id',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'The unique identifier of a device.',
     type: 'keyword',
   },
@@ -1772,7 +2519,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'manufacturer',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'The vendor name of the device manufacturer.',
     type: 'keyword',
   },
@@ -1785,7 +2532,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'model.identifier',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'The machine readable identifier of the device model.',
     type: 'keyword',
   },
@@ -1798,8 +2545,36 @@ export const EcsFlat = {
     level: 'extended',
     name: 'model.name',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'The human readable marketing name of the device model.',
+    type: 'keyword',
+  },
+  'device.product.id': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'device-product-id',
+    description:
+      'A unique identifier assigned by the vendor to distinguish different product models. This is typically a hexadecimal value that, combined with the vendor ID, creates a globally unique device identifier.\nThe product ID is assigned by the device manufacturer and should remain consistent across all instances of the same product model. For hardware devices, this often corresponds to the Product ID (PID) in device descriptors.\nSee https://learn.microsoft.com/en-us/windows-hardware/drivers/install/standard-usb-identifiers for more details on product identification standards.',
+    example: 43981,
+    flat_name: 'device.product.id',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'product.id',
+    normalize: [],
+    short: 'ProductID of the device',
+    type: 'keyword',
+  },
+  'device.product.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'device-product-name',
+    description:
+      'The human-readable marketing or commercial name of the device as designated by the manufacturer. This name is typically found in product documentation, marketing materials, or device packaging.\nUnlike the product.id which is a technical identifier, this field contains the consumer-facing product name that would be recognizable to end users. The name should be exactly as provided by the manufacturer and may include model numbers, series designations, or other identifying information.',
+    example: 'Extreme V2 SSD',
+    flat_name: 'device.product.name',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'product.name',
+    normalize: [],
+    short: 'Product name of the device',
     type: 'keyword',
   },
   'device.serial_number': {
@@ -1814,6 +2589,48 @@ export const EcsFlat = {
     name: 'serial_number',
     normalize: [],
     short: 'Serial Number of the device',
+    type: 'keyword',
+  },
+  'device.type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'device-type',
+    description:
+      'A classification of the device based on its primary function or device class. This field categorizes devices into functional groups to enable policy enforcement and monitoring based on device capabilities.\nThe classification should follow standard device class definitions where possible, such as "Storage Device", "Human Interface Device", "Audio", "Video", "Network", "Communication", etc. This allows for consistent categorization across different device types and manufacturers.\nSee https://www.usb.org/defined-class-codes for standard device class definitions.',
+    example: 'Storage Device',
+    flat_name: 'device.type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'type',
+    normalize: [],
+    short: 'Device type classification',
+    type: 'keyword',
+  },
+  'device.vendor.id': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'device-vendor-id',
+    description:
+      'A unique identifier assigned to device manufacturers by standards organizations. This is typically a hexadecimal value that uniquely identifies the vendor/manufacturer of the device.\nThe vendor ID is assigned by standards bodies and remains consistent across all products from the same manufacturer. For hardware devices, this often corresponds to the Vendor ID (VID) in device descriptors. This identifier enables tracking and policy enforcement at the manufacturer level.\nSee https://learn.microsoft.com/en-us/windows-hardware/drivers/install/standard-usb-identifiers for more information on vendor identification standards.',
+    example: 4660,
+    flat_name: 'device.vendor.id',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'vendor.id',
+    normalize: [],
+    short: 'VendorID of the device',
+    type: 'keyword',
+  },
+  'device.vendor.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'device-vendor-name',
+    description:
+      'The name of the organization or company that manufactured or produced the device. This should be the official registered business name or commonly recognized brand name of the manufacturer.\nThe vendor name provides human-readable identification of the device manufacturer and should be consistent with the vendor.id field. This field is useful for reporting, device inventory management, and applying vendor-specific policies or security rules.',
+    example: 'SanDisk',
+    flat_name: 'device.vendor.name',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'vendor.name',
+    normalize: [],
+    short: 'Vendor name of the device',
     type: 'keyword',
   },
   'dll.code_signature.digest_algorithm': {
@@ -1909,6 +2726,22 @@ export const EcsFlat = {
     normalize: [],
     original_fieldset: 'code_signature',
     short: 'The team identifier used to sign the process.',
+    type: 'keyword',
+  },
+  'dll.code_signature.thumbprint_sha256': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'dll-code-signature-thumbprint-sha256',
+    description:
+      'Certificate SHA256 hash that uniquely identifies the code signer.',
+    example: 'c0f23a8eb1cba0ccaa88483b5a234c96e4bdfec719bf458024e68c2a8183476b',
+    flat_name: 'dll.code_signature.thumbprint_sha256',
+    ignore_above: 64,
+    level: 'extended',
+    name: 'thumbprint_sha256',
+    normalize: [],
+    original_fieldset: 'code_signature',
+    pattern: '^[0-9a-f]{64}$',
+    short: 'SHA256 hash of the certificate.',
     type: 'keyword',
   },
   'dll.code_signature.timestamp': {
@@ -2405,6 +3238,13 @@ export const EcsFlat = {
     level: 'extended',
     name: 'answers',
     normalize: ['array'],
+    otel: [
+      {
+        attribute: 'dns.answers',
+        relation: 'related',
+        stability: 'development',
+      },
+    ],
     short: 'Array of DNS answers.',
     type: 'object',
   },
@@ -2535,7 +3375,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'question.name',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'The name being queried.',
     type: 'keyword',
   },
@@ -3649,6 +4489,11 @@ export const EcsFlat = {
       },
       {
         description:
+          'The device event type is used for the subset of events within a category that are related to device objects. Common example: `event.category:host AND event.type:change AND event.type:device`. You can further distinguish device operations using the ECS `event.action` field.',
+        name: 'device',
+      },
+      {
+        description:
           'The end event type is used for the subset of events within a category that indicate something has ended. A common example is `event.category:process AND event.type:end`.',
         name: 'end',
       },
@@ -3726,7 +4571,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'coldstart',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Boolean value indicating a cold start of a function.',
     type: 'boolean',
   },
@@ -3743,7 +4588,7 @@ export const EcsFlat = {
       {
         attribute: 'faas.invocation_id',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'The execution ID of the current function execution.',
@@ -3771,7 +4616,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'name',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'The name of a serverless function.',
     type: 'keyword',
   },
@@ -3801,7 +4646,7 @@ export const EcsFlat = {
       {
         attribute: 'faas.trigger',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'The trigger for the function execution.',
@@ -3816,7 +4661,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'version',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'The version of a serverless function.',
     type: 'keyword',
   },
@@ -3828,7 +4673,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'accessed',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Last time the file was accessed.',
     type: 'date',
   },
@@ -3842,7 +4687,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'attributes',
     normalize: ['array'],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Array of file attributes.',
     synthetic_source_keep: 'none',
     type: 'keyword',
@@ -3942,6 +4787,22 @@ export const EcsFlat = {
     short: 'The team identifier used to sign the process.',
     type: 'keyword',
   },
+  'file.code_signature.thumbprint_sha256': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'file-code-signature-thumbprint-sha256',
+    description:
+      'Certificate SHA256 hash that uniquely identifies the code signer.',
+    example: 'c0f23a8eb1cba0ccaa88483b5a234c96e4bdfec719bf458024e68c2a8183476b',
+    flat_name: 'file.code_signature.thumbprint_sha256',
+    ignore_above: 64,
+    level: 'extended',
+    name: 'thumbprint_sha256',
+    normalize: [],
+    original_fieldset: 'code_signature',
+    pattern: '^[0-9a-f]{64}$',
+    short: 'SHA256 hash of the certificate.',
+    type: 'keyword',
+  },
   'file.code_signature.timestamp': {
     dashed_name: 'file-code-signature-timestamp',
     description:
@@ -3990,7 +4851,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'created',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'File creation time.',
     type: 'date',
   },
@@ -4006,7 +4867,7 @@ export const EcsFlat = {
       {
         attribute: 'file.changed',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Last time the file attributes or metadata changed.',
@@ -4034,7 +4895,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'directory',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Directory where the file is located.',
     type: 'keyword',
   },
@@ -4527,7 +5388,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'extension',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'File extension, excluding the leading dot.',
     type: 'keyword',
   },
@@ -4541,7 +5402,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'fork_name',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'A fork is additional data associated with a filesystem object.',
     type: 'keyword',
   },
@@ -4558,7 +5419,7 @@ export const EcsFlat = {
       {
         attribute: 'file.group.id',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Primary group ID (GID) of the file.',
@@ -4577,7 +5438,7 @@ export const EcsFlat = {
       {
         attribute: 'file.group.name',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Primary group name of the file.',
@@ -4691,7 +5552,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'inode',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Inode representing the file in the filesystem.',
     type: 'keyword',
   },
@@ -4920,7 +5781,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'mode',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Mode of the file in octal representation.',
     type: 'keyword',
   },
@@ -4935,7 +5796,7 @@ export const EcsFlat = {
       {
         attribute: 'file.modified',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Last time the file content was modified.',
@@ -4951,7 +5812,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'name',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Name of the file including the extension, without the directory.',
     type: 'keyword',
   },
@@ -4994,7 +5855,7 @@ export const EcsFlat = {
       {
         attribute: 'file.owner.name',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: "File owner's username.",
@@ -5013,7 +5874,7 @@ export const EcsFlat = {
     ],
     name: 'path',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Full path to the file, including the file name.',
     type: 'keyword',
   },
@@ -5322,7 +6183,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'size',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'File size in bytes.',
     type: 'long',
   },
@@ -5345,7 +6206,7 @@ export const EcsFlat = {
       {
         attribute: 'file.symbolic_link.target_path',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Target path for symlinks.',
@@ -5377,7 +6238,7 @@ export const EcsFlat = {
       {
         attribute: 'file.owner.id',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'The user ID (UID) or security identifier (SID) of the file owner.',
@@ -5703,6 +6564,379 @@ export const EcsFlat = {
     short: 'Version of x509 format.',
     type: 'keyword',
   },
+  'gen_ai.agent.description': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-agent-description',
+    description:
+      'Free-form description of the GenAI agent provided by the application.',
+    doc_values: false,
+    example: 'Helps with math problems; Generates fiction stories',
+    flat_name: 'gen_ai.agent.description',
+    index: false,
+    level: 'extended',
+    name: 'agent.description',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short:
+      'Free-form description of the GenAI agent provided by the application.',
+    type: 'keyword',
+  },
+  'gen_ai.agent.id': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-agent-id',
+    description: 'The unique identifier of the GenAI agent.',
+    example: 'asst_5j66UpCpwteGg4YSxUnt7lPY',
+    flat_name: 'gen_ai.agent.id',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'agent.id',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The unique identifier of the GenAI agent.',
+    type: 'keyword',
+  },
+  'gen_ai.agent.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-agent-name',
+    description:
+      'Human-readable name of the GenAI agent provided by the application.',
+    example: 'Math Tutor; Fiction Writer',
+    flat_name: 'gen_ai.agent.name',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'agent.name',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short:
+      'Human-readable name of the GenAI agent provided by the application.',
+    type: 'keyword',
+  },
+  'gen_ai.operation.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-operation-name',
+    description: 'The name of the operation being performed.',
+    example: 'chat; text_completion; embeddings',
+    flat_name: 'gen_ai.operation.name',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'operation.name',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The name of the operation being performed.',
+    type: 'keyword',
+  },
+  'gen_ai.output.type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-output-type',
+    description: 'Represents the content type requested by the client.',
+    example: 'text; json; image',
+    flat_name: 'gen_ai.output.type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'output.type',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'Represents the content type requested by the client.',
+    type: 'keyword',
+  },
+  'gen_ai.request.choice.count': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-request-choice-count',
+    description: 'The target number of candidate completions to return.',
+    example: 3,
+    flat_name: 'gen_ai.request.choice.count',
+    level: 'extended',
+    name: 'request.choice.count',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The target number of candidate completions to return.',
+    type: 'integer',
+  },
+  'gen_ai.request.encoding_formats': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-request-encoding-formats',
+    description:
+      'The encoding formats requested in an embeddings operation, if specified.',
+    example: '["float", "binary"]',
+    flat_name: 'gen_ai.request.encoding_formats',
+    level: 'extended',
+    name: 'request.encoding_formats',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short:
+      'The encoding formats requested in an embeddings operation, if specified.',
+    type: 'nested',
+  },
+  'gen_ai.request.frequency_penalty': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-request-frequency-penalty',
+    description: 'The frequency penalty setting for the GenAI request.',
+    example: 0.1,
+    flat_name: 'gen_ai.request.frequency_penalty',
+    level: 'extended',
+    name: 'request.frequency_penalty',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The frequency penalty setting for the GenAI request.',
+    type: 'double',
+  },
+  'gen_ai.request.max_tokens': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-request-max-tokens',
+    description:
+      'The maximum number of tokens the model generates for a request.',
+    example: 100,
+    flat_name: 'gen_ai.request.max_tokens',
+    level: 'extended',
+    name: 'request.max_tokens',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The maximum number of tokens the model generates for a request.',
+    type: 'integer',
+  },
+  'gen_ai.request.model': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-request-model',
+    description: 'The name of the GenAI model a request is being made to.',
+    example: 'gpt-4',
+    flat_name: 'gen_ai.request.model',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'request.model',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The name of the GenAI model a request is being made to.',
+    type: 'keyword',
+  },
+  'gen_ai.request.presence_penalty': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-request-presence-penalty',
+    description: 'The presence penalty setting for the GenAI request.',
+    example: 0.1,
+    flat_name: 'gen_ai.request.presence_penalty',
+    level: 'extended',
+    name: 'request.presence_penalty',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The presence penalty setting for the GenAI request.',
+    type: 'double',
+  },
+  'gen_ai.request.seed': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-request-seed',
+    description:
+      'Requests with same seed value more likely to return same result.',
+    example: 100,
+    flat_name: 'gen_ai.request.seed',
+    level: 'extended',
+    name: 'request.seed',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'Requests with same seed value more likely to return same result.',
+    type: 'integer',
+  },
+  'gen_ai.request.stop_sequences': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-request-stop-sequences',
+    description:
+      'List of sequences that the model will use to stop generating further tokens.',
+    example: '["forest", "lived"]',
+    flat_name: 'gen_ai.request.stop_sequences',
+    level: 'extended',
+    name: 'request.stop_sequences',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short:
+      'List of sequences that the model will use to stop generating further tokens.',
+    type: 'nested',
+  },
+  'gen_ai.request.temperature': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-request-temperature',
+    description: 'The temperature setting for the GenAI request.',
+    example: 0,
+    flat_name: 'gen_ai.request.temperature',
+    level: 'extended',
+    name: 'request.temperature',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The temperature setting for the GenAI request.',
+    type: 'double',
+  },
+  'gen_ai.request.top_k': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-request-top-k',
+    description: 'The top_k sampling setting for the GenAI request.',
+    example: 1,
+    flat_name: 'gen_ai.request.top_k',
+    level: 'extended',
+    name: 'request.top_k',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The top_k sampling setting for the GenAI request.',
+    type: 'double',
+  },
+  'gen_ai.request.top_p': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-request-top-p',
+    description: 'The top_p sampling setting for the GenAI request.',
+    example: 1,
+    flat_name: 'gen_ai.request.top_p',
+    level: 'extended',
+    name: 'request.top_p',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The top_p sampling setting for the GenAI request.',
+    type: 'double',
+  },
+  'gen_ai.response.finish_reasons': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-response-finish-reasons',
+    description:
+      'Array of reasons the model stopped generating tokens, corresponding to each generation received.',
+    example: '["stop", "length"]',
+    flat_name: 'gen_ai.response.finish_reasons',
+    level: 'extended',
+    name: 'response.finish_reasons',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short:
+      'Array of reasons the model stopped generating tokens, corresponding to each generation received.',
+    type: 'nested',
+  },
+  'gen_ai.response.id': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-response-id',
+    description: 'The unique identifier for the completion.',
+    example: 'chatcmpl-123',
+    flat_name: 'gen_ai.response.id',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'response.id',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The unique identifier for the completion.',
+    type: 'keyword',
+  },
+  'gen_ai.response.model': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-response-model',
+    description: 'The name of the model that generated the response.',
+    example: 'gpt-4-0613',
+    flat_name: 'gen_ai.response.model',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'response.model',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The name of the model that generated the response.',
+    type: 'keyword',
+  },
+  'gen_ai.system': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-system',
+    description:
+      'The Generative AI product as identified by the client or server instrumentation.',
+    example: 'openai',
+    flat_name: 'gen_ai.system',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'system',
+    normalize: [],
+    otel: [
+      {
+        attribute: 'gen_ai.provider.name',
+        relation: 'equivalent',
+        stability: 'development',
+      },
+    ],
+    short:
+      'The Generative AI product as identified by the client or server instrumentation.',
+    type: 'keyword',
+  },
+  'gen_ai.token.type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-token-type',
+    description: 'The type of token being counted.',
+    example: 'input; output',
+    flat_name: 'gen_ai.token.type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'token.type',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The type of token being counted.',
+    type: 'keyword',
+  },
+  'gen_ai.tool.call.id': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-tool-call-id',
+    description: 'The tool call identifier.',
+    example: 'call_mszuSIzqtI65i1wAUOE8w5H4',
+    flat_name: 'gen_ai.tool.call.id',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'tool.call.id',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The tool call identifier.',
+    type: 'keyword',
+  },
+  'gen_ai.tool.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-tool-name',
+    description: 'Name of the tool utilized by the agent.',
+    example: 'Flights',
+    flat_name: 'gen_ai.tool.name',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'tool.name',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'Name of the tool utilized by the agent.',
+    type: 'keyword',
+  },
+  'gen_ai.tool.type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-tool-type',
+    description: 'Type of the tool utilized by the agent',
+    example: 'function; extension; datastore',
+    flat_name: 'gen_ai.tool.type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'tool.type',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'Type of the tool utilized by the agent',
+    type: 'keyword',
+  },
+  'gen_ai.usage.input_tokens': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-usage-input-tokens',
+    description: 'The number of tokens used in the GenAI input (prompt).',
+    example: 100,
+    flat_name: 'gen_ai.usage.input_tokens',
+    level: 'extended',
+    name: 'usage.input_tokens',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The number of tokens used in the GenAI input (prompt).',
+    type: 'integer',
+  },
+  'gen_ai.usage.output_tokens': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-usage-output-tokens',
+    description:
+      'The number of tokens used in the GenAI response (completion).',
+    example: 180,
+    flat_name: 'gen_ai.usage.output_tokens',
+    level: 'extended',
+    name: 'usage.output_tokens',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The number of tokens used in the GenAI response (completion).',
+    type: 'integer',
+  },
   'group.domain': {
     dashed_name: 'group-domain',
     description:
@@ -5750,7 +6984,7 @@ export const EcsFlat = {
       {
         attribute: 'host.arch',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Operating system architecture.',
@@ -5781,7 +7015,7 @@ export const EcsFlat = {
       {
         metric: 'system.cpu.utilization',
         relation: 'metric',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     scaling_factor: 1000,
@@ -5800,7 +7034,7 @@ export const EcsFlat = {
       {
         metric: 'system.disk.io',
         relation: 'metric',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'The number of bytes read by all disks.',
@@ -5818,7 +7052,7 @@ export const EcsFlat = {
       {
         metric: 'system.disk.io',
         relation: 'metric',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'The number of bytes written on all disks.',
@@ -5835,6 +7069,253 @@ export const EcsFlat = {
     name: 'domain',
     normalize: [],
     short: 'Name of the directory the group is a member of.',
+    type: 'keyword',
+  },
+  'host.entity.attributes': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'host-entity-attributes',
+    description:
+      'A set of static or semi-static attributes of the entity. Usually boolean or keyword field data types. Use this field set when you need to track static or semi-static characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'host.entity.attributes',
+    level: 'extended',
+    name: 'attributes',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of static or semi-static attributes of the entity.',
+    type: 'object',
+  },
+  'host.entity.behavior': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'host-entity-behavior',
+    description:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period. Usually boolean field data type. Use this field set when you need to capture and track ephemeral characteristics of an entity for advanced searching, correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'host.entity.behavior',
+    level: 'extended',
+    name: 'behavior',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period.',
+    type: 'object',
+  },
+  'host.entity.display_name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'host-entity-display-name',
+    description:
+      'An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (e.g., `host`).',
+    flat_name: 'host.entity.display_name',
+    ignore_above: 1024,
+    level: 'extended',
+    multi_fields: [
+      {
+        flat_name: 'host.entity.display_name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'display_name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'An optional field used when a pretty name is desired for entity-centric operations.',
+    type: 'keyword',
+  },
+  'host.entity.id': {
+    dashed_name: 'host-entity-id',
+    description:
+      "A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (e.g., host, user), this value should match the corresponding *.id field. Alternative identifiers (e.g., ARNs values in AWS, URLs) can be preserved in the raw field.",
+    flat_name: 'host.entity.id',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'id',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Unique identifier for the entity.',
+    type: 'keyword',
+  },
+  'host.entity.last_seen_timestamp': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'host-entity-last-seen-timestamp',
+    description:
+      'Indicates the date/time when this entity was last "seen," usually based upon the last event/log that is initiated by this entity.',
+    flat_name: 'host.entity.last_seen_timestamp',
+    level: 'extended',
+    name: 'last_seen_timestamp',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Indicates the date/time when this entity was last "seen."',
+    type: 'date',
+  },
+  'host.entity.lifecycle': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'host-entity-lifecycle',
+    description:
+      'A set of temporal characteristics of the entity. Usually date field data type. Use this field set when you need to track temporal characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'host.entity.lifecycle',
+    level: 'extended',
+    name: 'lifecycle',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of temporal characteristics of the entity.',
+    type: 'object',
+  },
+  'host.entity.metrics': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'host-entity-metrics',
+    description:
+      'Field set for any fields containing numeric entity metrics. These use dynamic field data type mapping.',
+    flat_name: 'host.entity.metrics',
+    level: 'extended',
+    name: 'metrics',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Field set for any fields containing numeric entity metrics.',
+    type: 'object',
+  },
+  'host.entity.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'host-entity-name',
+    description:
+      'The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (e.g., `host`), this field should mirrors the corresponding *.name value.',
+    flat_name: 'host.entity.name',
+    ignore_above: 1024,
+    level: 'core',
+    multi_fields: [
+      {
+        flat_name: 'host.entity.name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'The name of the entity.',
+    type: 'keyword',
+  },
+  'host.entity.raw': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'host-entity-raw',
+    description:
+      'Original, unmodified fields from the source system. Usually flattened field data type. While the attributes field should be used for normalized fields requiring advanced queries, this field preserves all source metadata with basic search capabilities.',
+    flat_name: 'host.entity.raw',
+    level: 'extended',
+    name: 'raw',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Original, unmodified fields from the source system.',
+    type: 'object',
+  },
+  'host.entity.reference': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'host-entity-reference',
+    description:
+      'A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format may vary by entity type and source system.',
+    flat_name: 'host.entity.reference',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'reference',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A URI, URL, or other direct reference to access or locate the entity.',
+    type: 'keyword',
+  },
+  'host.entity.source': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'host-entity-source',
+    description:
+      'The module or integration that provided this entity data (similar to event.module).',
+    flat_name: 'host.entity.source',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'source',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Source module or integration that provided the entity data.',
+    type: 'keyword',
+  },
+  'host.entity.sub_type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'host-entity-sub-type',
+    description:
+      'The specific type designation for the entity as defined by its provider or system. This field provides more granular classification than the type field. Examples: `aws_s3_bucket`, `gcp_cloud_storage_bucket`, `azure_blob_container` would all map to entity type `bucket`.  `hardware` , `virtual` , `container` , `node` , `cloud_instance` would all map to entity type `host`.',
+    example: 'aws_s3_bucket',
+    flat_name: 'host.entity.sub_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'sub_type',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'The specific type designation for the entity as defined by its provider or system.',
+    type: 'keyword',
+  },
+  'host.entity.type': {
+    allowed_values: [
+      {
+        description:
+          'Represents a storage container or bucket, typically used for object storage. Common examples include AWS S3 buckets, Google Cloud Storage buckets, Azure Blob containers, and other cloud storage services. Buckets are used to organize and store files, objects, or data in cloud environments.',
+        name: 'bucket',
+      },
+      {
+        description:
+          'Represents a database system or database instance. This includes relational databases (MySQL, PostgreSQL, Oracle), NoSQL databases (MongoDB, Cassandra, DynamoDB), time-series databases, and other data storage systems. The entity may represent the entire database system or a specific database instance.',
+        name: 'database',
+      },
+      {
+        description:
+          'Represents a containerized application or process. This includes Docker containers, Kubernetes pods, and other containerization technologies. Containers encapsulate applications and their dependencies, providing isolation and portability across different environments.',
+        name: 'container',
+      },
+      {
+        description:
+          'Represents a serverless function or Function-as-a-Service (FaaS) component. This includes AWS Lambda functions, Azure Functions, Google Cloud Functions, and other serverless computing resources. Functions are typically event-driven and execute code without managing the underlying infrastructure.',
+        name: 'function',
+      },
+      {
+        description:
+          'Represents a message queue or messaging system. This includes message brokers, event queues, and other messaging infrastructure components such as Amazon SQS, RabbitMQ, Apache Kafka, and Azure Service Bus. Queues facilitate asynchronous communication between applications and services.',
+        name: 'queue',
+      },
+      {
+        description:
+          'Represents a computing host or machine. This includes physical servers, virtual machines, cloud instances, and other computing resources that can run applications or services. Hosts provide the fundamental computing infrastructure for other entity types.',
+        name: 'host',
+      },
+      {
+        description:
+          'Represents a user account or identity. This includes human users, service accounts, system accounts, and other identity entities that can interact with systems, applications, or services. Users may have various roles, permissions, and attributes associated with their identity.',
+        name: 'user',
+      },
+      {
+        description:
+          'Represents a software application or service. This includes web applications, mobile applications, desktop applications, and other software components that provide functionality to users or other systems. Applications may run on various infrastructure components and can span multiple hosts or containers.',
+        name: 'application',
+      },
+      {
+        description:
+          'Represents a service or microservice component. This includes web services, APIs, background services, and other service-oriented architecture components. Services provide specific functionality and may communicate with other services to fulfill business requirements.',
+        name: 'service',
+      },
+      {
+        description:
+          'Represents a user session or connection session. This includes user login sessions, database connections, network sessions, and other temporary interactive or persistent connections between users, applications, or systems.',
+        name: 'session',
+      },
+    ],
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'host-entity-type',
+    description:
+      'A standardized high-level classification of the entity. This provides a normalized way to group similar entities across different providers or systems. Example values: `bucket`, `database`, `container`, `function`, `queue`, `host`, `user`, `application`, `session`, etc.',
+    example: 'host',
+    flat_name: 'host.entity.type',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'type',
+    normalize: ['array'],
+    original_fieldset: 'entity',
+    short: 'Standardized high-level classification of the entity.',
     type: 'keyword',
   },
   'host.geo.city_name': {
@@ -6002,7 +7483,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'id',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Unique host id.',
     type: 'keyword',
   },
@@ -6013,7 +7494,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'ip',
     normalize: ['array'],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Host ip addresses.',
     synthetic_source_keep: 'none',
     type: 'ip',
@@ -6028,7 +7509,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'mac',
     normalize: ['array'],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     pattern: '^[A-F0-9]{2}(-[A-F0-9]{2}){5,}$',
     short: 'Host MAC addresses.',
     synthetic_source_keep: 'none',
@@ -6043,7 +7524,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'name',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Name of the host.',
     type: 'keyword',
   },
@@ -6059,7 +7540,7 @@ export const EcsFlat = {
       {
         metric: 'system.network.io',
         relation: 'metric',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'The number of bytes sent on all network interfaces.',
@@ -6075,9 +7556,9 @@ export const EcsFlat = {
     normalize: [],
     otel: [
       {
-        metric: 'system.network.packets',
+        metric: 'system.network.packet.count',
         relation: 'metric',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'The number of packets sent on all network interfaces.',
@@ -6095,7 +7576,7 @@ export const EcsFlat = {
       {
         metric: 'system.network.io',
         relation: 'metric',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'The number of bytes received on all network interfaces.',
@@ -6111,9 +7592,9 @@ export const EcsFlat = {
     normalize: [],
     otel: [
       {
-        metric: 'system.network.packets',
+        metric: 'system.network.packet.count',
         relation: 'metric',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'The number of packets received on all network interfaces.',
@@ -6325,7 +7806,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'type',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Type of host.',
     type: 'keyword',
   },
@@ -6338,11 +7819,7 @@ export const EcsFlat = {
     name: 'uptime',
     normalize: [],
     otel: [
-      {
-        metric: 'system.uptime',
-        relation: 'metric',
-        stability: 'experimental',
-      },
+      { metric: 'system.uptime', relation: 'metric', stability: 'development' },
     ],
     short: 'Seconds the host has been up.',
     type: 'long',
@@ -6360,7 +7837,7 @@ export const EcsFlat = {
       {
         attribute: 'http.request.body.size',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Size in bytes of the request body.',
@@ -6397,7 +7874,7 @@ export const EcsFlat = {
       {
         attribute: 'http.request.size',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Total size in bytes of the request (body and headers).',
@@ -6480,7 +7957,7 @@ export const EcsFlat = {
       {
         attribute: 'http.response.body.size',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Size in bytes of the response body.',
@@ -6517,7 +7994,7 @@ export const EcsFlat = {
       {
         attribute: 'http.response.size',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Total size in bytes of the response (body and headers).',
@@ -6588,12 +8065,12 @@ export const EcsFlat = {
       {
         attribute: 'k8s.pod.label',
         relation: 'related',
-        stability: 'experimental',
+        stability: 'development',
       },
       {
         attribute: 'container.label',
         relation: 'related',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Custom key/value pairs.',
@@ -6609,7 +8086,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'file.path',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Full path to the log file this event came from.',
     type: 'keyword',
   },
@@ -7671,6 +9148,253 @@ export const EcsFlat = {
     short: 'The version of the cluster.',
     type: 'keyword',
   },
+  'orchestrator.entity.attributes': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'orchestrator-entity-attributes',
+    description:
+      'A set of static or semi-static attributes of the entity. Usually boolean or keyword field data types. Use this field set when you need to track static or semi-static characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'orchestrator.entity.attributes',
+    level: 'extended',
+    name: 'attributes',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of static or semi-static attributes of the entity.',
+    type: 'object',
+  },
+  'orchestrator.entity.behavior': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'orchestrator-entity-behavior',
+    description:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period. Usually boolean field data type. Use this field set when you need to capture and track ephemeral characteristics of an entity for advanced searching, correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'orchestrator.entity.behavior',
+    level: 'extended',
+    name: 'behavior',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period.',
+    type: 'object',
+  },
+  'orchestrator.entity.display_name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'orchestrator-entity-display-name',
+    description:
+      'An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (e.g., `host`).',
+    flat_name: 'orchestrator.entity.display_name',
+    ignore_above: 1024,
+    level: 'extended',
+    multi_fields: [
+      {
+        flat_name: 'orchestrator.entity.display_name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'display_name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'An optional field used when a pretty name is desired for entity-centric operations.',
+    type: 'keyword',
+  },
+  'orchestrator.entity.id': {
+    dashed_name: 'orchestrator-entity-id',
+    description:
+      "A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (e.g., host, user), this value should match the corresponding *.id field. Alternative identifiers (e.g., ARNs values in AWS, URLs) can be preserved in the raw field.",
+    flat_name: 'orchestrator.entity.id',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'id',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Unique identifier for the entity.',
+    type: 'keyword',
+  },
+  'orchestrator.entity.last_seen_timestamp': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'orchestrator-entity-last-seen-timestamp',
+    description:
+      'Indicates the date/time when this entity was last "seen," usually based upon the last event/log that is initiated by this entity.',
+    flat_name: 'orchestrator.entity.last_seen_timestamp',
+    level: 'extended',
+    name: 'last_seen_timestamp',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Indicates the date/time when this entity was last "seen."',
+    type: 'date',
+  },
+  'orchestrator.entity.lifecycle': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'orchestrator-entity-lifecycle',
+    description:
+      'A set of temporal characteristics of the entity. Usually date field data type. Use this field set when you need to track temporal characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'orchestrator.entity.lifecycle',
+    level: 'extended',
+    name: 'lifecycle',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of temporal characteristics of the entity.',
+    type: 'object',
+  },
+  'orchestrator.entity.metrics': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'orchestrator-entity-metrics',
+    description:
+      'Field set for any fields containing numeric entity metrics. These use dynamic field data type mapping.',
+    flat_name: 'orchestrator.entity.metrics',
+    level: 'extended',
+    name: 'metrics',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Field set for any fields containing numeric entity metrics.',
+    type: 'object',
+  },
+  'orchestrator.entity.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'orchestrator-entity-name',
+    description:
+      'The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (e.g., `host`), this field should mirrors the corresponding *.name value.',
+    flat_name: 'orchestrator.entity.name',
+    ignore_above: 1024,
+    level: 'core',
+    multi_fields: [
+      {
+        flat_name: 'orchestrator.entity.name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'The name of the entity.',
+    type: 'keyword',
+  },
+  'orchestrator.entity.raw': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'orchestrator-entity-raw',
+    description:
+      'Original, unmodified fields from the source system. Usually flattened field data type. While the attributes field should be used for normalized fields requiring advanced queries, this field preserves all source metadata with basic search capabilities.',
+    flat_name: 'orchestrator.entity.raw',
+    level: 'extended',
+    name: 'raw',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Original, unmodified fields from the source system.',
+    type: 'object',
+  },
+  'orchestrator.entity.reference': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'orchestrator-entity-reference',
+    description:
+      'A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format may vary by entity type and source system.',
+    flat_name: 'orchestrator.entity.reference',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'reference',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A URI, URL, or other direct reference to access or locate the entity.',
+    type: 'keyword',
+  },
+  'orchestrator.entity.source': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'orchestrator-entity-source',
+    description:
+      'The module or integration that provided this entity data (similar to event.module).',
+    flat_name: 'orchestrator.entity.source',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'source',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Source module or integration that provided the entity data.',
+    type: 'keyword',
+  },
+  'orchestrator.entity.sub_type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'orchestrator-entity-sub-type',
+    description:
+      'The specific type designation for the entity as defined by its provider or system. This field provides more granular classification than the type field. Examples: `aws_s3_bucket`, `gcp_cloud_storage_bucket`, `azure_blob_container` would all map to entity type `bucket`.  `hardware` , `virtual` , `container` , `node` , `cloud_instance` would all map to entity type `host`.',
+    example: 'aws_s3_bucket',
+    flat_name: 'orchestrator.entity.sub_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'sub_type',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'The specific type designation for the entity as defined by its provider or system.',
+    type: 'keyword',
+  },
+  'orchestrator.entity.type': {
+    allowed_values: [
+      {
+        description:
+          'Represents a storage container or bucket, typically used for object storage. Common examples include AWS S3 buckets, Google Cloud Storage buckets, Azure Blob containers, and other cloud storage services. Buckets are used to organize and store files, objects, or data in cloud environments.',
+        name: 'bucket',
+      },
+      {
+        description:
+          'Represents a database system or database instance. This includes relational databases (MySQL, PostgreSQL, Oracle), NoSQL databases (MongoDB, Cassandra, DynamoDB), time-series databases, and other data storage systems. The entity may represent the entire database system or a specific database instance.',
+        name: 'database',
+      },
+      {
+        description:
+          'Represents a containerized application or process. This includes Docker containers, Kubernetes pods, and other containerization technologies. Containers encapsulate applications and their dependencies, providing isolation and portability across different environments.',
+        name: 'container',
+      },
+      {
+        description:
+          'Represents a serverless function or Function-as-a-Service (FaaS) component. This includes AWS Lambda functions, Azure Functions, Google Cloud Functions, and other serverless computing resources. Functions are typically event-driven and execute code without managing the underlying infrastructure.',
+        name: 'function',
+      },
+      {
+        description:
+          'Represents a message queue or messaging system. This includes message brokers, event queues, and other messaging infrastructure components such as Amazon SQS, RabbitMQ, Apache Kafka, and Azure Service Bus. Queues facilitate asynchronous communication between applications and services.',
+        name: 'queue',
+      },
+      {
+        description:
+          'Represents a computing host or machine. This includes physical servers, virtual machines, cloud instances, and other computing resources that can run applications or services. Hosts provide the fundamental computing infrastructure for other entity types.',
+        name: 'host',
+      },
+      {
+        description:
+          'Represents a user account or identity. This includes human users, service accounts, system accounts, and other identity entities that can interact with systems, applications, or services. Users may have various roles, permissions, and attributes associated with their identity.',
+        name: 'user',
+      },
+      {
+        description:
+          'Represents a software application or service. This includes web applications, mobile applications, desktop applications, and other software components that provide functionality to users or other systems. Applications may run on various infrastructure components and can span multiple hosts or containers.',
+        name: 'application',
+      },
+      {
+        description:
+          'Represents a service or microservice component. This includes web services, APIs, background services, and other service-oriented architecture components. Services provide specific functionality and may communicate with other services to fulfill business requirements.',
+        name: 'service',
+      },
+      {
+        description:
+          'Represents a user session or connection session. This includes user login sessions, database connections, network sessions, and other temporary interactive or persistent connections between users, applications, or systems.',
+        name: 'session',
+      },
+    ],
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'orchestrator-entity-type',
+    description:
+      'A standardized high-level classification of the entity. This provides a normalized way to group similar entities across different providers or systems. Example values: `bucket`, `database`, `container`, `function`, `queue`, `host`, `user`, `application`, `session`, etc.',
+    example: 'host',
+    flat_name: 'orchestrator.entity.type',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'type',
+    normalize: ['array'],
+    original_fieldset: 'entity',
+    short: 'Standardized high-level classification of the entity.',
+    type: 'keyword',
+  },
   'orchestrator.namespace': {
     dashed_name: 'orchestrator-namespace',
     description: 'Namespace in which the action is taking place.',
@@ -8002,7 +9726,7 @@ export const EcsFlat = {
       {
         attribute: 'process.command_args',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Array of process arguments.',
@@ -8017,7 +9741,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'args_count',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Length of the process.args array.',
     type: 'long',
   },
@@ -8116,6 +9840,22 @@ export const EcsFlat = {
     short: 'The team identifier used to sign the process.',
     type: 'keyword',
   },
+  'process.code_signature.thumbprint_sha256': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'process-code-signature-thumbprint-sha256',
+    description:
+      'Certificate SHA256 hash that uniquely identifies the code signer.',
+    example: 'c0f23a8eb1cba0ccaa88483b5a234c96e4bdfec719bf458024e68c2a8183476b',
+    flat_name: 'process.code_signature.thumbprint_sha256',
+    ignore_above: 64,
+    level: 'extended',
+    name: 'thumbprint_sha256',
+    normalize: [],
+    original_fieldset: 'code_signature',
+    pattern: '^[0-9a-f]{64}$',
+    short: 'SHA256 hash of the certificate.',
+    type: 'keyword',
+  },
   'process.code_signature.timestamp': {
     dashed_name: 'process-code-signature-timestamp',
     description:
@@ -8172,7 +9912,7 @@ export const EcsFlat = {
     ],
     name: 'command_line',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Full command line that started the process.',
     type: 'wildcard',
   },
@@ -9295,7 +11035,7 @@ export const EcsFlat = {
       {
         attribute: 'process.executable.path',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Absolute path to the process executable.',
@@ -9485,7 +11225,7 @@ export const EcsFlat = {
     name: 'pid',
     normalize: [],
     original_fieldset: 'process',
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Process id.',
     type: 'long',
   },
@@ -9866,7 +11606,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'interactive',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Whether the process is connected to an interactive shell.',
     type: 'boolean',
   },
@@ -10312,6 +12052,22 @@ export const EcsFlat = {
     normalize: [],
     original_fieldset: 'code_signature',
     short: 'The team identifier used to sign the process.',
+    type: 'keyword',
+  },
+  'process.parent.code_signature.thumbprint_sha256': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'process-parent-code-signature-thumbprint-sha256',
+    description:
+      'Certificate SHA256 hash that uniquely identifies the code signer.',
+    example: 'c0f23a8eb1cba0ccaa88483b5a234c96e4bdfec719bf458024e68c2a8183476b',
+    flat_name: 'process.parent.code_signature.thumbprint_sha256',
+    ignore_above: 64,
+    level: 'extended',
+    name: 'thumbprint_sha256',
+    normalize: [],
+    original_fieldset: 'code_signature',
+    pattern: '^[0-9a-f]{64}$',
+    short: 'SHA256 hash of the certificate.',
     type: 'keyword',
   },
   'process.parent.code_signature.timestamp': {
@@ -12271,7 +14027,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'pid',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Process id.',
     type: 'long',
   },
@@ -12356,7 +14112,7 @@ export const EcsFlat = {
     name: 'id',
     normalize: [],
     original_fieldset: 'user',
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Unique identifier of the user.',
     type: 'keyword',
   },
@@ -12377,7 +14133,7 @@ export const EcsFlat = {
     name: 'name',
     normalize: [],
     original_fieldset: 'user',
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Short name or login of the user.',
     type: 'keyword',
   },
@@ -12415,7 +14171,7 @@ export const EcsFlat = {
     name: 'id',
     normalize: [],
     original_fieldset: 'user',
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Unique identifier of the user.',
     type: 'keyword',
   },
@@ -12436,7 +14192,7 @@ export const EcsFlat = {
     name: 'name',
     normalize: [],
     original_fieldset: 'user',
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Short name or login of the user.',
     type: 'keyword',
   },
@@ -12694,7 +14450,7 @@ export const EcsFlat = {
     name: 'pid',
     normalize: [],
     original_fieldset: 'process',
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Process id.',
     type: 'long',
   },
@@ -13072,7 +14828,7 @@ export const EcsFlat = {
     ],
     name: 'title',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Process title.',
     type: 'keyword',
   },
@@ -13147,7 +14903,7 @@ export const EcsFlat = {
       {
         metric: 'process.uptime',
         relation: 'metric',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Seconds the process has been up.',
@@ -13163,7 +14919,7 @@ export const EcsFlat = {
     name: 'id',
     normalize: [],
     original_fieldset: 'user',
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Unique identifier of the user.',
     type: 'keyword',
   },
@@ -13184,7 +14940,7 @@ export const EcsFlat = {
     name: 'name',
     normalize: [],
     original_fieldset: 'user',
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Short name or login of the user.',
     type: 'keyword',
   },
@@ -13198,7 +14954,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'vpid',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Virtual process id.',
     type: 'long',
   },
@@ -13218,7 +14974,7 @@ export const EcsFlat = {
     ],
     name: 'working_directory',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'The working directory of the process.',
     type: 'keyword',
   },
@@ -13971,6 +15727,253 @@ export const EcsFlat = {
     short: 'Address of this service.',
     type: 'keyword',
   },
+  'service.entity.attributes': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-entity-attributes',
+    description:
+      'A set of static or semi-static attributes of the entity. Usually boolean or keyword field data types. Use this field set when you need to track static or semi-static characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'service.entity.attributes',
+    level: 'extended',
+    name: 'attributes',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of static or semi-static attributes of the entity.',
+    type: 'object',
+  },
+  'service.entity.behavior': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-entity-behavior',
+    description:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period. Usually boolean field data type. Use this field set when you need to capture and track ephemeral characteristics of an entity for advanced searching, correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'service.entity.behavior',
+    level: 'extended',
+    name: 'behavior',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period.',
+    type: 'object',
+  },
+  'service.entity.display_name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-entity-display-name',
+    description:
+      'An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (e.g., `host`).',
+    flat_name: 'service.entity.display_name',
+    ignore_above: 1024,
+    level: 'extended',
+    multi_fields: [
+      {
+        flat_name: 'service.entity.display_name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'display_name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'An optional field used when a pretty name is desired for entity-centric operations.',
+    type: 'keyword',
+  },
+  'service.entity.id': {
+    dashed_name: 'service-entity-id',
+    description:
+      "A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (e.g., host, user), this value should match the corresponding *.id field. Alternative identifiers (e.g., ARNs values in AWS, URLs) can be preserved in the raw field.",
+    flat_name: 'service.entity.id',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'id',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Unique identifier for the entity.',
+    type: 'keyword',
+  },
+  'service.entity.last_seen_timestamp': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-entity-last-seen-timestamp',
+    description:
+      'Indicates the date/time when this entity was last "seen," usually based upon the last event/log that is initiated by this entity.',
+    flat_name: 'service.entity.last_seen_timestamp',
+    level: 'extended',
+    name: 'last_seen_timestamp',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Indicates the date/time when this entity was last "seen."',
+    type: 'date',
+  },
+  'service.entity.lifecycle': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-entity-lifecycle',
+    description:
+      'A set of temporal characteristics of the entity. Usually date field data type. Use this field set when you need to track temporal characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'service.entity.lifecycle',
+    level: 'extended',
+    name: 'lifecycle',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of temporal characteristics of the entity.',
+    type: 'object',
+  },
+  'service.entity.metrics': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-entity-metrics',
+    description:
+      'Field set for any fields containing numeric entity metrics. These use dynamic field data type mapping.',
+    flat_name: 'service.entity.metrics',
+    level: 'extended',
+    name: 'metrics',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Field set for any fields containing numeric entity metrics.',
+    type: 'object',
+  },
+  'service.entity.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-entity-name',
+    description:
+      'The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (e.g., `host`), this field should mirrors the corresponding *.name value.',
+    flat_name: 'service.entity.name',
+    ignore_above: 1024,
+    level: 'core',
+    multi_fields: [
+      {
+        flat_name: 'service.entity.name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'The name of the entity.',
+    type: 'keyword',
+  },
+  'service.entity.raw': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-entity-raw',
+    description:
+      'Original, unmodified fields from the source system. Usually flattened field data type. While the attributes field should be used for normalized fields requiring advanced queries, this field preserves all source metadata with basic search capabilities.',
+    flat_name: 'service.entity.raw',
+    level: 'extended',
+    name: 'raw',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Original, unmodified fields from the source system.',
+    type: 'object',
+  },
+  'service.entity.reference': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-entity-reference',
+    description:
+      'A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format may vary by entity type and source system.',
+    flat_name: 'service.entity.reference',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'reference',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A URI, URL, or other direct reference to access or locate the entity.',
+    type: 'keyword',
+  },
+  'service.entity.source': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-entity-source',
+    description:
+      'The module or integration that provided this entity data (similar to event.module).',
+    flat_name: 'service.entity.source',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'source',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Source module or integration that provided the entity data.',
+    type: 'keyword',
+  },
+  'service.entity.sub_type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-entity-sub-type',
+    description:
+      'The specific type designation for the entity as defined by its provider or system. This field provides more granular classification than the type field. Examples: `aws_s3_bucket`, `gcp_cloud_storage_bucket`, `azure_blob_container` would all map to entity type `bucket`.  `hardware` , `virtual` , `container` , `node` , `cloud_instance` would all map to entity type `host`.',
+    example: 'aws_s3_bucket',
+    flat_name: 'service.entity.sub_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'sub_type',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'The specific type designation for the entity as defined by its provider or system.',
+    type: 'keyword',
+  },
+  'service.entity.type': {
+    allowed_values: [
+      {
+        description:
+          'Represents a storage container or bucket, typically used for object storage. Common examples include AWS S3 buckets, Google Cloud Storage buckets, Azure Blob containers, and other cloud storage services. Buckets are used to organize and store files, objects, or data in cloud environments.',
+        name: 'bucket',
+      },
+      {
+        description:
+          'Represents a database system or database instance. This includes relational databases (MySQL, PostgreSQL, Oracle), NoSQL databases (MongoDB, Cassandra, DynamoDB), time-series databases, and other data storage systems. The entity may represent the entire database system or a specific database instance.',
+        name: 'database',
+      },
+      {
+        description:
+          'Represents a containerized application or process. This includes Docker containers, Kubernetes pods, and other containerization technologies. Containers encapsulate applications and their dependencies, providing isolation and portability across different environments.',
+        name: 'container',
+      },
+      {
+        description:
+          'Represents a serverless function or Function-as-a-Service (FaaS) component. This includes AWS Lambda functions, Azure Functions, Google Cloud Functions, and other serverless computing resources. Functions are typically event-driven and execute code without managing the underlying infrastructure.',
+        name: 'function',
+      },
+      {
+        description:
+          'Represents a message queue or messaging system. This includes message brokers, event queues, and other messaging infrastructure components such as Amazon SQS, RabbitMQ, Apache Kafka, and Azure Service Bus. Queues facilitate asynchronous communication between applications and services.',
+        name: 'queue',
+      },
+      {
+        description:
+          'Represents a computing host or machine. This includes physical servers, virtual machines, cloud instances, and other computing resources that can run applications or services. Hosts provide the fundamental computing infrastructure for other entity types.',
+        name: 'host',
+      },
+      {
+        description:
+          'Represents a user account or identity. This includes human users, service accounts, system accounts, and other identity entities that can interact with systems, applications, or services. Users may have various roles, permissions, and attributes associated with their identity.',
+        name: 'user',
+      },
+      {
+        description:
+          'Represents a software application or service. This includes web applications, mobile applications, desktop applications, and other software components that provide functionality to users or other systems. Applications may run on various infrastructure components and can span multiple hosts or containers.',
+        name: 'application',
+      },
+      {
+        description:
+          'Represents a service or microservice component. This includes web services, APIs, background services, and other service-oriented architecture components. Services provide specific functionality and may communicate with other services to fulfill business requirements.',
+        name: 'service',
+      },
+      {
+        description:
+          'Represents a user session or connection session. This includes user login sessions, database connections, network sessions, and other temporary interactive or persistent connections between users, applications, or systems.',
+        name: 'session',
+      },
+    ],
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-entity-type',
+    description:
+      'A standardized high-level classification of the entity. This provides a normalized way to group similar entities across different providers or systems. Example values: `bucket`, `database`, `container`, `function`, `queue`, `host`, `user`, `application`, `session`, etc.',
+    example: 'host',
+    flat_name: 'service.entity.type',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'type',
+    normalize: ['array'],
+    original_fieldset: 'entity',
+    short: 'Standardized high-level classification of the entity.',
+    type: 'keyword',
+  },
   'service.environment': {
     beta: 'This field is beta and subject to change.',
     dashed_name: 'service-environment',
@@ -13986,7 +15989,7 @@ export const EcsFlat = {
       {
         attribute: 'deployment.environment.name',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Environment of the service.',
@@ -14046,7 +16049,7 @@ export const EcsFlat = {
       {
         attribute: 'service.instance.id',
         relation: 'equivalent',
-        stability: 'experimental',
+        stability: 'development',
       },
     ],
     short: 'Name of the service node.',
@@ -14091,6 +16094,253 @@ export const EcsFlat = {
     normalize: [],
     original_fieldset: 'service',
     short: 'Address of this service.',
+    type: 'keyword',
+  },
+  'service.origin.entity.attributes': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-origin-entity-attributes',
+    description:
+      'A set of static or semi-static attributes of the entity. Usually boolean or keyword field data types. Use this field set when you need to track static or semi-static characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'service.origin.entity.attributes',
+    level: 'extended',
+    name: 'attributes',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of static or semi-static attributes of the entity.',
+    type: 'object',
+  },
+  'service.origin.entity.behavior': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-origin-entity-behavior',
+    description:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period. Usually boolean field data type. Use this field set when you need to capture and track ephemeral characteristics of an entity for advanced searching, correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'service.origin.entity.behavior',
+    level: 'extended',
+    name: 'behavior',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period.',
+    type: 'object',
+  },
+  'service.origin.entity.display_name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-origin-entity-display-name',
+    description:
+      'An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (e.g., `host`).',
+    flat_name: 'service.origin.entity.display_name',
+    ignore_above: 1024,
+    level: 'extended',
+    multi_fields: [
+      {
+        flat_name: 'service.origin.entity.display_name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'display_name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'An optional field used when a pretty name is desired for entity-centric operations.',
+    type: 'keyword',
+  },
+  'service.origin.entity.id': {
+    dashed_name: 'service-origin-entity-id',
+    description:
+      "A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (e.g., host, user), this value should match the corresponding *.id field. Alternative identifiers (e.g., ARNs values in AWS, URLs) can be preserved in the raw field.",
+    flat_name: 'service.origin.entity.id',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'id',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Unique identifier for the entity.',
+    type: 'keyword',
+  },
+  'service.origin.entity.last_seen_timestamp': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-origin-entity-last-seen-timestamp',
+    description:
+      'Indicates the date/time when this entity was last "seen," usually based upon the last event/log that is initiated by this entity.',
+    flat_name: 'service.origin.entity.last_seen_timestamp',
+    level: 'extended',
+    name: 'last_seen_timestamp',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Indicates the date/time when this entity was last "seen."',
+    type: 'date',
+  },
+  'service.origin.entity.lifecycle': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-origin-entity-lifecycle',
+    description:
+      'A set of temporal characteristics of the entity. Usually date field data type. Use this field set when you need to track temporal characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'service.origin.entity.lifecycle',
+    level: 'extended',
+    name: 'lifecycle',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of temporal characteristics of the entity.',
+    type: 'object',
+  },
+  'service.origin.entity.metrics': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-origin-entity-metrics',
+    description:
+      'Field set for any fields containing numeric entity metrics. These use dynamic field data type mapping.',
+    flat_name: 'service.origin.entity.metrics',
+    level: 'extended',
+    name: 'metrics',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Field set for any fields containing numeric entity metrics.',
+    type: 'object',
+  },
+  'service.origin.entity.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-origin-entity-name',
+    description:
+      'The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (e.g., `host`), this field should mirrors the corresponding *.name value.',
+    flat_name: 'service.origin.entity.name',
+    ignore_above: 1024,
+    level: 'core',
+    multi_fields: [
+      {
+        flat_name: 'service.origin.entity.name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'The name of the entity.',
+    type: 'keyword',
+  },
+  'service.origin.entity.raw': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-origin-entity-raw',
+    description:
+      'Original, unmodified fields from the source system. Usually flattened field data type. While the attributes field should be used for normalized fields requiring advanced queries, this field preserves all source metadata with basic search capabilities.',
+    flat_name: 'service.origin.entity.raw',
+    level: 'extended',
+    name: 'raw',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Original, unmodified fields from the source system.',
+    type: 'object',
+  },
+  'service.origin.entity.reference': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-origin-entity-reference',
+    description:
+      'A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format may vary by entity type and source system.',
+    flat_name: 'service.origin.entity.reference',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'reference',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A URI, URL, or other direct reference to access or locate the entity.',
+    type: 'keyword',
+  },
+  'service.origin.entity.source': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-origin-entity-source',
+    description:
+      'The module or integration that provided this entity data (similar to event.module).',
+    flat_name: 'service.origin.entity.source',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'source',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Source module or integration that provided the entity data.',
+    type: 'keyword',
+  },
+  'service.origin.entity.sub_type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-origin-entity-sub-type',
+    description:
+      'The specific type designation for the entity as defined by its provider or system. This field provides more granular classification than the type field. Examples: `aws_s3_bucket`, `gcp_cloud_storage_bucket`, `azure_blob_container` would all map to entity type `bucket`.  `hardware` , `virtual` , `container` , `node` , `cloud_instance` would all map to entity type `host`.',
+    example: 'aws_s3_bucket',
+    flat_name: 'service.origin.entity.sub_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'sub_type',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'The specific type designation for the entity as defined by its provider or system.',
+    type: 'keyword',
+  },
+  'service.origin.entity.type': {
+    allowed_values: [
+      {
+        description:
+          'Represents a storage container or bucket, typically used for object storage. Common examples include AWS S3 buckets, Google Cloud Storage buckets, Azure Blob containers, and other cloud storage services. Buckets are used to organize and store files, objects, or data in cloud environments.',
+        name: 'bucket',
+      },
+      {
+        description:
+          'Represents a database system or database instance. This includes relational databases (MySQL, PostgreSQL, Oracle), NoSQL databases (MongoDB, Cassandra, DynamoDB), time-series databases, and other data storage systems. The entity may represent the entire database system or a specific database instance.',
+        name: 'database',
+      },
+      {
+        description:
+          'Represents a containerized application or process. This includes Docker containers, Kubernetes pods, and other containerization technologies. Containers encapsulate applications and their dependencies, providing isolation and portability across different environments.',
+        name: 'container',
+      },
+      {
+        description:
+          'Represents a serverless function or Function-as-a-Service (FaaS) component. This includes AWS Lambda functions, Azure Functions, Google Cloud Functions, and other serverless computing resources. Functions are typically event-driven and execute code without managing the underlying infrastructure.',
+        name: 'function',
+      },
+      {
+        description:
+          'Represents a message queue or messaging system. This includes message brokers, event queues, and other messaging infrastructure components such as Amazon SQS, RabbitMQ, Apache Kafka, and Azure Service Bus. Queues facilitate asynchronous communication between applications and services.',
+        name: 'queue',
+      },
+      {
+        description:
+          'Represents a computing host or machine. This includes physical servers, virtual machines, cloud instances, and other computing resources that can run applications or services. Hosts provide the fundamental computing infrastructure for other entity types.',
+        name: 'host',
+      },
+      {
+        description:
+          'Represents a user account or identity. This includes human users, service accounts, system accounts, and other identity entities that can interact with systems, applications, or services. Users may have various roles, permissions, and attributes associated with their identity.',
+        name: 'user',
+      },
+      {
+        description:
+          'Represents a software application or service. This includes web applications, mobile applications, desktop applications, and other software components that provide functionality to users or other systems. Applications may run on various infrastructure components and can span multiple hosts or containers.',
+        name: 'application',
+      },
+      {
+        description:
+          'Represents a service or microservice component. This includes web services, APIs, background services, and other service-oriented architecture components. Services provide specific functionality and may communicate with other services to fulfill business requirements.',
+        name: 'service',
+      },
+      {
+        description:
+          'Represents a user session or connection session. This includes user login sessions, database connections, network sessions, and other temporary interactive or persistent connections between users, applications, or systems.',
+        name: 'session',
+      },
+    ],
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-origin-entity-type',
+    description:
+      'A standardized high-level classification of the entity. This provides a normalized way to group similar entities across different providers or systems. Example values: `bucket`, `database`, `container`, `function`, `queue`, `host`, `user`, `application`, `session`, etc.',
+    example: 'host',
+    flat_name: 'service.origin.entity.type',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'type',
+    normalize: ['array'],
+    original_fieldset: 'entity',
+    short: 'Standardized high-level classification of the entity.',
     type: 'keyword',
   },
   'service.origin.environment': {
@@ -14256,6 +16506,253 @@ export const EcsFlat = {
     normalize: [],
     original_fieldset: 'service',
     short: 'Address of this service.',
+    type: 'keyword',
+  },
+  'service.target.entity.attributes': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-target-entity-attributes',
+    description:
+      'A set of static or semi-static attributes of the entity. Usually boolean or keyword field data types. Use this field set when you need to track static or semi-static characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'service.target.entity.attributes',
+    level: 'extended',
+    name: 'attributes',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of static or semi-static attributes of the entity.',
+    type: 'object',
+  },
+  'service.target.entity.behavior': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-target-entity-behavior',
+    description:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period. Usually boolean field data type. Use this field set when you need to capture and track ephemeral characteristics of an entity for advanced searching, correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'service.target.entity.behavior',
+    level: 'extended',
+    name: 'behavior',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period.',
+    type: 'object',
+  },
+  'service.target.entity.display_name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-target-entity-display-name',
+    description:
+      'An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (e.g., `host`).',
+    flat_name: 'service.target.entity.display_name',
+    ignore_above: 1024,
+    level: 'extended',
+    multi_fields: [
+      {
+        flat_name: 'service.target.entity.display_name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'display_name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'An optional field used when a pretty name is desired for entity-centric operations.',
+    type: 'keyword',
+  },
+  'service.target.entity.id': {
+    dashed_name: 'service-target-entity-id',
+    description:
+      "A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (e.g., host, user), this value should match the corresponding *.id field. Alternative identifiers (e.g., ARNs values in AWS, URLs) can be preserved in the raw field.",
+    flat_name: 'service.target.entity.id',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'id',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Unique identifier for the entity.',
+    type: 'keyword',
+  },
+  'service.target.entity.last_seen_timestamp': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-target-entity-last-seen-timestamp',
+    description:
+      'Indicates the date/time when this entity was last "seen," usually based upon the last event/log that is initiated by this entity.',
+    flat_name: 'service.target.entity.last_seen_timestamp',
+    level: 'extended',
+    name: 'last_seen_timestamp',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Indicates the date/time when this entity was last "seen."',
+    type: 'date',
+  },
+  'service.target.entity.lifecycle': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-target-entity-lifecycle',
+    description:
+      'A set of temporal characteristics of the entity. Usually date field data type. Use this field set when you need to track temporal characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'service.target.entity.lifecycle',
+    level: 'extended',
+    name: 'lifecycle',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of temporal characteristics of the entity.',
+    type: 'object',
+  },
+  'service.target.entity.metrics': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-target-entity-metrics',
+    description:
+      'Field set for any fields containing numeric entity metrics. These use dynamic field data type mapping.',
+    flat_name: 'service.target.entity.metrics',
+    level: 'extended',
+    name: 'metrics',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Field set for any fields containing numeric entity metrics.',
+    type: 'object',
+  },
+  'service.target.entity.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-target-entity-name',
+    description:
+      'The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (e.g., `host`), this field should mirrors the corresponding *.name value.',
+    flat_name: 'service.target.entity.name',
+    ignore_above: 1024,
+    level: 'core',
+    multi_fields: [
+      {
+        flat_name: 'service.target.entity.name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'The name of the entity.',
+    type: 'keyword',
+  },
+  'service.target.entity.raw': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-target-entity-raw',
+    description:
+      'Original, unmodified fields from the source system. Usually flattened field data type. While the attributes field should be used for normalized fields requiring advanced queries, this field preserves all source metadata with basic search capabilities.',
+    flat_name: 'service.target.entity.raw',
+    level: 'extended',
+    name: 'raw',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Original, unmodified fields from the source system.',
+    type: 'object',
+  },
+  'service.target.entity.reference': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-target-entity-reference',
+    description:
+      'A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format may vary by entity type and source system.',
+    flat_name: 'service.target.entity.reference',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'reference',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A URI, URL, or other direct reference to access or locate the entity.',
+    type: 'keyword',
+  },
+  'service.target.entity.source': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-target-entity-source',
+    description:
+      'The module or integration that provided this entity data (similar to event.module).',
+    flat_name: 'service.target.entity.source',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'source',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Source module or integration that provided the entity data.',
+    type: 'keyword',
+  },
+  'service.target.entity.sub_type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-target-entity-sub-type',
+    description:
+      'The specific type designation for the entity as defined by its provider or system. This field provides more granular classification than the type field. Examples: `aws_s3_bucket`, `gcp_cloud_storage_bucket`, `azure_blob_container` would all map to entity type `bucket`.  `hardware` , `virtual` , `container` , `node` , `cloud_instance` would all map to entity type `host`.',
+    example: 'aws_s3_bucket',
+    flat_name: 'service.target.entity.sub_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'sub_type',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'The specific type designation for the entity as defined by its provider or system.',
+    type: 'keyword',
+  },
+  'service.target.entity.type': {
+    allowed_values: [
+      {
+        description:
+          'Represents a storage container or bucket, typically used for object storage. Common examples include AWS S3 buckets, Google Cloud Storage buckets, Azure Blob containers, and other cloud storage services. Buckets are used to organize and store files, objects, or data in cloud environments.',
+        name: 'bucket',
+      },
+      {
+        description:
+          'Represents a database system or database instance. This includes relational databases (MySQL, PostgreSQL, Oracle), NoSQL databases (MongoDB, Cassandra, DynamoDB), time-series databases, and other data storage systems. The entity may represent the entire database system or a specific database instance.',
+        name: 'database',
+      },
+      {
+        description:
+          'Represents a containerized application or process. This includes Docker containers, Kubernetes pods, and other containerization technologies. Containers encapsulate applications and their dependencies, providing isolation and portability across different environments.',
+        name: 'container',
+      },
+      {
+        description:
+          'Represents a serverless function or Function-as-a-Service (FaaS) component. This includes AWS Lambda functions, Azure Functions, Google Cloud Functions, and other serverless computing resources. Functions are typically event-driven and execute code without managing the underlying infrastructure.',
+        name: 'function',
+      },
+      {
+        description:
+          'Represents a message queue or messaging system. This includes message brokers, event queues, and other messaging infrastructure components such as Amazon SQS, RabbitMQ, Apache Kafka, and Azure Service Bus. Queues facilitate asynchronous communication between applications and services.',
+        name: 'queue',
+      },
+      {
+        description:
+          'Represents a computing host or machine. This includes physical servers, virtual machines, cloud instances, and other computing resources that can run applications or services. Hosts provide the fundamental computing infrastructure for other entity types.',
+        name: 'host',
+      },
+      {
+        description:
+          'Represents a user account or identity. This includes human users, service accounts, system accounts, and other identity entities that can interact with systems, applications, or services. Users may have various roles, permissions, and attributes associated with their identity.',
+        name: 'user',
+      },
+      {
+        description:
+          'Represents a software application or service. This includes web applications, mobile applications, desktop applications, and other software components that provide functionality to users or other systems. Applications may run on various infrastructure components and can span multiple hosts or containers.',
+        name: 'application',
+      },
+      {
+        description:
+          'Represents a service or microservice component. This includes web services, APIs, background services, and other service-oriented architecture components. Services provide specific functionality and may communicate with other services to fulfill business requirements.',
+        name: 'service',
+      },
+      {
+        description:
+          'Represents a user session or connection session. This includes user login sessions, database connections, network sessions, and other temporary interactive or persistent connections between users, applications, or systems.',
+        name: 'session',
+      },
+    ],
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'service-target-entity-type',
+    description:
+      'A standardized high-level classification of the entity. This provides a normalized way to group similar entities across different providers or systems. Example values: `bucket`, `database`, `container`, `function`, `queue`, `host`, `user`, `application`, `session`, etc.',
+    example: 'host',
+    flat_name: 'service.target.entity.type',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'type',
+    normalize: ['array'],
+    original_fieldset: 'entity',
+    short: 'Standardized high-level classification of the entity.',
     type: 'keyword',
   },
   'service.target.environment': {
@@ -14434,7 +16931,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'address',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Source network address.',
     type: 'keyword',
   },
@@ -14706,7 +17203,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'port',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Port of the source.',
     type: 'long',
   },
@@ -15136,6 +17633,24 @@ export const EcsFlat = {
     normalize: [],
     original_fieldset: 'code_signature',
     short: 'The team identifier used to sign the process.',
+    type: 'keyword',
+  },
+  'threat.enrichments.indicator.file.code_signature.thumbprint_sha256': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name:
+      'threat-enrichments-indicator-file-code-signature-thumbprint-sha256',
+    description:
+      'Certificate SHA256 hash that uniquely identifies the code signer.',
+    example: 'c0f23a8eb1cba0ccaa88483b5a234c96e4bdfec719bf458024e68c2a8183476b',
+    flat_name:
+      'threat.enrichments.indicator.file.code_signature.thumbprint_sha256',
+    ignore_above: 64,
+    level: 'extended',
+    name: 'thumbprint_sha256',
+    normalize: [],
+    original_fieldset: 'code_signature',
+    pattern: '^[0-9a-f]{64}$',
+    short: 'SHA256 hash of the certificate.',
     type: 'keyword',
   },
   'threat.enrichments.indicator.file.code_signature.timestamp': {
@@ -18016,6 +20531,22 @@ export const EcsFlat = {
     short: 'The team identifier used to sign the process.',
     type: 'keyword',
   },
+  'threat.indicator.file.code_signature.thumbprint_sha256': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'threat-indicator-file-code-signature-thumbprint-sha256',
+    description:
+      'Certificate SHA256 hash that uniquely identifies the code signer.',
+    example: 'c0f23a8eb1cba0ccaa88483b5a234c96e4bdfec719bf458024e68c2a8183476b',
+    flat_name: 'threat.indicator.file.code_signature.thumbprint_sha256',
+    ignore_above: 64,
+    level: 'extended',
+    name: 'thumbprint_sha256',
+    normalize: [],
+    original_fieldset: 'code_signature',
+    pattern: '^[0-9a-f]{64}$',
+    short: 'SHA256 hash of the certificate.',
+    type: 'keyword',
+  },
   'threat.indicator.file.code_signature.timestamp': {
     dashed_name: 'threat-indicator-file-code-signature-timestamp',
     description:
@@ -20732,7 +23263,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'cipher',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'String indicating the cipher used during the current connection.',
     type: 'keyword',
   },
@@ -20746,7 +23277,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.certificate',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'PEM-encoded stand-alone certificate offered by the client.',
     type: 'keyword',
   },
@@ -20760,7 +23291,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.certificate_chain',
     normalize: ['array'],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Array of PEM-encoded certificates that make up the certificate chain offered by the client.',
     type: 'keyword',
@@ -20775,7 +23306,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.hash.md5',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Certificate fingerprint using the MD5 digest of DER-encoded version of certificate offered by the client.',
     type: 'keyword',
@@ -20790,7 +23321,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.hash.sha1',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Certificate fingerprint using the SHA1 digest of DER-encoded version of certificate offered by the client.',
     type: 'keyword',
@@ -20805,7 +23336,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.hash.sha256',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Certificate fingerprint using the SHA256 digest of DER-encoded version of certificate offered by the client.',
     type: 'keyword',
@@ -20820,7 +23351,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.issuer',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Distinguished name of subject of the issuer of the x.509 certificate presented by the client.',
     type: 'keyword',
@@ -20835,7 +23366,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.ja3',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'A hash that identifies clients based on how they perform an SSL/TLS handshake.',
     type: 'keyword',
@@ -20849,7 +23380,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.not_after',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Date/Time indicating when client certificate is no longer considered valid.',
     type: 'date',
@@ -20863,7 +23394,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.not_before',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Date/Time indicating when client certificate is first considered valid.',
     type: 'date',
@@ -20891,7 +23422,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.subject',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Distinguished name of subject of the x.509 certificate presented by the client.',
     type: 'keyword',
@@ -20907,7 +23438,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'client.supported_ciphers',
     normalize: ['array'],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Array of ciphers offered by the client during the client hello.',
     type: 'keyword',
   },
@@ -21241,7 +23772,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'curve',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'String indicating the curve used for the given cipher, when applicable.',
     type: 'keyword',
@@ -21254,7 +23785,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'established',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Boolean flag indicating if the TLS negotiation was successful and transitioned to an encrypted tunnel.',
     type: 'boolean',
@@ -21269,7 +23800,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'next_protocol',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'String indicating the protocol being tunneled.',
     type: 'keyword',
   },
@@ -21281,7 +23812,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'resumed',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Boolean flag indicating if this TLS connection was resumed from an existing TLS negotiation.',
     type: 'boolean',
@@ -21296,7 +23827,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.certificate',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'PEM-encoded stand-alone certificate offered by the server.',
     type: 'keyword',
   },
@@ -21310,7 +23841,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.certificate_chain',
     normalize: ['array'],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Array of PEM-encoded certificates that make up the certificate chain offered by the server.',
     type: 'keyword',
@@ -21325,7 +23856,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.hash.md5',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Certificate fingerprint using the MD5 digest of DER-encoded version of certificate offered by the server.',
     type: 'keyword',
@@ -21340,7 +23871,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.hash.sha1',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Certificate fingerprint using the SHA1 digest of DER-encoded version of certificate offered by the server.',
     type: 'keyword',
@@ -21355,7 +23886,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.hash.sha256',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Certificate fingerprint using the SHA256 digest of DER-encoded version of certificate offered by the server.',
     type: 'keyword',
@@ -21370,7 +23901,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.issuer',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Subject of the issuer of the x.509 certificate presented by the server.',
     type: 'keyword',
@@ -21385,7 +23916,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.ja3s',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'A hash that identifies servers based on how they perform an SSL/TLS handshake.',
     type: 'keyword',
@@ -21399,7 +23930,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.not_after',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Timestamp indicating when server certificate is no longer considered valid.',
     type: 'date',
@@ -21413,7 +23944,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.not_before',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Timestamp indicating when server certificate is first considered valid.',
     type: 'date',
@@ -21427,7 +23958,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'server.subject',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Subject of the x.509 certificate presented by the server.',
     type: 'keyword',
   },
@@ -21815,7 +24346,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'domain',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Domain of the url.',
     type: 'keyword',
   },
@@ -21829,7 +24360,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'extension',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'File extension from the request url, excluding the leading dot.',
     type: 'keyword',
   },
@@ -21875,7 +24406,7 @@ export const EcsFlat = {
     ],
     name: 'original',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Unmodified original url as seen in the event source.',
     type: 'wildcard',
   },
@@ -21910,7 +24441,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'port',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Port of the request, such as 443.',
     type: 'long',
   },
@@ -21937,7 +24468,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'registered_domain',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'The highest registered url domain, stripped of the subdomain.',
     type: 'keyword',
   },
@@ -21965,7 +24496,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'subdomain',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'The subdomain of the domain.',
     type: 'keyword',
   },
@@ -21979,7 +24510,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'top_level_domain',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'The effective top level domain (com, org, net, co.uk).',
     type: 'keyword',
   },
@@ -22017,6 +24548,253 @@ export const EcsFlat = {
     normalize: [],
     original_fieldset: 'user',
     short: 'User email address.',
+    type: 'keyword',
+  },
+  'user.changes.entity.attributes': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-changes-entity-attributes',
+    description:
+      'A set of static or semi-static attributes of the entity. Usually boolean or keyword field data types. Use this field set when you need to track static or semi-static characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'user.changes.entity.attributes',
+    level: 'extended',
+    name: 'attributes',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of static or semi-static attributes of the entity.',
+    type: 'object',
+  },
+  'user.changes.entity.behavior': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-changes-entity-behavior',
+    description:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period. Usually boolean field data type. Use this field set when you need to capture and track ephemeral characteristics of an entity for advanced searching, correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'user.changes.entity.behavior',
+    level: 'extended',
+    name: 'behavior',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period.',
+    type: 'object',
+  },
+  'user.changes.entity.display_name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-changes-entity-display-name',
+    description:
+      'An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (e.g., `host`).',
+    flat_name: 'user.changes.entity.display_name',
+    ignore_above: 1024,
+    level: 'extended',
+    multi_fields: [
+      {
+        flat_name: 'user.changes.entity.display_name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'display_name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'An optional field used when a pretty name is desired for entity-centric operations.',
+    type: 'keyword',
+  },
+  'user.changes.entity.id': {
+    dashed_name: 'user-changes-entity-id',
+    description:
+      "A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (e.g., host, user), this value should match the corresponding *.id field. Alternative identifiers (e.g., ARNs values in AWS, URLs) can be preserved in the raw field.",
+    flat_name: 'user.changes.entity.id',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'id',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Unique identifier for the entity.',
+    type: 'keyword',
+  },
+  'user.changes.entity.last_seen_timestamp': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-changes-entity-last-seen-timestamp',
+    description:
+      'Indicates the date/time when this entity was last "seen," usually based upon the last event/log that is initiated by this entity.',
+    flat_name: 'user.changes.entity.last_seen_timestamp',
+    level: 'extended',
+    name: 'last_seen_timestamp',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Indicates the date/time when this entity was last "seen."',
+    type: 'date',
+  },
+  'user.changes.entity.lifecycle': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-changes-entity-lifecycle',
+    description:
+      'A set of temporal characteristics of the entity. Usually date field data type. Use this field set when you need to track temporal characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'user.changes.entity.lifecycle',
+    level: 'extended',
+    name: 'lifecycle',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of temporal characteristics of the entity.',
+    type: 'object',
+  },
+  'user.changes.entity.metrics': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-changes-entity-metrics',
+    description:
+      'Field set for any fields containing numeric entity metrics. These use dynamic field data type mapping.',
+    flat_name: 'user.changes.entity.metrics',
+    level: 'extended',
+    name: 'metrics',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Field set for any fields containing numeric entity metrics.',
+    type: 'object',
+  },
+  'user.changes.entity.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-changes-entity-name',
+    description:
+      'The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (e.g., `host`), this field should mirrors the corresponding *.name value.',
+    flat_name: 'user.changes.entity.name',
+    ignore_above: 1024,
+    level: 'core',
+    multi_fields: [
+      {
+        flat_name: 'user.changes.entity.name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'The name of the entity.',
+    type: 'keyword',
+  },
+  'user.changes.entity.raw': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-changes-entity-raw',
+    description:
+      'Original, unmodified fields from the source system. Usually flattened field data type. While the attributes field should be used for normalized fields requiring advanced queries, this field preserves all source metadata with basic search capabilities.',
+    flat_name: 'user.changes.entity.raw',
+    level: 'extended',
+    name: 'raw',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Original, unmodified fields from the source system.',
+    type: 'object',
+  },
+  'user.changes.entity.reference': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-changes-entity-reference',
+    description:
+      'A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format may vary by entity type and source system.',
+    flat_name: 'user.changes.entity.reference',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'reference',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A URI, URL, or other direct reference to access or locate the entity.',
+    type: 'keyword',
+  },
+  'user.changes.entity.source': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-changes-entity-source',
+    description:
+      'The module or integration that provided this entity data (similar to event.module).',
+    flat_name: 'user.changes.entity.source',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'source',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Source module or integration that provided the entity data.',
+    type: 'keyword',
+  },
+  'user.changes.entity.sub_type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-changes-entity-sub-type',
+    description:
+      'The specific type designation for the entity as defined by its provider or system. This field provides more granular classification than the type field. Examples: `aws_s3_bucket`, `gcp_cloud_storage_bucket`, `azure_blob_container` would all map to entity type `bucket`.  `hardware` , `virtual` , `container` , `node` , `cloud_instance` would all map to entity type `host`.',
+    example: 'aws_s3_bucket',
+    flat_name: 'user.changes.entity.sub_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'sub_type',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'The specific type designation for the entity as defined by its provider or system.',
+    type: 'keyword',
+  },
+  'user.changes.entity.type': {
+    allowed_values: [
+      {
+        description:
+          'Represents a storage container or bucket, typically used for object storage. Common examples include AWS S3 buckets, Google Cloud Storage buckets, Azure Blob containers, and other cloud storage services. Buckets are used to organize and store files, objects, or data in cloud environments.',
+        name: 'bucket',
+      },
+      {
+        description:
+          'Represents a database system or database instance. This includes relational databases (MySQL, PostgreSQL, Oracle), NoSQL databases (MongoDB, Cassandra, DynamoDB), time-series databases, and other data storage systems. The entity may represent the entire database system or a specific database instance.',
+        name: 'database',
+      },
+      {
+        description:
+          'Represents a containerized application or process. This includes Docker containers, Kubernetes pods, and other containerization technologies. Containers encapsulate applications and their dependencies, providing isolation and portability across different environments.',
+        name: 'container',
+      },
+      {
+        description:
+          'Represents a serverless function or Function-as-a-Service (FaaS) component. This includes AWS Lambda functions, Azure Functions, Google Cloud Functions, and other serverless computing resources. Functions are typically event-driven and execute code without managing the underlying infrastructure.',
+        name: 'function',
+      },
+      {
+        description:
+          'Represents a message queue or messaging system. This includes message brokers, event queues, and other messaging infrastructure components such as Amazon SQS, RabbitMQ, Apache Kafka, and Azure Service Bus. Queues facilitate asynchronous communication between applications and services.',
+        name: 'queue',
+      },
+      {
+        description:
+          'Represents a computing host or machine. This includes physical servers, virtual machines, cloud instances, and other computing resources that can run applications or services. Hosts provide the fundamental computing infrastructure for other entity types.',
+        name: 'host',
+      },
+      {
+        description:
+          'Represents a user account or identity. This includes human users, service accounts, system accounts, and other identity entities that can interact with systems, applications, or services. Users may have various roles, permissions, and attributes associated with their identity.',
+        name: 'user',
+      },
+      {
+        description:
+          'Represents a software application or service. This includes web applications, mobile applications, desktop applications, and other software components that provide functionality to users or other systems. Applications may run on various infrastructure components and can span multiple hosts or containers.',
+        name: 'application',
+      },
+      {
+        description:
+          'Represents a service or microservice component. This includes web services, APIs, background services, and other service-oriented architecture components. Services provide specific functionality and may communicate with other services to fulfill business requirements.',
+        name: 'service',
+      },
+      {
+        description:
+          'Represents a user session or connection session. This includes user login sessions, database connections, network sessions, and other temporary interactive or persistent connections between users, applications, or systems.',
+        name: 'session',
+      },
+    ],
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-changes-entity-type',
+    description:
+      'A standardized high-level classification of the entity. This provides a normalized way to group similar entities across different providers or systems. Example values: `bucket`, `database`, `container`, `function`, `queue`, `host`, `user`, `application`, `session`, etc.',
+    example: 'host',
+    flat_name: 'user.changes.entity.type',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'type',
+    normalize: ['array'],
+    original_fieldset: 'entity',
+    short: 'Standardized high-level classification of the entity.',
     type: 'keyword',
   },
   'user.changes.full_name': {
@@ -22123,6 +24901,90 @@ export const EcsFlat = {
     short: 'Short name or login of the user.',
     type: 'keyword',
   },
+  'user.changes.risk.calculated_level': {
+    dashed_name: 'user-changes-risk-calculated-level',
+    description:
+      'A risk classification level calculated by an internal system as part of entity analytics and entity risk scoring.',
+    example: 'High',
+    flat_name: 'user.changes.risk.calculated_level',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'calculated_level',
+    normalize: [],
+    original_fieldset: 'risk',
+    short:
+      'A risk classification level calculated by an internal system as part of entity analytics and entity risk scoring.',
+    type: 'keyword',
+  },
+  'user.changes.risk.calculated_score': {
+    dashed_name: 'user-changes-risk-calculated-score',
+    description:
+      'A risk classification score calculated by an internal system as part of entity analytics and entity risk scoring.',
+    example: 880.73,
+    flat_name: 'user.changes.risk.calculated_score',
+    level: 'extended',
+    name: 'calculated_score',
+    normalize: [],
+    original_fieldset: 'risk',
+    short:
+      'A risk classification score calculated by an internal system as part of entity analytics and entity risk scoring.',
+    type: 'float',
+  },
+  'user.changes.risk.calculated_score_norm': {
+    dashed_name: 'user-changes-risk-calculated-score-norm',
+    description:
+      'A risk classification score calculated by an internal system as part of entity analytics and entity risk scoring, and normalized to a range of 0 to 100.',
+    example: 88.73,
+    flat_name: 'user.changes.risk.calculated_score_norm',
+    level: 'extended',
+    name: 'calculated_score_norm',
+    normalize: [],
+    original_fieldset: 'risk',
+    short: 'A normalized risk score calculated by an internal system.',
+    type: 'float',
+  },
+  'user.changes.risk.static_level': {
+    dashed_name: 'user-changes-risk-static-level',
+    description:
+      'A risk classification level obtained from outside the system, such as from some external Threat Intelligence Platform.',
+    example: 'High',
+    flat_name: 'user.changes.risk.static_level',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'static_level',
+    normalize: [],
+    original_fieldset: 'risk',
+    short:
+      'A risk classification level obtained from outside the system, such as from some external Threat Intelligence Platform.',
+    type: 'keyword',
+  },
+  'user.changes.risk.static_score': {
+    dashed_name: 'user-changes-risk-static-score',
+    description:
+      'A risk classification score obtained from outside the system, such as from some external Threat Intelligence Platform.',
+    example: 830,
+    flat_name: 'user.changes.risk.static_score',
+    level: 'extended',
+    name: 'static_score',
+    normalize: [],
+    original_fieldset: 'risk',
+    short:
+      'A risk classification score obtained from outside the system, such as from some external Threat Intelligence Platform.',
+    type: 'float',
+  },
+  'user.changes.risk.static_score_norm': {
+    dashed_name: 'user-changes-risk-static-score-norm',
+    description:
+      'A risk classification score obtained from outside the system, such as from some external Threat Intelligence Platform, and normalized to a range of 0 to 100.',
+    example: 83,
+    flat_name: 'user.changes.risk.static_score_norm',
+    level: 'extended',
+    name: 'static_score_norm',
+    normalize: [],
+    original_fieldset: 'risk',
+    short: 'A normalized risk score calculated by an external system.',
+    type: 'float',
+  },
   'user.changes.roles': {
     dashed_name: 'user-changes-roles',
     description: 'Array of user roles at the time of the event.',
@@ -22172,6 +25034,253 @@ export const EcsFlat = {
     normalize: [],
     original_fieldset: 'user',
     short: 'User email address.',
+    type: 'keyword',
+  },
+  'user.effective.entity.attributes': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-effective-entity-attributes',
+    description:
+      'A set of static or semi-static attributes of the entity. Usually boolean or keyword field data types. Use this field set when you need to track static or semi-static characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'user.effective.entity.attributes',
+    level: 'extended',
+    name: 'attributes',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of static or semi-static attributes of the entity.',
+    type: 'object',
+  },
+  'user.effective.entity.behavior': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-effective-entity-behavior',
+    description:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period. Usually boolean field data type. Use this field set when you need to capture and track ephemeral characteristics of an entity for advanced searching, correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'user.effective.entity.behavior',
+    level: 'extended',
+    name: 'behavior',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period.',
+    type: 'object',
+  },
+  'user.effective.entity.display_name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-effective-entity-display-name',
+    description:
+      'An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (e.g., `host`).',
+    flat_name: 'user.effective.entity.display_name',
+    ignore_above: 1024,
+    level: 'extended',
+    multi_fields: [
+      {
+        flat_name: 'user.effective.entity.display_name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'display_name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'An optional field used when a pretty name is desired for entity-centric operations.',
+    type: 'keyword',
+  },
+  'user.effective.entity.id': {
+    dashed_name: 'user-effective-entity-id',
+    description:
+      "A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (e.g., host, user), this value should match the corresponding *.id field. Alternative identifiers (e.g., ARNs values in AWS, URLs) can be preserved in the raw field.",
+    flat_name: 'user.effective.entity.id',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'id',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Unique identifier for the entity.',
+    type: 'keyword',
+  },
+  'user.effective.entity.last_seen_timestamp': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-effective-entity-last-seen-timestamp',
+    description:
+      'Indicates the date/time when this entity was last "seen," usually based upon the last event/log that is initiated by this entity.',
+    flat_name: 'user.effective.entity.last_seen_timestamp',
+    level: 'extended',
+    name: 'last_seen_timestamp',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Indicates the date/time when this entity was last "seen."',
+    type: 'date',
+  },
+  'user.effective.entity.lifecycle': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-effective-entity-lifecycle',
+    description:
+      'A set of temporal characteristics of the entity. Usually date field data type. Use this field set when you need to track temporal characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'user.effective.entity.lifecycle',
+    level: 'extended',
+    name: 'lifecycle',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of temporal characteristics of the entity.',
+    type: 'object',
+  },
+  'user.effective.entity.metrics': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-effective-entity-metrics',
+    description:
+      'Field set for any fields containing numeric entity metrics. These use dynamic field data type mapping.',
+    flat_name: 'user.effective.entity.metrics',
+    level: 'extended',
+    name: 'metrics',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Field set for any fields containing numeric entity metrics.',
+    type: 'object',
+  },
+  'user.effective.entity.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-effective-entity-name',
+    description:
+      'The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (e.g., `host`), this field should mirrors the corresponding *.name value.',
+    flat_name: 'user.effective.entity.name',
+    ignore_above: 1024,
+    level: 'core',
+    multi_fields: [
+      {
+        flat_name: 'user.effective.entity.name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'The name of the entity.',
+    type: 'keyword',
+  },
+  'user.effective.entity.raw': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-effective-entity-raw',
+    description:
+      'Original, unmodified fields from the source system. Usually flattened field data type. While the attributes field should be used for normalized fields requiring advanced queries, this field preserves all source metadata with basic search capabilities.',
+    flat_name: 'user.effective.entity.raw',
+    level: 'extended',
+    name: 'raw',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Original, unmodified fields from the source system.',
+    type: 'object',
+  },
+  'user.effective.entity.reference': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-effective-entity-reference',
+    description:
+      'A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format may vary by entity type and source system.',
+    flat_name: 'user.effective.entity.reference',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'reference',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A URI, URL, or other direct reference to access or locate the entity.',
+    type: 'keyword',
+  },
+  'user.effective.entity.source': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-effective-entity-source',
+    description:
+      'The module or integration that provided this entity data (similar to event.module).',
+    flat_name: 'user.effective.entity.source',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'source',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Source module or integration that provided the entity data.',
+    type: 'keyword',
+  },
+  'user.effective.entity.sub_type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-effective-entity-sub-type',
+    description:
+      'The specific type designation for the entity as defined by its provider or system. This field provides more granular classification than the type field. Examples: `aws_s3_bucket`, `gcp_cloud_storage_bucket`, `azure_blob_container` would all map to entity type `bucket`.  `hardware` , `virtual` , `container` , `node` , `cloud_instance` would all map to entity type `host`.',
+    example: 'aws_s3_bucket',
+    flat_name: 'user.effective.entity.sub_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'sub_type',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'The specific type designation for the entity as defined by its provider or system.',
+    type: 'keyword',
+  },
+  'user.effective.entity.type': {
+    allowed_values: [
+      {
+        description:
+          'Represents a storage container or bucket, typically used for object storage. Common examples include AWS S3 buckets, Google Cloud Storage buckets, Azure Blob containers, and other cloud storage services. Buckets are used to organize and store files, objects, or data in cloud environments.',
+        name: 'bucket',
+      },
+      {
+        description:
+          'Represents a database system or database instance. This includes relational databases (MySQL, PostgreSQL, Oracle), NoSQL databases (MongoDB, Cassandra, DynamoDB), time-series databases, and other data storage systems. The entity may represent the entire database system or a specific database instance.',
+        name: 'database',
+      },
+      {
+        description:
+          'Represents a containerized application or process. This includes Docker containers, Kubernetes pods, and other containerization technologies. Containers encapsulate applications and their dependencies, providing isolation and portability across different environments.',
+        name: 'container',
+      },
+      {
+        description:
+          'Represents a serverless function or Function-as-a-Service (FaaS) component. This includes AWS Lambda functions, Azure Functions, Google Cloud Functions, and other serverless computing resources. Functions are typically event-driven and execute code without managing the underlying infrastructure.',
+        name: 'function',
+      },
+      {
+        description:
+          'Represents a message queue or messaging system. This includes message brokers, event queues, and other messaging infrastructure components such as Amazon SQS, RabbitMQ, Apache Kafka, and Azure Service Bus. Queues facilitate asynchronous communication between applications and services.',
+        name: 'queue',
+      },
+      {
+        description:
+          'Represents a computing host or machine. This includes physical servers, virtual machines, cloud instances, and other computing resources that can run applications or services. Hosts provide the fundamental computing infrastructure for other entity types.',
+        name: 'host',
+      },
+      {
+        description:
+          'Represents a user account or identity. This includes human users, service accounts, system accounts, and other identity entities that can interact with systems, applications, or services. Users may have various roles, permissions, and attributes associated with their identity.',
+        name: 'user',
+      },
+      {
+        description:
+          'Represents a software application or service. This includes web applications, mobile applications, desktop applications, and other software components that provide functionality to users or other systems. Applications may run on various infrastructure components and can span multiple hosts or containers.',
+        name: 'application',
+      },
+      {
+        description:
+          'Represents a service or microservice component. This includes web services, APIs, background services, and other service-oriented architecture components. Services provide specific functionality and may communicate with other services to fulfill business requirements.',
+        name: 'service',
+      },
+      {
+        description:
+          'Represents a user session or connection session. This includes user login sessions, database connections, network sessions, and other temporary interactive or persistent connections between users, applications, or systems.',
+        name: 'session',
+      },
+    ],
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-effective-entity-type',
+    description:
+      'A standardized high-level classification of the entity. This provides a normalized way to group similar entities across different providers or systems. Example values: `bucket`, `database`, `container`, `function`, `queue`, `host`, `user`, `application`, `session`, etc.',
+    example: 'host',
+    flat_name: 'user.effective.entity.type',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'type',
+    normalize: ['array'],
+    original_fieldset: 'entity',
+    short: 'Standardized high-level classification of the entity.',
     type: 'keyword',
   },
   'user.effective.full_name': {
@@ -22278,6 +25387,90 @@ export const EcsFlat = {
     short: 'Short name or login of the user.',
     type: 'keyword',
   },
+  'user.effective.risk.calculated_level': {
+    dashed_name: 'user-effective-risk-calculated-level',
+    description:
+      'A risk classification level calculated by an internal system as part of entity analytics and entity risk scoring.',
+    example: 'High',
+    flat_name: 'user.effective.risk.calculated_level',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'calculated_level',
+    normalize: [],
+    original_fieldset: 'risk',
+    short:
+      'A risk classification level calculated by an internal system as part of entity analytics and entity risk scoring.',
+    type: 'keyword',
+  },
+  'user.effective.risk.calculated_score': {
+    dashed_name: 'user-effective-risk-calculated-score',
+    description:
+      'A risk classification score calculated by an internal system as part of entity analytics and entity risk scoring.',
+    example: 880.73,
+    flat_name: 'user.effective.risk.calculated_score',
+    level: 'extended',
+    name: 'calculated_score',
+    normalize: [],
+    original_fieldset: 'risk',
+    short:
+      'A risk classification score calculated by an internal system as part of entity analytics and entity risk scoring.',
+    type: 'float',
+  },
+  'user.effective.risk.calculated_score_norm': {
+    dashed_name: 'user-effective-risk-calculated-score-norm',
+    description:
+      'A risk classification score calculated by an internal system as part of entity analytics and entity risk scoring, and normalized to a range of 0 to 100.',
+    example: 88.73,
+    flat_name: 'user.effective.risk.calculated_score_norm',
+    level: 'extended',
+    name: 'calculated_score_norm',
+    normalize: [],
+    original_fieldset: 'risk',
+    short: 'A normalized risk score calculated by an internal system.',
+    type: 'float',
+  },
+  'user.effective.risk.static_level': {
+    dashed_name: 'user-effective-risk-static-level',
+    description:
+      'A risk classification level obtained from outside the system, such as from some external Threat Intelligence Platform.',
+    example: 'High',
+    flat_name: 'user.effective.risk.static_level',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'static_level',
+    normalize: [],
+    original_fieldset: 'risk',
+    short:
+      'A risk classification level obtained from outside the system, such as from some external Threat Intelligence Platform.',
+    type: 'keyword',
+  },
+  'user.effective.risk.static_score': {
+    dashed_name: 'user-effective-risk-static-score',
+    description:
+      'A risk classification score obtained from outside the system, such as from some external Threat Intelligence Platform.',
+    example: 830,
+    flat_name: 'user.effective.risk.static_score',
+    level: 'extended',
+    name: 'static_score',
+    normalize: [],
+    original_fieldset: 'risk',
+    short:
+      'A risk classification score obtained from outside the system, such as from some external Threat Intelligence Platform.',
+    type: 'float',
+  },
+  'user.effective.risk.static_score_norm': {
+    dashed_name: 'user-effective-risk-static-score-norm',
+    description:
+      'A risk classification score obtained from outside the system, such as from some external Threat Intelligence Platform, and normalized to a range of 0 to 100.',
+    example: 83,
+    flat_name: 'user.effective.risk.static_score_norm',
+    level: 'extended',
+    name: 'static_score_norm',
+    normalize: [],
+    original_fieldset: 'risk',
+    short: 'A normalized risk score calculated by an external system.',
+    type: 'float',
+  },
   'user.effective.roles': {
     dashed_name: 'user-effective-roles',
     description: 'Array of user roles at the time of the event.',
@@ -22300,8 +25493,255 @@ export const EcsFlat = {
     level: 'extended',
     name: 'email',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'User email address.',
+    type: 'keyword',
+  },
+  'user.entity.attributes': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-entity-attributes',
+    description:
+      'A set of static or semi-static attributes of the entity. Usually boolean or keyword field data types. Use this field set when you need to track static or semi-static characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'user.entity.attributes',
+    level: 'extended',
+    name: 'attributes',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of static or semi-static attributes of the entity.',
+    type: 'object',
+  },
+  'user.entity.behavior': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-entity-behavior',
+    description:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period. Usually boolean field data type. Use this field set when you need to capture and track ephemeral characteristics of an entity for advanced searching, correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'user.entity.behavior',
+    level: 'extended',
+    name: 'behavior',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period.',
+    type: 'object',
+  },
+  'user.entity.display_name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-entity-display-name',
+    description:
+      'An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (e.g., `host`).',
+    flat_name: 'user.entity.display_name',
+    ignore_above: 1024,
+    level: 'extended',
+    multi_fields: [
+      {
+        flat_name: 'user.entity.display_name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'display_name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'An optional field used when a pretty name is desired for entity-centric operations.',
+    type: 'keyword',
+  },
+  'user.entity.id': {
+    dashed_name: 'user-entity-id',
+    description:
+      "A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (e.g., host, user), this value should match the corresponding *.id field. Alternative identifiers (e.g., ARNs values in AWS, URLs) can be preserved in the raw field.",
+    flat_name: 'user.entity.id',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'id',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Unique identifier for the entity.',
+    type: 'keyword',
+  },
+  'user.entity.last_seen_timestamp': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-entity-last-seen-timestamp',
+    description:
+      'Indicates the date/time when this entity was last "seen," usually based upon the last event/log that is initiated by this entity.',
+    flat_name: 'user.entity.last_seen_timestamp',
+    level: 'extended',
+    name: 'last_seen_timestamp',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Indicates the date/time when this entity was last "seen."',
+    type: 'date',
+  },
+  'user.entity.lifecycle': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-entity-lifecycle',
+    description:
+      'A set of temporal characteristics of the entity. Usually date field data type. Use this field set when you need to track temporal characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'user.entity.lifecycle',
+    level: 'extended',
+    name: 'lifecycle',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of temporal characteristics of the entity.',
+    type: 'object',
+  },
+  'user.entity.metrics': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-entity-metrics',
+    description:
+      'Field set for any fields containing numeric entity metrics. These use dynamic field data type mapping.',
+    flat_name: 'user.entity.metrics',
+    level: 'extended',
+    name: 'metrics',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Field set for any fields containing numeric entity metrics.',
+    type: 'object',
+  },
+  'user.entity.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-entity-name',
+    description:
+      'The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (e.g., `host`), this field should mirrors the corresponding *.name value.',
+    flat_name: 'user.entity.name',
+    ignore_above: 1024,
+    level: 'core',
+    multi_fields: [
+      {
+        flat_name: 'user.entity.name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'The name of the entity.',
+    type: 'keyword',
+  },
+  'user.entity.raw': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-entity-raw',
+    description:
+      'Original, unmodified fields from the source system. Usually flattened field data type. While the attributes field should be used for normalized fields requiring advanced queries, this field preserves all source metadata with basic search capabilities.',
+    flat_name: 'user.entity.raw',
+    level: 'extended',
+    name: 'raw',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Original, unmodified fields from the source system.',
+    type: 'object',
+  },
+  'user.entity.reference': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-entity-reference',
+    description:
+      'A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format may vary by entity type and source system.',
+    flat_name: 'user.entity.reference',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'reference',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A URI, URL, or other direct reference to access or locate the entity.',
+    type: 'keyword',
+  },
+  'user.entity.source': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-entity-source',
+    description:
+      'The module or integration that provided this entity data (similar to event.module).',
+    flat_name: 'user.entity.source',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'source',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Source module or integration that provided the entity data.',
+    type: 'keyword',
+  },
+  'user.entity.sub_type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-entity-sub-type',
+    description:
+      'The specific type designation for the entity as defined by its provider or system. This field provides more granular classification than the type field. Examples: `aws_s3_bucket`, `gcp_cloud_storage_bucket`, `azure_blob_container` would all map to entity type `bucket`.  `hardware` , `virtual` , `container` , `node` , `cloud_instance` would all map to entity type `host`.',
+    example: 'aws_s3_bucket',
+    flat_name: 'user.entity.sub_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'sub_type',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'The specific type designation for the entity as defined by its provider or system.',
+    type: 'keyword',
+  },
+  'user.entity.type': {
+    allowed_values: [
+      {
+        description:
+          'Represents a storage container or bucket, typically used for object storage. Common examples include AWS S3 buckets, Google Cloud Storage buckets, Azure Blob containers, and other cloud storage services. Buckets are used to organize and store files, objects, or data in cloud environments.',
+        name: 'bucket',
+      },
+      {
+        description:
+          'Represents a database system or database instance. This includes relational databases (MySQL, PostgreSQL, Oracle), NoSQL databases (MongoDB, Cassandra, DynamoDB), time-series databases, and other data storage systems. The entity may represent the entire database system or a specific database instance.',
+        name: 'database',
+      },
+      {
+        description:
+          'Represents a containerized application or process. This includes Docker containers, Kubernetes pods, and other containerization technologies. Containers encapsulate applications and their dependencies, providing isolation and portability across different environments.',
+        name: 'container',
+      },
+      {
+        description:
+          'Represents a serverless function or Function-as-a-Service (FaaS) component. This includes AWS Lambda functions, Azure Functions, Google Cloud Functions, and other serverless computing resources. Functions are typically event-driven and execute code without managing the underlying infrastructure.',
+        name: 'function',
+      },
+      {
+        description:
+          'Represents a message queue or messaging system. This includes message brokers, event queues, and other messaging infrastructure components such as Amazon SQS, RabbitMQ, Apache Kafka, and Azure Service Bus. Queues facilitate asynchronous communication between applications and services.',
+        name: 'queue',
+      },
+      {
+        description:
+          'Represents a computing host or machine. This includes physical servers, virtual machines, cloud instances, and other computing resources that can run applications or services. Hosts provide the fundamental computing infrastructure for other entity types.',
+        name: 'host',
+      },
+      {
+        description:
+          'Represents a user account or identity. This includes human users, service accounts, system accounts, and other identity entities that can interact with systems, applications, or services. Users may have various roles, permissions, and attributes associated with their identity.',
+        name: 'user',
+      },
+      {
+        description:
+          'Represents a software application or service. This includes web applications, mobile applications, desktop applications, and other software components that provide functionality to users or other systems. Applications may run on various infrastructure components and can span multiple hosts or containers.',
+        name: 'application',
+      },
+      {
+        description:
+          'Represents a service or microservice component. This includes web services, APIs, background services, and other service-oriented architecture components. Services provide specific functionality and may communicate with other services to fulfill business requirements.',
+        name: 'service',
+      },
+      {
+        description:
+          'Represents a user session or connection session. This includes user login sessions, database connections, network sessions, and other temporary interactive or persistent connections between users, applications, or systems.',
+        name: 'session',
+      },
+    ],
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-entity-type',
+    description:
+      'A standardized high-level classification of the entity. This provides a normalized way to group similar entities across different providers or systems. Example values: `bucket`, `database`, `container`, `function`, `queue`, `host`, `user`, `application`, `session`, etc.',
+    example: 'host',
+    flat_name: 'user.entity.type',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'type',
+    normalize: ['array'],
+    original_fieldset: 'entity',
+    short: 'Standardized high-level classification of the entity.',
     type: 'keyword',
   },
   'user.full_name': {
@@ -22320,7 +25760,7 @@ export const EcsFlat = {
     ],
     name: 'full_name',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: "User's full name, if available.",
     type: 'keyword',
   },
@@ -22370,7 +25810,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'hash',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
       'Unique user hash to correlate information for a user in anonymized form.',
     type: 'keyword',
@@ -22384,7 +25824,7 @@ export const EcsFlat = {
     level: 'core',
     name: 'id',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Unique identifier of the user.',
     type: 'keyword',
   },
@@ -22400,7 +25840,7 @@ export const EcsFlat = {
     ],
     name: 'name',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Short name or login of the user.',
     type: 'keyword',
   },
@@ -22497,7 +25937,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'roles',
     normalize: ['array'],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Array of user roles at the time of the event.',
     synthetic_source_keep: 'none',
     type: 'keyword',
@@ -22525,6 +25965,253 @@ export const EcsFlat = {
     normalize: [],
     original_fieldset: 'user',
     short: 'User email address.',
+    type: 'keyword',
+  },
+  'user.target.entity.attributes': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-target-entity-attributes',
+    description:
+      'A set of static or semi-static attributes of the entity. Usually boolean or keyword field data types. Use this field set when you need to track static or semi-static characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'user.target.entity.attributes',
+    level: 'extended',
+    name: 'attributes',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of static or semi-static attributes of the entity.',
+    type: 'object',
+  },
+  'user.target.entity.behavior': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-target-entity-behavior',
+    description:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period. Usually boolean field data type. Use this field set when you need to capture and track ephemeral characteristics of an entity for advanced searching, correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'user.target.entity.behavior',
+    level: 'extended',
+    name: 'behavior',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period.',
+    type: 'object',
+  },
+  'user.target.entity.display_name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-target-entity-display-name',
+    description:
+      'An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (e.g., `host`).',
+    flat_name: 'user.target.entity.display_name',
+    ignore_above: 1024,
+    level: 'extended',
+    multi_fields: [
+      {
+        flat_name: 'user.target.entity.display_name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'display_name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'An optional field used when a pretty name is desired for entity-centric operations.',
+    type: 'keyword',
+  },
+  'user.target.entity.id': {
+    dashed_name: 'user-target-entity-id',
+    description:
+      "A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (e.g., host, user), this value should match the corresponding *.id field. Alternative identifiers (e.g., ARNs values in AWS, URLs) can be preserved in the raw field.",
+    flat_name: 'user.target.entity.id',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'id',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Unique identifier for the entity.',
+    type: 'keyword',
+  },
+  'user.target.entity.last_seen_timestamp': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-target-entity-last-seen-timestamp',
+    description:
+      'Indicates the date/time when this entity was last "seen," usually based upon the last event/log that is initiated by this entity.',
+    flat_name: 'user.target.entity.last_seen_timestamp',
+    level: 'extended',
+    name: 'last_seen_timestamp',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Indicates the date/time when this entity was last "seen."',
+    type: 'date',
+  },
+  'user.target.entity.lifecycle': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-target-entity-lifecycle',
+    description:
+      'A set of temporal characteristics of the entity. Usually date field data type. Use this field set when you need to track temporal characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.',
+    flat_name: 'user.target.entity.lifecycle',
+    level: 'extended',
+    name: 'lifecycle',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'A set of temporal characteristics of the entity.',
+    type: 'object',
+  },
+  'user.target.entity.metrics': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-target-entity-metrics',
+    description:
+      'Field set for any fields containing numeric entity metrics. These use dynamic field data type mapping.',
+    flat_name: 'user.target.entity.metrics',
+    level: 'extended',
+    name: 'metrics',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Field set for any fields containing numeric entity metrics.',
+    type: 'object',
+  },
+  'user.target.entity.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-target-entity-name',
+    description:
+      'The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (e.g., `host`), this field should mirrors the corresponding *.name value.',
+    flat_name: 'user.target.entity.name',
+    ignore_above: 1024,
+    level: 'core',
+    multi_fields: [
+      {
+        flat_name: 'user.target.entity.name.text',
+        name: 'text',
+        type: 'match_only_text',
+      },
+    ],
+    name: 'name',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'The name of the entity.',
+    type: 'keyword',
+  },
+  'user.target.entity.raw': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-target-entity-raw',
+    description:
+      'Original, unmodified fields from the source system. Usually flattened field data type. While the attributes field should be used for normalized fields requiring advanced queries, this field preserves all source metadata with basic search capabilities.',
+    flat_name: 'user.target.entity.raw',
+    level: 'extended',
+    name: 'raw',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Original, unmodified fields from the source system.',
+    type: 'object',
+  },
+  'user.target.entity.reference': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-target-entity-reference',
+    description:
+      'A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format may vary by entity type and source system.',
+    flat_name: 'user.target.entity.reference',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'reference',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'A URI, URL, or other direct reference to access or locate the entity.',
+    type: 'keyword',
+  },
+  'user.target.entity.source': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-target-entity-source',
+    description:
+      'The module or integration that provided this entity data (similar to event.module).',
+    flat_name: 'user.target.entity.source',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'source',
+    normalize: [],
+    original_fieldset: 'entity',
+    short: 'Source module or integration that provided the entity data.',
+    type: 'keyword',
+  },
+  'user.target.entity.sub_type': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-target-entity-sub-type',
+    description:
+      'The specific type designation for the entity as defined by its provider or system. This field provides more granular classification than the type field. Examples: `aws_s3_bucket`, `gcp_cloud_storage_bucket`, `azure_blob_container` would all map to entity type `bucket`.  `hardware` , `virtual` , `container` , `node` , `cloud_instance` would all map to entity type `host`.',
+    example: 'aws_s3_bucket',
+    flat_name: 'user.target.entity.sub_type',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'sub_type',
+    normalize: [],
+    original_fieldset: 'entity',
+    short:
+      'The specific type designation for the entity as defined by its provider or system.',
+    type: 'keyword',
+  },
+  'user.target.entity.type': {
+    allowed_values: [
+      {
+        description:
+          'Represents a storage container or bucket, typically used for object storage. Common examples include AWS S3 buckets, Google Cloud Storage buckets, Azure Blob containers, and other cloud storage services. Buckets are used to organize and store files, objects, or data in cloud environments.',
+        name: 'bucket',
+      },
+      {
+        description:
+          'Represents a database system or database instance. This includes relational databases (MySQL, PostgreSQL, Oracle), NoSQL databases (MongoDB, Cassandra, DynamoDB), time-series databases, and other data storage systems. The entity may represent the entire database system or a specific database instance.',
+        name: 'database',
+      },
+      {
+        description:
+          'Represents a containerized application or process. This includes Docker containers, Kubernetes pods, and other containerization technologies. Containers encapsulate applications and their dependencies, providing isolation and portability across different environments.',
+        name: 'container',
+      },
+      {
+        description:
+          'Represents a serverless function or Function-as-a-Service (FaaS) component. This includes AWS Lambda functions, Azure Functions, Google Cloud Functions, and other serverless computing resources. Functions are typically event-driven and execute code without managing the underlying infrastructure.',
+        name: 'function',
+      },
+      {
+        description:
+          'Represents a message queue or messaging system. This includes message brokers, event queues, and other messaging infrastructure components such as Amazon SQS, RabbitMQ, Apache Kafka, and Azure Service Bus. Queues facilitate asynchronous communication between applications and services.',
+        name: 'queue',
+      },
+      {
+        description:
+          'Represents a computing host or machine. This includes physical servers, virtual machines, cloud instances, and other computing resources that can run applications or services. Hosts provide the fundamental computing infrastructure for other entity types.',
+        name: 'host',
+      },
+      {
+        description:
+          'Represents a user account or identity. This includes human users, service accounts, system accounts, and other identity entities that can interact with systems, applications, or services. Users may have various roles, permissions, and attributes associated with their identity.',
+        name: 'user',
+      },
+      {
+        description:
+          'Represents a software application or service. This includes web applications, mobile applications, desktop applications, and other software components that provide functionality to users or other systems. Applications may run on various infrastructure components and can span multiple hosts or containers.',
+        name: 'application',
+      },
+      {
+        description:
+          'Represents a service or microservice component. This includes web services, APIs, background services, and other service-oriented architecture components. Services provide specific functionality and may communicate with other services to fulfill business requirements.',
+        name: 'service',
+      },
+      {
+        description:
+          'Represents a user session or connection session. This includes user login sessions, database connections, network sessions, and other temporary interactive or persistent connections between users, applications, or systems.',
+        name: 'session',
+      },
+    ],
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'user-target-entity-type',
+    description:
+      'A standardized high-level classification of the entity. This provides a normalized way to group similar entities across different providers or systems. Example values: `bucket`, `database`, `container`, `function`, `queue`, `host`, `user`, `application`, `session`, etc.',
+    example: 'host',
+    flat_name: 'user.target.entity.type',
+    ignore_above: 1024,
+    level: 'core',
+    name: 'type',
+    normalize: ['array'],
+    original_fieldset: 'entity',
+    short: 'Standardized high-level classification of the entity.',
     type: 'keyword',
   },
   'user.target.full_name': {
@@ -22631,6 +26318,90 @@ export const EcsFlat = {
     short: 'Short name or login of the user.',
     type: 'keyword',
   },
+  'user.target.risk.calculated_level': {
+    dashed_name: 'user-target-risk-calculated-level',
+    description:
+      'A risk classification level calculated by an internal system as part of entity analytics and entity risk scoring.',
+    example: 'High',
+    flat_name: 'user.target.risk.calculated_level',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'calculated_level',
+    normalize: [],
+    original_fieldset: 'risk',
+    short:
+      'A risk classification level calculated by an internal system as part of entity analytics and entity risk scoring.',
+    type: 'keyword',
+  },
+  'user.target.risk.calculated_score': {
+    dashed_name: 'user-target-risk-calculated-score',
+    description:
+      'A risk classification score calculated by an internal system as part of entity analytics and entity risk scoring.',
+    example: 880.73,
+    flat_name: 'user.target.risk.calculated_score',
+    level: 'extended',
+    name: 'calculated_score',
+    normalize: [],
+    original_fieldset: 'risk',
+    short:
+      'A risk classification score calculated by an internal system as part of entity analytics and entity risk scoring.',
+    type: 'float',
+  },
+  'user.target.risk.calculated_score_norm': {
+    dashed_name: 'user-target-risk-calculated-score-norm',
+    description:
+      'A risk classification score calculated by an internal system as part of entity analytics and entity risk scoring, and normalized to a range of 0 to 100.',
+    example: 88.73,
+    flat_name: 'user.target.risk.calculated_score_norm',
+    level: 'extended',
+    name: 'calculated_score_norm',
+    normalize: [],
+    original_fieldset: 'risk',
+    short: 'A normalized risk score calculated by an internal system.',
+    type: 'float',
+  },
+  'user.target.risk.static_level': {
+    dashed_name: 'user-target-risk-static-level',
+    description:
+      'A risk classification level obtained from outside the system, such as from some external Threat Intelligence Platform.',
+    example: 'High',
+    flat_name: 'user.target.risk.static_level',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'static_level',
+    normalize: [],
+    original_fieldset: 'risk',
+    short:
+      'A risk classification level obtained from outside the system, such as from some external Threat Intelligence Platform.',
+    type: 'keyword',
+  },
+  'user.target.risk.static_score': {
+    dashed_name: 'user-target-risk-static-score',
+    description:
+      'A risk classification score obtained from outside the system, such as from some external Threat Intelligence Platform.',
+    example: 830,
+    flat_name: 'user.target.risk.static_score',
+    level: 'extended',
+    name: 'static_score',
+    normalize: [],
+    original_fieldset: 'risk',
+    short:
+      'A risk classification score obtained from outside the system, such as from some external Threat Intelligence Platform.',
+    type: 'float',
+  },
+  'user.target.risk.static_score_norm': {
+    dashed_name: 'user-target-risk-static-score-norm',
+    description:
+      'A risk classification score obtained from outside the system, such as from some external Threat Intelligence Platform, and normalized to a range of 0 to 100.',
+    example: 83,
+    flat_name: 'user.target.risk.static_score_norm',
+    level: 'extended',
+    name: 'static_score_norm',
+    normalize: [],
+    original_fieldset: 'risk',
+    short: 'A normalized risk score calculated by an external system.',
+    type: 'float',
+  },
   'user.target.roles': {
     dashed_name: 'user-target-roles',
     description: 'Array of user roles at the time of the event.',
@@ -22666,7 +26437,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'name',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Name of the user agent.',
     type: 'keyword',
   },
@@ -22808,7 +26579,7 @@ export const EcsFlat = {
     level: 'extended',
     name: 'version',
     normalize: [],
-    otel: [{ relation: 'match', stability: 'experimental' }],
+    otel: [{ relation: 'match', stability: 'development' }],
     short: 'Version of the user agent.',
     type: 'keyword',
   },
