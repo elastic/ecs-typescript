@@ -19,6 +19,9 @@ jobs:
       contents: write
       pull-requests: write
 
+    env:
+      ECS_REF: ${{ inputs.ecsRef }}
+
     strategy:
       matrix:
         node-version: [18.x]
@@ -31,12 +34,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
     - run: yarn install --frozen-lockfile
-    - run: yarn generate-ecs-types -r ${{ inputs.ecsRef }} && yarn test:integration && yarn build
+    - run: yarn generate-ecs-types -r ${ECS_REF} && yarn test:integration && yarn build
     - name: Create Pull Request
       id: cpr
       uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
       with:
-        title: New definitions generated from elastic/ecs release ${{ inputs.ecsRef }}
+        title: New definitions generated from elastic/ecs release ${ECS_REF}
     - name: Request reviewers
       if: steps.cpr.outputs.pull-request-number
       env:
