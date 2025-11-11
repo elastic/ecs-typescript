@@ -1,0 +1,141 @@
+name: Publish to npm
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+      - 'generated/**'
+      - 'src/**'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run in dry-run mode (no actual publish)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      should_publish: ${{ steps.check.outputs.should_publish }}
+      package_version: ${{ steps.check.outputs.version }}
+      npm_version: ${{ steps.check.outputs.npm_version }}
+    steps:
+      - uses: actions/checkout@v5
+      
+      - name: Get package version
+        id: package
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Package version: ${VERSION}"
+      
+      - name: Check npm registry
+        id: check
+        run: |
+          PACKAGE_VERSION="${{ steps.package.outputs.version }}"
+          NPM_VERSION=$(npm view @elastic/ecs version 2>/dev/null || echo "0.0.0")
+          
+          echo "version=${PACKAGE_VERSION}" >> $GITHUB_OUTPUT
+          echo "npm_version=${NPM_VERSION}" >> $GITHUB_OUTPUT
+          
+          if [ "${PACKAGE_VERSION}" != "${NPM_VERSION}" ]; then
+            echo "should_publish=true" >> $GITHUB_OUTPUT
+            echo "✅ Version ${PACKAGE_VERSION} is new (npm has ${NPM_VERSION})"
+          else
+            echo "should_publish=false" >> $GITHUB_OUTPUT
+            echo "⏭️  Version ${PACKAGE_VERSION} already published to npm"
+          fi
+
+  publish:
+    needs: check-version
+    if: needs.check-version.outputs.should_publish == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+      
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      
+      - name: Build
+        run: yarn build
+      
+      - name: Run tests
+        run: |
+          yarn test:unit
+          yarn test:integration
+      
+      - name: Publish to npm (dry-run)
+        if: inputs.dry_run == true
+        run: npm publish --dry-run
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
+      - name: Publish to npm
+        if: inputs.dry_run != true
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
+      - name: Create git tag
+        if: inputs.dry_run != true
+        run: |
+          VERSION="${{ needs.check-version.outputs.package_version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${VERSION}" -m "Release v${VERSION}"
+          git push origin "v${VERSION}"
+      
+      - name: Create GitHub Release
+        if: inputs.dry_run != true
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ needs.check-version.outputs.package_version }}
+          release_name: v${{ needs.check-version.outputs.package_version }}
+          body: |
+            ## @elastic/ecs v${{ needs.check-version.outputs.package_version }}
+            
+            TypeScript definitions for Elastic Common Schema (ECS) version ${{ needs.check-version.outputs.package_version }}.
+            
+            ### Installation
+            ```bash
+            npm install @elastic/ecs@${{ needs.check-version.outputs.package_version }}
+            # or
+            yarn add @elastic/ecs@${{ needs.check-version.outputs.package_version }}
+            ```
+            
+            ### npm Package
+            https://www.npmjs.com/package/@elastic/ecs/v/${{ needs.check-version.outputs.package_version }}
+            
+            ### Changes
+            This release includes updated TypeScript definitions generated from ECS schema version ${{ needs.check-version.outputs.package_version }}.
+          draft: false
+          prerelease: false
+      
+      - name: Summary
+        if: inputs.dry_run != true
+        run: |
+          echo "## 🚀 Published to npm" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Package:** @elastic/ecs" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ needs.check-version.outputs.package_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**npm:** https://www.npmjs.com/package/@elastic/ecs/v/${{ needs.check-version.outputs.package_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Tag:** v${{ needs.check-version.outputs.package_version }}" >> $GITHUB_STEP_SUMMARY
