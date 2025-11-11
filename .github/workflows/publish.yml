@@ -1,5 +1,8 @@
 name: Publish to npm
 
+env:
+  NODE_VERSION: '22.x'
+
 on:
   push:
     branches:
@@ -29,7 +32,7 @@ jobs:
       package_version: ${{ steps.check.outputs.version }}
       npm_version: ${{ steps.check.outputs.npm_version }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       
       - name: Get package version
         id: package
@@ -64,14 +67,14 @@ jobs:
       id-token: write
     
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
-      
+
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
-          node-version: '18.x'
+          node-version: ${{ env.NODE_VERSION }}
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
       
@@ -85,19 +88,15 @@ jobs:
         run: |
           yarn test:unit
           yarn test:integration
-      
+
       - name: Publish to npm (dry-run)
         if: inputs.dry_run == true
         run: npm publish --dry-run
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
+
       - name: Publish to npm
         if: inputs.dry_run != true
         run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
+
       - name: Create git tag
         if: inputs.dry_run != true
         run: |
