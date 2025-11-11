@@ -46,17 +46,19 @@ jobs:
         run: |
           PACKAGE_VERSION="${{ steps.package.outputs.version }}"
           NPM_VERSION=$(npm view @elastic/ecs version 2>/dev/null || echo "0.0.0")
-          
+
           echo "version=${PACKAGE_VERSION}" >> $GITHUB_OUTPUT
           echo "npm_version=${NPM_VERSION}" >> $GITHUB_OUTPUT
-          
-          if [ "${PACKAGE_VERSION}" != "${NPM_VERSION}" ]; then
-            echo "should_publish=true" >> $GITHUB_OUTPUT
-            echo "✅ Version ${PACKAGE_VERSION} is new (npm has ${NPM_VERSION})"
-          else
-            echo "should_publish=false" >> $GITHUB_OUTPUT
-            echo "⏭️  Version ${PACKAGE_VERSION} already published to npm"
+
+          if [ "${PACKAGE_VERSION}" = "${NPM_VERSION}" ]; then
+            echo "❌ ERROR: Version ${PACKAGE_VERSION} already exists on npm!"
+            echo "Current npm version: ${NPM_VERSION}"
+            echo "Please bump the version in package.json before publishing."
+            exit 1
           fi
+
+          echo "should_publish=true" >> $GITHUB_OUTPUT
+          echo "✅ Version ${PACKAGE_VERSION} is new (npm has ${NPM_VERSION})"
 
   publish:
     needs: check-version
