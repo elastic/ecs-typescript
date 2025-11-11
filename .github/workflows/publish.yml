@@ -16,6 +16,11 @@ on:
         type: boolean
         default: false
 
+# Prevent concurrent publish operations
+concurrency:
+  group: npm-publish-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   check-version:
     runs-on: ubuntu-latest
@@ -104,31 +109,29 @@ jobs:
       
       - name: Create GitHub Release
         if: inputs.dry_run != true
-        uses: actions/create-release@v1
+        run: |
+          VERSION="${{ needs.check-version.outputs.package_version }}"
+          gh release create "v${VERSION}" \
+            --title "v${VERSION}" \
+            --notes "## @elastic/ecs v${VERSION}
+
+          TypeScript definitions for Elastic Common Schema (ECS) version ${VERSION}.
+
+          ### Installation
+          \`\`\`bash
+          npm install @elastic/ecs@${VERSION}
+          # or
+          yarn add @elastic/ecs@${VERSION}
+          \`\`\`
+
+          ### npm Package
+          https://www.npmjs.com/package/@elastic/ecs/v/${VERSION}
+
+          ### Changes
+          This release includes updated TypeScript definitions generated from ECS schema version ${VERSION}." \
+            --repo ${{ github.repository }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ needs.check-version.outputs.package_version }}
-          release_name: v${{ needs.check-version.outputs.package_version }}
-          body: |
-            ## @elastic/ecs v${{ needs.check-version.outputs.package_version }}
-            
-            TypeScript definitions for Elastic Common Schema (ECS) version ${{ needs.check-version.outputs.package_version }}.
-            
-            ### Installation
-            ```bash
-            npm install @elastic/ecs@${{ needs.check-version.outputs.package_version }}
-            # or
-            yarn add @elastic/ecs@${{ needs.check-version.outputs.package_version }}
-            ```
-            
-            ### npm Package
-            https://www.npmjs.com/package/@elastic/ecs/v/${{ needs.check-version.outputs.package_version }}
-            
-            ### Changes
-            This release includes updated TypeScript definitions generated from ECS schema version ${{ needs.check-version.outputs.package_version }}.
-          draft: false
-          prerelease: false
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Summary
         if: inputs.dry_run != true
