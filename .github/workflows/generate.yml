@@ -89,10 +89,10 @@ jobs:
           **Triggered by:** ${{ github.event_name }}
           
           ### Changes
-          - 📦 Updated package.json version to ${{ steps.ecs_version.outputs.version }}
-          - 🔄 Regenerated TypeScript definitions from ECS schema
-          - ✅ Tests passed
-          - 🏗️ Build succeeded
+          - Updated package.json version to ${{ steps.ecs_version.outputs.version }}
+          - Regenerated TypeScript definitions from ECS schema
+          - Tests passed
+          - Build succeeded
           
           ### Next Steps
           After merging this PR, the `publish.yml` workflow will automatically:
