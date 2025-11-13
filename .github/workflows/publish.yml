@@ -91,6 +91,10 @@ jobs:
           yarn test:unit
           yarn test:integration
 
+#      npm trusted publishing requires npm CLI version 11.5.1+
+      - name: Install npm 11.5.1 for trusted publishing
+        run: npm install -g npm@11.5.1
+
       - name: Publish to npm (dry-run)
         if: inputs.dry_run == true
         run: npm publish --dry-run
