@@ -3,37 +3,103 @@
 
 name: Generate ECS definition package
 
+env:
+  NODE_VERSION: '22.x'
+
 on:
   workflow_dispatch:
     inputs:
       ecsRef:
-        description: 'ECS Ref'
+        description: 'ECS Ref (version tag like v8.11.0 or branch name)'
         required: false
         default: 'main'
         type: string
+  repository_dispatch:
+    types: [ecs-release]
 
 jobs:
-  build:
+  generate:
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
 
-    strategy:
-      matrix:
-        node-version: [18.x]
-
     steps:
-    - uses: actions/checkout@v5
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v5
+    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       with:
-        node-version: ${{ matrix.node-version }}
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+      with:
+        node-version: ${{ env.NODE_VERSION }}
         cache: 'yarn'
-    - run: yarn install --frozen-lockfile
-    - run: yarn generate-ecs-types -r ${{ inputs.ecsRef }} && yarn test:integration && yarn build
+    
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+    
+    - name: Determine ECS version
+      id: ecs_version
+      run: |
+        # Use input if provided, otherwise use payload from repository_dispatch
+        if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+          ECS_REF="${{ github.event.client_payload.version }}"
+        else
+          ECS_REF="${{ inputs.ecsRef }}"
+        fi
+        
+        echo "ecs_ref=${ECS_REF}" >> $GITHUB_OUTPUT
+        
+        # Extract version number (remove 'v' prefix if present)
+        VERSION="${ECS_REF#v}"
+        echo "version=${VERSION}" >> $GITHUB_OUTPUT
+        echo "ECS Reference: ${ECS_REF}"
+        echo "Version: ${VERSION}"
+    
+    - name: Update package.json version
+      run: |
+        VERSION="${{ steps.ecs_version.outputs.version }}"
+        # Update version in package.json
+        npm version "${VERSION}" --no-git-tag-version --allow-same-version
+        echo "Updated package.json to version ${VERSION}"
+    
+    - name: Generate ECS types
+      run: yarn generate-ecs-types -r ${{ steps.ecs_version.outputs.ecs_ref }}
+    
+    - name: Run tests
+      run: yarn test:integration
+    
+    - name: Build
+      run: yarn build
+    
     - name: Create Pull Request
       id: cpr
       uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
       with:
-        title: New definitions generated from elastic/ecs release ${{ inputs.ecsRef }}
+        commit-message: 'Update to ECS ${{ steps.ecs_version.outputs.version }}'
+        branch: ecs-update-${{ steps.ecs_version.outputs.version }}
+        delete-branch: true
+        title: 'Update to ECS ${{ steps.ecs_version.outputs.version }}'
+        body: |
+          ## Automated ECS Update
+          
+          This PR updates the ECS TypeScript definitions to version **${{ steps.ecs_version.outputs.version }}**.
+          
+          **ECS Reference:** `${{ steps.ecs_version.outputs.ecs_ref }}`
+          **Triggered by:** ${{ github.event_name }}
+          
+          ### Changes
+          - Updated package.json version to ${{ steps.ecs_version.outputs.version }}
+          - Regenerated TypeScript definitions from ECS schema
+          - Tests passed
+          - Build succeeded
+          
+          ### Next Steps
+          After merging this PR, the `publish.yml` workflow will automatically:
+          1. Create a git tag (v${{ steps.ecs_version.outputs.version }})
+          2. Publish to npm registry
+          3. Create a GitHub release
+        labels: |
+          automated
+          enhancement
+          Team:obs-exploration
