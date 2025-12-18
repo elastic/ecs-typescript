@@ -149,6 +149,7 @@ export type Ecs = EcsBase &
     dns?: EcsDns;
     ecs: EcsEcs;
     email?: EcsEmail;
+    entity?: EcsEntity;
     error?: EcsError;
     event?: EcsEvent;
     faas?: EcsFaas;
