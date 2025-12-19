@@ -62,8 +62,8 @@ export interface EcsUrl {
    */
   port?: number;
   /**
-   * The query field describes the query string of the request, such as "q=elasticsearch".
-   * The `?` is excluded from the query string. If a URL contains no `?`, there is no query field. If there is a `?` but no query, the query field exists with an empty string. The `exists` query can be used to differentiate between the two cases.
+   * The field contains the entire query string, excluding the leading `?` character, such as "q=elasticsearch".
+   * If a URL contains no `?`, there is no query field. If there is a `?` but no query, the query field exists with an empty string. The `exists` query can be used to differentiate between the two cases.
    */
   query?: string;
   /**
