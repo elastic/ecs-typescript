@@ -72,7 +72,7 @@ import { EcsVolume } from './volume';
 import { EcsVulnerability } from './vulnerability';
 import { EcsX509 } from './x509';
 
-export const EcsVersion = '9.3.0-dev' as const;
+export const EcsVersion = '9.3.0' as const;
 
 /**
  * Exporting raw schema files for easy programmatic use
