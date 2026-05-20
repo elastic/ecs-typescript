@@ -33,6 +33,7 @@ import { EcsEcs } from './ecs';
 import { EcsElf } from './elf';
 import { EcsEmail } from './email';
 import { EcsEntity } from './entity';
+import { EcsEntityReference } from './entity_reference';
 import { EcsError } from './error';
 import { EcsEvent } from './event';
 import { EcsFaas } from './faas';
@@ -72,7 +73,7 @@ import { EcsVolume } from './volume';
 import { EcsVulnerability } from './vulnerability';
 import { EcsX509 } from './x509';
 
-export const EcsVersion = '9.4.0-dev' as const;
+export const EcsVersion = '9.4.0' as const;
 
 /**
  * Exporting raw schema files for easy programmatic use
@@ -96,6 +97,7 @@ export type {
   EcsElf,
   EcsEmail,
   EcsEntity,
+  EcsEntityReference,
   EcsError,
   EcsEvent,
   EcsFaas,

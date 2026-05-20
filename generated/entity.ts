@@ -21,36 +21,62 @@
  * The entity fields provide a standardized way to represent and categorize different types of components within an IT environment, including those that don't have dedicated field sets in ECS. An entity represents a discrete, identifiable component that can be described by a set of attributes and maintains its identity over time.
  */
 export interface EcsEntity {
-  /**
-   * A set of static or semi-static attributes of the entity. Usually boolean or keyword field data types. Use this field set when you need to track static or semi-static characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.
-   */
-  attributes?: Record<string, unknown>;
+  attributes?: {
+    /**
+     * Known redirect URIs or URLs associated with this entity. Typically applicable to Service entities.
+     */
+    known_redirects?: string | Array<string>;
+    /**
+     * Indicates whether the entity is managed by an external administration or control system. Typically applicable to Host and Service entities.
+     */
+    managed?: boolean;
+    /**
+     * Indicates whether multi-factor authentication is enabled for this entity. Typically applicable to User entities.
+     */
+    mfa_enabled?: boolean;
+    /**
+     * Restriction applied to OAuth consent for this entity (for example `admin_only`, `verified_only`, `unrestricted`). Typically applicable to Service entities.
+     */
+    oauth_consent_restriction?: string;
+    /**
+     * Action-level permissions associated with this entity (not roles or groups). Typically applicable to User, Host, and Service entities.
+     */
+    permissions?: string | Array<string>;
+    /**
+     * The storage tier or class assigned to an object storage resource (for example S3/GCS/Azure object tiers). Common examples include `STANDARD`, `STANDARD_IA`, `GLACIER`, `COLDLINE`. Typically applicable to Service entities.
+     */
+    storage_class?: string;
+  };
+
   /**
    * A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period. Usually boolean field data type. Use this field set when you need to capture and track ephemeral characteristics of an entity for advanced searching, correlation of normalized values across different providers/sources and entity types.
    */
   behavior?: Record<string, unknown>;
   /**
-   * An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (e.g., `host`).
+   * An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (for example, `host`).
    */
   display_name?: string;
   /**
-   * A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (e.g., host, user), this value should match the corresponding *.id field. Alternative identifiers (e.g., ARNs values in AWS, URLs) can be preserved in the raw field.
+   * A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (for example, host, user), this value should match the corresponding *.id field. Alternative identifiers (for example, ARNs values in AWS, URLs) can be preserved in the raw field.
    */
   id?: string;
   /**
    * Indicates the date/time when this entity was last "seen," usually based upon the last event/log that is initiated by this entity.
    */
   last_seen_timestamp?: string;
-  /**
-   * A set of temporal characteristics of the entity. Usually date field data type. Use this field set when you need to track temporal characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.
-   */
-  lifecycle?: Record<string, unknown>;
+  lifecycle?: {
+    /**
+     * Timestamp of the most recent action performed by or attributed to this entity (active use). Distinct from `entity.last_seen_timestamp`, which records when the entity was last observed in data; `last_activity` implies the entity was active, not only seen. Typically applicable to User, Host, and Service entities.
+     */
+    last_activity?: string;
+  };
+
   /**
    * Field set for any fields containing numeric entity metrics. These use dynamic field data type mapping.
    */
   metrics?: Record<string, unknown>;
   /**
-   * The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (e.g., `host`), this field should mirrors the corresponding *.name value.
+   * The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (for example, `host`), this field should mirrors the corresponding *.name value.
    */
   name?: string;
   /**
@@ -58,9 +84,211 @@ export interface EcsEntity {
    */
   raw?: Record<string, unknown>;
   /**
-   * A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format may vary by entity type and source system.
+   * A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format can vary by entity type and source system.
    */
   reference?: string;
+  relationships?: {
+    administers?: {
+      entity?: {
+        /**
+         * Identifiers of referenced entities, using the same meaning as root `entity.id` (stable id for correlation within scope).
+         */
+        id?: string | Array<string>;
+      };
+
+      host?: {
+        /**
+         * Referenced host ids.
+         */
+        id?: string | Array<string>;
+        /**
+         * Referenced host names.
+         */
+        name?: string | Array<string>;
+      };
+
+      service?: {
+        /**
+         * Referenced service ids.
+         */
+        id?: string | Array<string>;
+        /**
+         * Referenced service names.
+         */
+        name?: string | Array<string>;
+      };
+
+      user?: {
+        /**
+         * Referenced user directory or AD/LDAP domain names (same semantics as ECS `user.domain`).
+         */
+        domain?: string | Array<string>;
+        /**
+         * Referenced user email addresses.
+         */
+        email?: string | Array<string>;
+        /**
+         * Referenced user ids.
+         */
+        id?: string | Array<string>;
+        /**
+         * Referenced user short names or logins.
+         */
+        name?: string | Array<string>;
+      };
+    };
+
+    depends_on?: {
+      entity?: {
+        /**
+         * Identifiers of referenced entities, using the same meaning as root `entity.id` (stable id for correlation within scope).
+         */
+        id?: string | Array<string>;
+      };
+
+      host?: {
+        /**
+         * Referenced host ids.
+         */
+        id?: string | Array<string>;
+        /**
+         * Referenced host names.
+         */
+        name?: string | Array<string>;
+      };
+
+      service?: {
+        /**
+         * Referenced service ids.
+         */
+        id?: string | Array<string>;
+        /**
+         * Referenced service names.
+         */
+        name?: string | Array<string>;
+      };
+
+      user?: {
+        /**
+         * Referenced user directory or AD/LDAP domain names (same semantics as ECS `user.domain`).
+         */
+        domain?: string | Array<string>;
+        /**
+         * Referenced user email addresses.
+         */
+        email?: string | Array<string>;
+        /**
+         * Referenced user ids.
+         */
+        id?: string | Array<string>;
+        /**
+         * Referenced user short names or logins.
+         */
+        name?: string | Array<string>;
+      };
+    };
+
+    owns?: {
+      entity?: {
+        /**
+         * Identifiers of referenced entities, using the same meaning as root `entity.id` (stable id for correlation within scope).
+         */
+        id?: string | Array<string>;
+      };
+
+      host?: {
+        /**
+         * Referenced host ids.
+         */
+        id?: string | Array<string>;
+        /**
+         * Referenced host names.
+         */
+        name?: string | Array<string>;
+      };
+
+      service?: {
+        /**
+         * Referenced service ids.
+         */
+        id?: string | Array<string>;
+        /**
+         * Referenced service names.
+         */
+        name?: string | Array<string>;
+      };
+
+      user?: {
+        /**
+         * Referenced user directory or AD/LDAP domain names (same semantics as ECS `user.domain`).
+         */
+        domain?: string | Array<string>;
+        /**
+         * Referenced user email addresses.
+         */
+        email?: string | Array<string>;
+        /**
+         * Referenced user ids.
+         */
+        id?: string | Array<string>;
+        /**
+         * Referenced user short names or logins.
+         */
+        name?: string | Array<string>;
+      };
+    };
+
+    supervises?: {
+      entity?: {
+        /**
+         * Identifiers of referenced entities, using the same meaning as root `entity.id` (stable id for correlation within scope).
+         */
+        id?: string | Array<string>;
+      };
+
+      host?: {
+        /**
+         * Referenced host ids.
+         */
+        id?: string | Array<string>;
+        /**
+         * Referenced host names.
+         */
+        name?: string | Array<string>;
+      };
+
+      service?: {
+        /**
+         * Referenced service ids.
+         */
+        id?: string | Array<string>;
+        /**
+         * Referenced service names.
+         */
+        name?: string | Array<string>;
+      };
+
+      user?: {
+        /**
+         * Referenced user directory or AD/LDAP domain names (same semantics as ECS `user.domain`).
+         */
+        domain?: string | Array<string>;
+        /**
+         * Referenced user email addresses.
+         */
+        email?: string | Array<string>;
+        /**
+         * Referenced user ids.
+         */
+        id?: string | Array<string>;
+        /**
+         * Referenced user short names or logins.
+         */
+        name?: string | Array<string>;
+      };
+    };
+  };
+
   /**
    * The module or integration that provided this entity data (similar to event.module).
    */
@@ -70,36 +298,62 @@ export interface EcsEntity {
    */
   sub_type?: string;
   target?: {
-    /**
-     * A set of static or semi-static attributes of the entity. Usually boolean or keyword field data types. Use this field set when you need to track static or semi-static characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.
-     */
-    attributes?: Record<string, unknown>;
+    attributes?: {
+      /**
+       * Known redirect URIs or URLs associated with this entity. Typically applicable to Service entities.
+       */
+      known_redirects?: string | Array<string>;
+      /**
+       * Indicates whether the entity is managed by an external administration or control system. Typically applicable to Host and Service entities.
+       */
+      managed?: boolean;
+      /**
+       * Indicates whether multi-factor authentication is enabled for this entity. Typically applicable to User entities.
+       */
+      mfa_enabled?: boolean;
+      /**
+       * Restriction applied to OAuth consent for this entity (for example `admin_only`, `verified_only`, `unrestricted`). Typically applicable to Service entities.
+       */
+      oauth_consent_restriction?: string;
+      /**
+       * Action-level permissions associated with this entity (not roles or groups). Typically applicable to User, Host, and Service entities.
+       */
+      permissions?: string | Array<string>;
+      /**
+       * The storage tier or class assigned to an object storage resource (for example S3/GCS/Azure object tiers). Common examples include `STANDARD`, `STANDARD_IA`, `GLACIER`, `COLDLINE`. Typically applicable to Service entities.
+       */
+      storage_class?: string;
+    };
+
     /**
      * A set of ephemeral characteristics of the entity, derived from observed behaviors during a specific time period. Usually boolean field data type. Use this field set when you need to capture and track ephemeral characteristics of an entity for advanced searching, correlation of normalized values across different providers/sources and entity types.
      */
     behavior?: Record<string, unknown>;
     /**
-     * An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (e.g., `host`).
+     * An optional field used when a pretty name is desired for entity-centric operations. This field should not be used for correlation with `*.name` fields for entities with dedicated field sets (for example, `host`).
      */
     display_name?: string;
     /**
-     * A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (e.g., host, user), this value should match the corresponding *.id field. Alternative identifiers (e.g., ARNs values in AWS, URLs) can be preserved in the raw field.
+     * A unique identifier for the entity. When multiple identifiers exist, this should be the most stable and commonly used identifier that: 1) persists across the entity's lifecycle, 2) ensures uniqueness within its scope, 3) is commonly used for queries and correlation, and 4) is readily available in most observations (logs/events). For entities with dedicated field sets (for example, host, user), this value should match the corresponding *.id field. Alternative identifiers (for example, ARNs values in AWS, URLs) can be preserved in the raw field.
      */
     id?: string;
     /**
      * Indicates the date/time when this entity was last "seen," usually based upon the last event/log that is initiated by this entity.
      */
     last_seen_timestamp?: string;
-    /**
-     * A set of temporal characteristics of the entity. Usually date field data type. Use this field set when you need to track temporal characteristics of an entity for advanced searching and correlation of normalized values across different providers/sources and entity types.
-     */
-    lifecycle?: Record<string, unknown>;
+    lifecycle?: {
+      /**
+       * Timestamp of the most recent action performed by or attributed to this entity (active use). Distinct from `entity.last_seen_timestamp`, which records when the entity was last observed in data; `last_activity` implies the entity was active, not only seen. Typically applicable to User, Host, and Service entities.
+       */
+      last_activity?: string;
+    };
+
     /**
      * Field set for any fields containing numeric entity metrics. These use dynamic field data type mapping.
      */
     metrics?: Record<string, unknown>;
     /**
-     * The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (e.g., `host`), this field should mirrors the corresponding *.name value.
+     * The name of the entity. The keyword field enables exact matches for filtering and aggregations, while the text field enables full-text search. For entities with dedicated field sets (for example, `host`), this field should mirrors the corresponding *.name value.
      */
     name?: string;
     /**
@@ -107,9 +361,211 @@ export interface EcsEntity {
      */
     raw?: Record<string, unknown>;
     /**
-     * A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format may vary by entity type and source system.
+     * A URI, URL, or other direct reference to access or locate the entity in its source system. This could be an API endpoint, web console URL, or other addressable location. Format can vary by entity type and source system.
      */
     reference?: string;
+    relationships?: {
+      administers?: {
+        entity?: {
+          /**
+           * Identifiers of referenced entities, using the same meaning as root `entity.id` (stable id for correlation within scope).
+           */
+          id?: string | Array<string>;
+        };
+
+        host?: {
+          /**
+           * Referenced host ids.
+           */
+          id?: string | Array<string>;
+          /**
+           * Referenced host names.
+           */
+          name?: string | Array<string>;
+        };
+
+        service?: {
+          /**
+           * Referenced service ids.
+           */
+          id?: string | Array<string>;
+          /**
+           * Referenced service names.
+           */
+          name?: string | Array<string>;
+        };
+
+        user?: {
+          /**
+           * Referenced user directory or AD/LDAP domain names (same semantics as ECS `user.domain`).
+           */
+          domain?: string | Array<string>;
+          /**
+           * Referenced user email addresses.
+           */
+          email?: string | Array<string>;
+          /**
+           * Referenced user ids.
+           */
+          id?: string | Array<string>;
+          /**
+           * Referenced user short names or logins.
+           */
+          name?: string | Array<string>;
+        };
+      };
+
+      depends_on?: {
+        entity?: {
+          /**
+           * Identifiers of referenced entities, using the same meaning as root `entity.id` (stable id for correlation within scope).
+           */
+          id?: string | Array<string>;
+        };
+
+        host?: {
+          /**
+           * Referenced host ids.
+           */
+          id?: string | Array<string>;
+          /**
+           * Referenced host names.
+           */
+          name?: string | Array<string>;
+        };
+
+        service?: {
+          /**
+           * Referenced service ids.
+           */
+          id?: string | Array<string>;
+          /**
+           * Referenced service names.
+           */
+          name?: string | Array<string>;
+        };
+
+        user?: {
+          /**
+           * Referenced user directory or AD/LDAP domain names (same semantics as ECS `user.domain`).
+           */
+          domain?: string | Array<string>;
+          /**
+           * Referenced user email addresses.
+           */
+          email?: string | Array<string>;
+          /**
+           * Referenced user ids.
+           */
+          id?: string | Array<string>;
+          /**
+           * Referenced user short names or logins.
+           */
+          name?: string | Array<string>;
+        };
+      };
+
+      owns?: {
+        entity?: {
+          /**
+           * Identifiers of referenced entities, using the same meaning as root `entity.id` (stable id for correlation within scope).
+           */
+          id?: string | Array<string>;
+        };
+
+        host?: {
+          /**
+           * Referenced host ids.
+           */
+          id?: string | Array<string>;
+          /**
+           * Referenced host names.
+           */
+          name?: string | Array<string>;
+        };
+
+        service?: {
+          /**
+           * Referenced service ids.
+           */
+          id?: string | Array<string>;
+          /**
+           * Referenced service names.
+           */
+          name?: string | Array<string>;
+        };
+
+        user?: {
+          /**
+           * Referenced user directory or AD/LDAP domain names (same semantics as ECS `user.domain`).
+           */
+          domain?: string | Array<string>;
+          /**
+           * Referenced user email addresses.
+           */
+          email?: string | Array<string>;
+          /**
+           * Referenced user ids.
+           */
+          id?: string | Array<string>;
+          /**
+           * Referenced user short names or logins.
+           */
+          name?: string | Array<string>;
+        };
+      };
+
+      supervises?: {
+        entity?: {
+          /**
+           * Identifiers of referenced entities, using the same meaning as root `entity.id` (stable id for correlation within scope).
+           */
+          id?: string | Array<string>;
+        };
+
+        host?: {
+          /**
+           * Referenced host ids.
+           */
+          id?: string | Array<string>;
+          /**
+           * Referenced host names.
+           */
+          name?: string | Array<string>;
+        };
+
+        service?: {
+          /**
+           * Referenced service ids.
+           */
+          id?: string | Array<string>;
+          /**
+           * Referenced service names.
+           */
+          name?: string | Array<string>;
+        };
+
+        user?: {
+          /**
+           * Referenced user directory or AD/LDAP domain names (same semantics as ECS `user.domain`).
+           */
+          domain?: string | Array<string>;
+          /**
+           * Referenced user email addresses.
+           */
+          email?: string | Array<string>;
+          /**
+           * Referenced user ids.
+           */
+          id?: string | Array<string>;
+          /**
+           * Referenced user short names or logins.
+           */
+          name?: string | Array<string>;
+        };
+      };
+    };
+
     /**
      * The module or integration that provided this entity data (similar to event.module).
      */
