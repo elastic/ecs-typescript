@@ -24,6 +24,9 @@ concurrency:
   group: npm-publish-${{ github.ref }}
   cancel-in-progress: false
 
+permissions:
+  contents: read
+
 jobs:
   check-version:
     runs-on: ubuntu-latest
