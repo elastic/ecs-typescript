@@ -508,6 +508,11 @@ export interface EcsHost {
     static_score_norm?: number;
   };
 
+  /**
+   * User-configurable, arbitrary tags used to classify a host for search, alerting, and access control purposes. A host can carry more than one tag at a time, for example an environment tag and a team or application tag.
+   * These values are expected to be assigned by the entity that manages the host's monitoring configuration (e.g. a Fleet policy or configuration management system), not derived from data on the host itself.
+   */
+  tags?: string | Array<string>;
   target?: {
     /**
      * Operating system architecture.
@@ -995,6 +1000,11 @@ export interface EcsHost {
       static_score_norm?: number;
     };
 
+    /**
+     * User-configurable, arbitrary tags used to classify a host for search, alerting, and access control purposes. A host can carry more than one tag at a time, for example an environment tag and a team or application tag.
+     * These values are expected to be assigned by the entity that manages the host's monitoring configuration (e.g. a Fleet policy or configuration management system), not derived from data on the host itself.
+     */
+    tags?: string | Array<string>;
     /**
      * Type of host.
      * For Cloud providers this can be the machine type like `t2.medium`. If vm, this could be the container, for example, or other information meaningful in your environment.
