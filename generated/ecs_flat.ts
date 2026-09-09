@@ -9688,6 +9688,20 @@ export const EcsFlat = {
       'Human-readable name of the GenAI agent provided by the application.',
     type: 'keyword',
   },
+  'gen_ai.input.messages': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-input-messages',
+    description: 'The chat history provided to the model as an input.',
+    example:
+      '{\n  "role": "user",\n  "parts": [\n    {\n      "type": "text",\n      "content": "Weather in Paris?"\n    }\n  ]\n}, {\n  "role": "assistant",\n  "parts": [\n    {\n      "type": "tool_call",\n      "id": "call_VSPygqKTWdrhaFErNvMV18Yl",\n      "name": "get_weather",\n      "arguments": {\n        "location": "Paris"\n      }\n    }\n  ]\n}, {\n  "role": "tool",\n  "parts": [\n    {\n      "type": "tool_call_response",\n      "id": "call_VSPygqKTWdrhaFErNvMV18Yl",\n      "result": "rainy, 57°F"\n    }\n  ]\n}',
+    flat_name: 'gen_ai.input.messages',
+    level: 'extended',
+    name: 'input.messages',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'The chat history provided to the model as an input.',
+    type: 'flattened',
+  },
   'gen_ai.operation.name': {
     beta: 'This field is beta and subject to change.',
     dashed_name: 'gen-ai-operation-name',
@@ -9701,6 +9715,22 @@ export const EcsFlat = {
     otel: [{ relation: 'match', stability: 'development' }],
     short: 'The name of the operation being performed.',
     type: 'keyword',
+  },
+  'gen_ai.output.messages': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-output-messages',
+    description:
+      'Messages returned by the model where each message represents a specific model response (choice, candidate).',
+    example:
+      '{\n  "role": "assistant",\n  "parts": [\n    {\n      "type": "text",\n      "content": "The weather in Paris is currently rainy with a temperature of 57°F."\n    }\n  ],\n  "finish_reason": "stop"\n}',
+    flat_name: 'gen_ai.output.messages',
+    level: 'extended',
+    name: 'output.messages',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short:
+      'Messages returned by the model where each message represents a specific model response (choice, candidate).',
+    type: 'flattened',
   },
   'gen_ai.output.type': {
     beta: 'This field is beta and subject to change.',
@@ -9716,6 +9746,22 @@ export const EcsFlat = {
     short: 'Represents the content type requested by the client.',
     type: 'keyword',
   },
+  'gen_ai.provider.name': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-provider-name',
+    description:
+      'The Generative AI provider as identified by the client or server instrumentation.',
+    example: 'openai',
+    flat_name: 'gen_ai.provider.name',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'provider.name',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short:
+      'The Generative AI provider as identified by the client or server instrumentation.',
+    type: 'keyword',
+  },
   'gen_ai.request.choice.count': {
     beta: 'This field is beta and subject to change.',
     dashed_name: 'gen-ai-request-choice-count',
@@ -9727,7 +9773,7 @@ export const EcsFlat = {
     normalize: [],
     otel: [{ relation: 'match', stability: 'development' }],
     short: 'The target number of candidate completions to return.',
-    type: 'integer',
+    type: 'long',
   },
   'gen_ai.request.encoding_formats': {
     beta: 'This field is beta and subject to change.',
@@ -9769,7 +9815,7 @@ export const EcsFlat = {
     normalize: [],
     otel: [{ relation: 'match', stability: 'development' }],
     short: 'The maximum number of tokens the model generates for a request.',
-    type: 'integer',
+    type: 'long',
   },
   'gen_ai.request.model': {
     beta: 'This field is beta and subject to change.',
@@ -9810,7 +9856,7 @@ export const EcsFlat = {
     normalize: [],
     otel: [{ relation: 'match', stability: 'development' }],
     short: 'Requests with same seed value more likely to return same result.',
-    type: 'integer',
+    type: 'long',
   },
   'gen_ai.request.stop_sequences': {
     beta: 'This field is beta and subject to change.',
@@ -9909,27 +9955,21 @@ export const EcsFlat = {
     short: 'The name of the model that generated the response.',
     type: 'keyword',
   },
-  'gen_ai.system': {
+  'gen_ai.system_instructions': {
     beta: 'This field is beta and subject to change.',
-    dashed_name: 'gen-ai-system',
+    dashed_name: 'gen-ai-system-instructions',
     description:
-      'The Generative AI product as identified by the client or server instrumentation.',
-    example: 'openai',
-    flat_name: 'gen_ai.system',
-    ignore_above: 1024,
+      'The system message or instructions provided to the GenAI model separately from the chat history.',
+    example:
+      '{\n  "type": "text",\n  "content": "You are an Agent that greet users, always use greetings tool to respond"\n}',
+    flat_name: 'gen_ai.system_instructions',
     level: 'extended',
-    name: 'system',
+    name: 'system_instructions',
     normalize: [],
-    otel: [
-      {
-        attribute: 'gen_ai.provider.name',
-        relation: 'equivalent',
-        stability: 'development',
-      },
-    ],
+    otel: [{ relation: 'match', stability: 'development' }],
     short:
-      'The Generative AI product as identified by the client or server instrumentation.',
-    type: 'keyword',
+      'The system message or instructions provided to the GenAI model separately from the chat history.',
+    type: 'flattened',
   },
   'gen_ai.token.type': {
     beta: 'This field is beta and subject to change.',
@@ -9945,6 +9985,20 @@ export const EcsFlat = {
     short: 'The type of token being counted.',
     type: 'keyword',
   },
+  'gen_ai.tool.call.arguments': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-tool-call-arguments',
+    description: 'Parameters passed to the tool call.',
+    example:
+      '{\n    "location": "San Francisco?",\n    "date": "2025-10-01"\n}',
+    flat_name: 'gen_ai.tool.call.arguments',
+    level: 'extended',
+    name: 'tool.call.arguments',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short: 'Parameters passed to the tool call.',
+    type: 'flattened',
+  },
   'gen_ai.tool.call.id': {
     beta: 'This field is beta and subject to change.',
     dashed_name: 'gen-ai-tool-call-id',
@@ -9958,6 +10012,38 @@ export const EcsFlat = {
     otel: [{ relation: 'match', stability: 'development' }],
     short: 'The tool call identifier.',
     type: 'keyword',
+  },
+  'gen_ai.tool.call.result': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-tool-call-result',
+    description:
+      'The result returned by the tool call (if any and if execution was successful).',
+    example:
+      '{\n  "temperature_range": {\n    "high": 75,\n    "low": 60\n  },\n  "conditions": "sunny"\n}',
+    flat_name: 'gen_ai.tool.call.result',
+    level: 'extended',
+    name: 'tool.call.result',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short:
+      'The result returned by the tool call (if any and if execution was successful).',
+    type: 'flattened',
+  },
+  'gen_ai.tool.definitions': {
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'gen-ai-tool-definitions',
+    description:
+      'The list of source system tool definitions available to the GenAI agent or model.',
+    example:
+      '{\n  "type": "function",\n  "name": "get_current_weather",\n  "description": "Get the current weather in a given location",\n  "parameters": {\n    "type": "object",\n    "properties": {\n      "location": {\n        "type": "string",\n        "description": "The city and state, e.g. San Francisco, CA"\n      },\n      "unit": {\n        "type": "string",\n        "enum": [\n          "celsius",\n          "fahrenheit"\n        ]\n      }\n    },\n    "required": [\n      "location",\n      "unit"\n    ]\n  }\n}',
+    flat_name: 'gen_ai.tool.definitions',
+    level: 'extended',
+    name: 'tool.definitions',
+    normalize: [],
+    otel: [{ relation: 'match', stability: 'development' }],
+    short:
+      'The list of source system tool definitions available to the GenAI agent or model.',
+    type: 'flattened',
   },
   'gen_ai.tool.name': {
     beta: 'This field is beta and subject to change.',
@@ -9998,7 +10084,7 @@ export const EcsFlat = {
     normalize: [],
     otel: [{ relation: 'match', stability: 'development' }],
     short: 'The number of tokens used in the GenAI input (prompt).',
-    type: 'integer',
+    type: 'long',
   },
   'gen_ai.usage.output_tokens': {
     beta: 'This field is beta and subject to change.',
@@ -10012,7 +10098,7 @@ export const EcsFlat = {
     normalize: [],
     otel: [{ relation: 'match', stability: 'development' }],
     short: 'The number of tokens used in the GenAI response (completion).',
-    type: 'integer',
+    type: 'long',
   },
   'group.domain': {
     dashed_name: 'group-domain',
@@ -11395,6 +11481,21 @@ export const EcsFlat = {
     short: 'A normalized risk score calculated by an external system.',
     type: 'float',
   },
+  'host.tags': {
+    alpha: 'This field is alpha and subject to change.',
+    dashed_name: 'host-tags',
+    description:
+      "User-configurable, arbitrary tags used to classify a host for search, alerting, and access control purposes. A host can carry more than one tag at a time, for example an environment tag and a team or application tag.\nThese values are expected to be assigned by the entity that manages the host's monitoring configuration (e.g. a Fleet policy or configuration management system), not derived from data on the host itself.",
+    example: '["APP-A_PROD", "team-platform"]',
+    flat_name: 'host.tags',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'tags',
+    normalize: ['array'],
+    short: 'User-configurable tags used to classify a host.',
+    synthetic_source_keep: 'none',
+    type: 'keyword',
+  },
   'host.target.architecture': {
     dashed_name: 'host-target-architecture',
     description: 'Operating system architecture.',
@@ -12705,6 +12806,22 @@ export const EcsFlat = {
     original_fieldset: 'risk',
     short: 'A normalized risk score calculated by an external system.',
     type: 'float',
+  },
+  'host.target.tags': {
+    alpha: 'This field is alpha and subject to change.',
+    dashed_name: 'host-target-tags',
+    description:
+      "User-configurable, arbitrary tags used to classify a host for search, alerting, and access control purposes. A host can carry more than one tag at a time, for example an environment tag and a team or application tag.\nThese values are expected to be assigned by the entity that manages the host's monitoring configuration (e.g. a Fleet policy or configuration management system), not derived from data on the host itself.",
+    example: '["APP-A_PROD", "team-platform"]',
+    flat_name: 'host.target.tags',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'tags',
+    normalize: ['array'],
+    original_fieldset: 'host',
+    short: 'User-configurable tags used to classify a host.',
+    synthetic_source_keep: 'none',
+    type: 'keyword',
   },
   'host.target.type': {
     dashed_name: 'host-target-type',
@@ -36048,6 +36165,41 @@ export const EcsFlat = {
     name: 'severity',
     normalize: [],
     short: 'Severity of the vulnerability.',
+    type: 'keyword',
+  },
+  'vulnerability.status': {
+    allowed_values: [
+      {
+        description: 'Vulnerability is currently present on the asset.',
+        name: 'open',
+      },
+      {
+        description:
+          'Vulnerability has been remediated and is no longer present on the asset.',
+        name: 'fixed',
+      },
+      {
+        description:
+          'Vulnerability reappeared on the asset after previously being fixed. From a filtering perspective this is treated the same as `open`, but it signals a regression that matters for SLA tracking.',
+        name: 'reopened',
+      },
+      {
+        description:
+          'The lifecycle state of the vulnerability cannot be determined. This is the appropriate value for full-snapshot integrations that do not provide lifecycle data, or when the source data does not include status information.',
+        name: 'unknown',
+      },
+    ],
+    beta: 'This field is beta and subject to change.',
+    dashed_name: 'vulnerability-status',
+    description:
+      "The lifecycle state of a vulnerability finding on an asset. Use this field to distinguish between vulnerabilities that are currently present and those that have been remediated.\nIntegrations that consume incremental or delta APIs should map their vendor-specific status values to one of the allowed values below. Integrations that consume full-snapshot APIs (where every record represents a currently open vulnerability) should set this field to `open`. Full-snapshot sources never produce `fixed` records — fixed vulnerabilities simply stop appearing in subsequent snapshots and are eventually evicted by the transform's retention policy.",
+    example: 'open',
+    flat_name: 'vulnerability.status',
+    ignore_above: 1024,
+    level: 'extended',
+    name: 'status',
+    normalize: [],
+    short: 'Lifecycle state of a vulnerability finding.',
     type: 'keyword',
   },
 };

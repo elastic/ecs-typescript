@@ -37,6 +37,13 @@ export interface EcsGenAi {
     name?: string;
   };
 
+  input?: {
+    /**
+     * The chat history provided to the model as an input.
+     */
+    messages?: Record<string, unknown>;
+  };
+
   operation?: {
     /**
      * The name of the operation being performed.
@@ -46,9 +53,20 @@ export interface EcsGenAi {
 
   output?: {
     /**
+     * Messages returned by the model where each message represents a specific model response (choice, candidate).
+     */
+    messages?: Record<string, unknown>;
+    /**
      * Represents the content type requested by the client.
      */
     type?: string;
+  };
+
+  provider?: {
+    /**
+     * The Generative AI provider as identified by the client or server instrumentation.
+     */
+    name?: string;
   };
 
   request?: {
@@ -117,9 +135,9 @@ export interface EcsGenAi {
   };
 
   /**
-   * The Generative AI product as identified by the client or server instrumentation.
+   * The system message or instructions provided to the GenAI model separately from the chat history.
    */
-  system?: string;
+  system_instructions?: Record<string, unknown>;
   token?: {
     /**
      * The type of token being counted.
@@ -130,11 +148,23 @@ export interface EcsGenAi {
   tool?: {
     call?: {
       /**
+       * Parameters passed to the tool call.
+       */
+      arguments?: Record<string, unknown>;
+      /**
        * The tool call identifier.
        */
       id?: string;
+      /**
+       * The result returned by the tool call (if any and if execution was successful).
+       */
+      result?: Record<string, unknown>;
     };
 
+    /**
+     * The list of source system tool definitions available to the GenAI agent or model.
+     */
+    definitions?: Record<string, unknown>;
     /**
      * Name of the tool utilized by the agent.
      */
