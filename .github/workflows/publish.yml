@@ -78,8 +78,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: 'https://registry.npmjs.org'
-          cache: 'yarn'
-      
+          # cache intentionally disabled: this workflow publishes to npm.
+          # elastic/observability-robots#3261
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       
